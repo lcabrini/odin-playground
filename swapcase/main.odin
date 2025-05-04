@@ -30,9 +30,9 @@ swapcase :: proc(s: string) -> (res: string, err: mem.Allocator_Error) #optional
     strings.builder_init(&b, 0, len(s), allocator) or_return
 
     for r in s {
-        if r >= 'a' && r <= 'z' {
+        if unicode.is_lower(r) {
             strings.write_rune(&b, unicode.to_upper(r))
-        } else if r >= 'A' && r <= 'Z' {
+        } else if unicode.is_upper(r) {
             strings.write_rune(&b, unicode.to_lower(r))
         } else {
             strings.write_rune(&b, r)
