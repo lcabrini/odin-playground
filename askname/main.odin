@@ -30,9 +30,11 @@ main :: proc() {
 
 capitalize_names :: proc(name: string) -> (res: string, err: mem.Allocator_Error) #optional_allocator_error {
     b: strings.Builder
+
     allocator := context.allocator
     strings.builder_init(&b, 0, len(name), allocator)
     capitalize_next := true
+
     for r in name {
         if capitalize_next {
             strings.write_rune(&b, unicode.to_upper(r))
@@ -45,5 +47,6 @@ capitalize_names :: proc(name: string) -> (res: string, err: mem.Allocator_Error
             capitalize_next = true
         }
     }
+
     return strings.to_string(b), nil
 }
