@@ -37,7 +37,7 @@ Line :: struct {
 main :: proc() {
     rl.SetConfigFlags({.VSYNC_HINT})
     rl.InitWindow(WIDTH, HEIGHT, TITLE)
-    rl.SetTargetFPS(60)
+    rl.SetTargetFPS(30)
 
     head := init_lines()
     current := head
@@ -48,6 +48,7 @@ main :: proc() {
 
     paused := false
     line_count := 1
+    time_played: f32 = 0.0
 
     for !rl.WindowShouldClose() {
         if rl.IsKeyPressed(.P) {
@@ -67,6 +68,8 @@ main :: proc() {
         }
 
         rl.UpdateMusicStream(music)
+        time_played = rl.GetMusicTimePlayed(music) / rl.GetMusicTimeLength(music)
+        if time_played > 1.0 do time_played = 1.0
 
         rl.BeginDrawing()
         rl.ClearBackground(WB_BACKGROUND)
@@ -91,7 +94,7 @@ main :: proc() {
         rl.EndDrawing()
 
         if !paused && line_count == LINE_COUNT do current = current.next
-        if line_count < LINE_COUNT do line_count += 1
+        if !paused && line_count < LINE_COUNT do line_count += 1
     }
 
     rl.UnloadAudioStream(music)
