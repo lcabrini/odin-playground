@@ -43,7 +43,7 @@ main :: proc() {
     current := head
 
     rl.InitAudioDevice()
-    music := rl.LoadMusicStream("jesu-joy-of-mans-desiring.mp3")
+    music := rl.LoadMusicStream("../../resources/jesu-joy-of-mans-desiring.mp3")
     rl.PlayMusicStream(music)
 
     paused := false
