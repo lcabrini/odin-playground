@@ -44,13 +44,23 @@ main :: proc() {
     rl.SetTargetFPS(60)
 
     head := init_lines()
+    current := head
 
     rl.InitAudioDevice()
     music := rl.LoadMusicStream("jesu-joy-of-mans-desiring.mp3")
     rl.PlayMusicStream(music)
 
-    for !rl.WindowShouldClose() {
+    paused := false
 
+    for !rl.WindowShouldClose() {
+        if rl.IsKeyPressed(.P) {
+            paused = !paused
+            if paused {
+                rl.PauseMusicStream(music)
+            } else {
+                rl.ResumeMusicStream(music)
+            }
+        }
 
         rl.UpdateMusicStream(music)
 
@@ -61,17 +71,17 @@ main :: proc() {
         green := u8(WB_GREEN)
         blue := u8(WB_BLUE)
 
-        current := head
+        line := current
         for i in 0..<LINE_COUNT {
             red += R_STEP
             green += G_STEP
             blue += B_STEP
-            rl.DrawLine(i32(current.x1), i32(current.y1), i32(current.x2), i32(current.y2), {red, green, blue, 255})
-            current = current.next
+            rl.DrawLine(i32(line.x1), i32(line.y1), i32(line.x2), i32(line.y2), {red, green, blue, 255})
+            line = line.next
         }
 
         rl.EndDrawing()
-        head = head.next
+        if !paused do current = current.next
     }
 
     rl.UnloadAudioStream(music)
