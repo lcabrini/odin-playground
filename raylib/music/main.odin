@@ -19,7 +19,7 @@ TITLE :: "Music"
 
 LINES_PER_QUADRANT :: 30
 LINE_STEP :: 10
-LINE_COUNT :: LINES_PER_QUADRANT * 2
+MAX_LINE_COUNT :: LINES_PER_QUADRANT * 2
 
 LEFT :: 0
 TOP :: 0
@@ -93,8 +93,8 @@ main :: proc() {
 
         rl.EndDrawing()
 
-        if !paused && line_count == LINE_COUNT do current = current.next
-        if !paused && line_count < LINE_COUNT do line_count += 1
+        if !paused && line_count == MAX_LINE_COUNT do current = current.next
+        if !paused && line_count < MAX_LINE_COUNT do line_count += 1
     }
 
     rl.UnloadAudioStream(music)
