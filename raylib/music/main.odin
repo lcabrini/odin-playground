@@ -60,7 +60,7 @@ main :: proc() {
             }
         }
 
-        if rl.IsKeyPressed(.R) {
+        if rl.IsKeyPressed(.R) && !paused {
             rl.StopMusicStream(music)
             rl.PlayMusicStream(music)
             current = head
