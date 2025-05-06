@@ -26,10 +26,6 @@ TOP :: 0
 RIGHT :: WIDTH - 1
 BOTTOM :: HEIGHT - 1
 
-R_STEP :: (255 - 0) / LINE_COUNT
-G_STEP :: (255 - 85) / LINE_COUNT
-B_STEP :: (255 - 169) / LINE_COUNT
-
 Line :: struct {
     x1: int,
     y1: int,
@@ -51,6 +47,7 @@ main :: proc() {
     rl.PlayMusicStream(music)
 
     paused := false
+    line_count := 1
 
     for !rl.WindowShouldClose() {
         if rl.IsKeyPressed(.P) {
@@ -66,6 +63,7 @@ main :: proc() {
             rl.StopMusicStream(music)
             rl.PlayMusicStream(music)
             current = head
+            line_count = 1
         }
 
         rl.UpdateMusicStream(music)
@@ -77,17 +75,23 @@ main :: proc() {
         green := u8(WB_GREEN)
         blue := u8(WB_BLUE)
 
+        rs := (255 - 0) / line_count
+        gs := (255 - 85) / line_count
+        bs := (255 - 169) / line_count
+
         line := current
-        for i in 0..<LINE_COUNT {
-            red += R_STEP
-            green += G_STEP
-            blue += B_STEP
+        for i in 0..<line_count {
+            red += u8(rs)
+            green += u8(gs)
+            blue += u8(bs)
             rl.DrawLine(i32(line.x1), i32(line.y1), i32(line.x2), i32(line.y2), {red, green, blue, 255})
             line = line.next
         }
 
         rl.EndDrawing()
-        if !paused do current = current.next
+
+        if !paused && line_count == LINE_COUNT do current = current.next
+        if line_count < LINE_COUNT do line_count += 1
     }
 
     rl.UnloadAudioStream(music)
