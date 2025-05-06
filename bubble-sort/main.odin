@@ -17,9 +17,7 @@ bubble_sort :: proc(na: []int) {
         swapped := false
         for j := i+1; j < len(na); j += 1 {
             if na[i] > na[j] {
-                tmp := na[i]
-                na[i] = na[j]
-                na[j] = tmp
+                na[i], na[j] = na[j], na[i]
                 swapped = true
             }
         }
