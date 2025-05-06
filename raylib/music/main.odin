@@ -62,6 +62,12 @@ main :: proc() {
             }
         }
 
+        if rl.IsKeyPressed(.R) {
+            rl.StopMusicStream(music)
+            rl.PlayMusicStream(music)
+            current = head
+        }
+
         rl.UpdateMusicStream(music)
 
         rl.BeginDrawing()
