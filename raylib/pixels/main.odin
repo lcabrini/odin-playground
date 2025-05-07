@@ -19,6 +19,7 @@ HUD_SPEED :: 3
 SMALL_CHANGE :: 1
 MEDIUM_CHANGE :: 10
 LARGE_CHANGE :: 30
+MAX_PIXELS_PER_FRAME :: 500
 
 Hud :: struct {
     draw: bool,
@@ -35,6 +36,7 @@ main :: proc() {
 
     hud := Hud{false, 0, WORKBENCH_BLUE, rl.GenImageColor(WIDTH, HUD_HEIGHT, WORKBENCH_BLUE)}
     pixels_per_frame := 1
+    should_clear_screen := true
 
     for !rl.WindowShouldClose() {
         if rl.IsKeyPressed(.H) {
@@ -63,8 +65,12 @@ main :: proc() {
             pixels_per_frame -= dec
         }
 
+        if rl.IsKeyPressed(.C) {
+            should_clear_screen = true
+        }
+
         if pixels_per_frame < 1 do pixels_per_frame = 1
-        if pixels_per_frame > 100 do pixels_per_frame = 100
+        if pixels_per_frame > MAX_PIXELS_PER_FRAME do pixels_per_frame = MAX_PIXELS_PER_FRAME
 
         if hud.draw && hud.current_height < HUD_HEIGHT {
             hud.current_height += HUD_SPEED
@@ -77,6 +83,11 @@ main :: proc() {
         if hud.current_height > HUD_HEIGHT do hud.current_height = HUD_HEIGHT
 
         rl.BeginDrawing()
+
+        if should_clear_screen {
+            rl.ImageClearBackground(&image, rl.BLACK)
+            should_clear_screen = false
+        }
 
         for i in 0..<pixels_per_frame {
             x := rl.GetRandomValue(0, WIDTH-1)
