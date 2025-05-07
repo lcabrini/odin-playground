@@ -37,6 +37,7 @@ main :: proc() {
     hud := Hud{false, 0, WORKBENCH_BLUE, rl.GenImageColor(WIDTH, HUD_HEIGHT, WORKBENCH_BLUE)}
     pixels_per_frame := 1
     should_clear_screen := true
+    paused := false
 
     for !rl.WindowShouldClose() {
         if rl.IsKeyPressed(.H) {
@@ -69,6 +70,10 @@ main :: proc() {
             should_clear_screen = true
         }
 
+        if rl.IsKeyPressed(.P) {
+            paused = !paused
+        }
+
         if pixels_per_frame < 1 do pixels_per_frame = 1
         if pixels_per_frame > MAX_PIXELS_PER_FRAME do pixels_per_frame = MAX_PIXELS_PER_FRAME
 
@@ -89,13 +94,15 @@ main :: proc() {
             should_clear_screen = false
         }
 
-        for i in 0..<pixels_per_frame {
-            x := rl.GetRandomValue(0, WIDTH-1)
-            y := rl.GetRandomValue(0, HEIGHT-1)
-            r := rl.GetRandomValue(0, 255)
-            g := rl.GetRandomValue(0, 255)
-            b := rl.GetRandomValue(0, 255)
-            rl.ImageDrawPixel(&image, x, y, {u8(r), u8(g), u8(b), 255})
+        if !paused {
+            for i in 0..<pixels_per_frame {
+                x := rl.GetRandomValue(0, WIDTH-1)
+                y := rl.GetRandomValue(0, HEIGHT-1)
+                r := rl.GetRandomValue(0, 255)
+                g := rl.GetRandomValue(0, 255)
+                b := rl.GetRandomValue(0, 255)
+                rl.ImageDrawPixel(&image, x, y, {u8(r), u8(g), u8(b), 255})
+            }
         }
 
         rl.ImageClearBackground(&hud.image, WORKBENCH_BLUE)
