@@ -138,6 +138,10 @@ main :: proc() {
             rl.ImageDrawText(&hud.image, "PAUSED", x, 10, FONT_SIZE, rl.RAYWHITE)
         }
 
+        rl.ImageDrawRectangle(&hud.image, WIDTH - 66, 10, 56, 20, rl.RAYWHITE)
+        if use_red do rl.ImageDrawRectangle(&hud.image, WIDTH - 64, 12, 16, 16, rl.RED)
+        if use_green do rl.ImageDrawRectangle(&hud.image, WIDTH - 46, 12, 16, 16, rl.GREEN)
+        if use_blue do rl.ImageDrawRectangle(&hud.image, WIDTH - 28, 12, 16, 16, rl.BLUE)
         texture := rl.LoadTextureFromImage(image)
         rl.DrawTexture(texture, 0, 0, rl.RAYWHITE)
 
