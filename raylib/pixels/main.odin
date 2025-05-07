@@ -14,6 +14,15 @@ HEIGHT :: 748
 TITLE :: "Pixels"
 
 HUD_HEIGHT :: 100
+HUD_SPEED :: 3
+
+
+Hud :: struct {
+    draw: bool,
+    current_height: i32,
+    color: rl.Color,
+    image: rl.Image
+}
 
 main :: proc() {
     rl.SetConfigFlags({.VSYNC_HINT})
@@ -21,22 +30,53 @@ main :: proc() {
     image := rl.LoadImageFromScreen()
     rl.SetTargetFPS(60)
 
+    hud := Hud{false, 0, WORKBENCH_BLUE, rl.GenImageColor(WIDTH, HUD_HEIGHT, WORKBENCH_BLUE)}
+    pixels_per_frame := 1
+
     for !rl.WindowShouldClose() {
+        if rl.IsKeyPressed(.H) {
+            hud.draw = !hud.draw
+        }
+
+        if hud.draw && hud.current_height < HUD_HEIGHT {
+            hud.current_height += HUD_SPEED
+        }
+
+        if !hud.draw && hud.current_height > 0 {
+            hud.current_height -= HUD_SPEED
+        }
+
+        if hud.current_height > HUD_HEIGHT do hud.current_height = HUD_HEIGHT
+
         rl.BeginDrawing()
 
         x := rl.GetRandomValue(0, WIDTH-1)
-        y := rl.GetRandomValue(HUD_HEIGHT+1, HEIGHT-1)
+        y := rl.GetRandomValue(0, HEIGHT-1)
         r := rl.GetRandomValue(0, 255)
         g := rl.GetRandomValue(0, 255)
         b := rl.GetRandomValue(0, 255)
         rl.ImageDrawPixel(&image, x, y, {u8(r), u8(g), u8(b), 255})
 
+        rl.ImageClearBackground(&hud.image, WORKBENCH_BLUE)
+        text := rl.TextFormat("Pixels per frame: %03d", pixels_per_frame)
+        rl.ImageDrawText(&hud.image, text, 10, 10, 20, rl.RAYWHITE)
+
         texture := rl.LoadTextureFromImage(image)
         rl.DrawTexture(texture, 0, 0, rl.RAYWHITE)
 
-        rl.DrawRectangle(0, 0, WIDTH, HUD_HEIGHT, WORKBENCH_BLUE)
+        hud_texture: rl.Texture
+        loaded_hud_texture := false
+        if hud.draw || (!hud.draw && hud.current_height > 0) {
+            loaded_hud_texture = true
+            hud_texture = rl.LoadTextureFromImage(hud.image)
+            src_rect := rl.Rectangle{0, f32(HUD_HEIGHT-hud.current_height), WIDTH, f32(hud.current_height)}
+            dest_rect := rl.Rectangle{0, 0, WIDTH, f32(hud.current_height)}
+            rl.DrawTexturePro(hud_texture, src_rect, dest_rect, {0, 0}, 0.0, rl.RAYWHITE )
+        }
+
         rl.EndDrawing()
         rl.UnloadTexture(texture)
+        if loaded_hud_texture do rl.UnloadTexture(hud_texture)
     }
 
     rl.UnloadImage(image)
