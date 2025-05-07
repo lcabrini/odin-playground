@@ -16,6 +16,9 @@ TITLE :: "Pixels"
 HUD_HEIGHT :: 100
 HUD_SPEED :: 3
 
+SMALL_CHANGE :: 1
+MEDIUM_CHANGE :: 10
+LARGE_CHANGE :: 30
 
 Hud :: struct {
     draw: bool,
@@ -38,6 +41,31 @@ main :: proc() {
             hud.draw = !hud.draw
         }
 
+        if rl.IsKeyPressed(.UP) {
+            inc := SMALL_CHANGE
+            if rl.IsKeyDown(.LEFT_SHIFT) {
+                inc = MEDIUM_CHANGE
+            } else if rl.IsKeyDown(.LEFT_CONTROL) {
+                inc = LARGE_CHANGE
+            }
+
+            pixels_per_frame += inc
+        }
+
+        if rl.IsKeyPressed(.DOWN) {
+            dec := SMALL_CHANGE
+            if rl.IsKeyDown(.LEFT_SHIFT) {
+                dec = MEDIUM_CHANGE
+            } else if rl.IsKeyDown(.LEFT_CONTROL) {
+                dec = LARGE_CHANGE
+            }
+
+            pixels_per_frame -= dec
+        }
+
+        if pixels_per_frame < 1 do pixels_per_frame = 1
+        if pixels_per_frame > 100 do pixels_per_frame = 100
+
         if hud.draw && hud.current_height < HUD_HEIGHT {
             hud.current_height += HUD_SPEED
         }
@@ -50,12 +78,14 @@ main :: proc() {
 
         rl.BeginDrawing()
 
-        x := rl.GetRandomValue(0, WIDTH-1)
-        y := rl.GetRandomValue(0, HEIGHT-1)
-        r := rl.GetRandomValue(0, 255)
-        g := rl.GetRandomValue(0, 255)
-        b := rl.GetRandomValue(0, 255)
-        rl.ImageDrawPixel(&image, x, y, {u8(r), u8(g), u8(b), 255})
+        for i in 0..<pixels_per_frame {
+            x := rl.GetRandomValue(0, WIDTH-1)
+            y := rl.GetRandomValue(0, HEIGHT-1)
+            r := rl.GetRandomValue(0, 255)
+            g := rl.GetRandomValue(0, 255)
+            b := rl.GetRandomValue(0, 255)
+            rl.ImageDrawPixel(&image, x, y, {u8(r), u8(g), u8(b), 255})
+        }
 
         rl.ImageClearBackground(&hud.image, WORKBENCH_BLUE)
         text := rl.TextFormat("Pixels per frame: %03d", pixels_per_frame)
