@@ -21,6 +21,9 @@ MEDIUM_CHANGE :: 10
 LARGE_CHANGE :: 30
 MAX_PIXELS_PER_FRAME :: 500
 
+FONT_SIZE :: 20
+BLINK_CYCLE :: 140
+
 Hud :: struct {
     draw: bool,
     current_height: i32,
@@ -38,6 +41,7 @@ main :: proc() {
     pixels_per_frame := 1
     should_clear_screen := true
     paused := false
+    pause_blink_counter := 0
 
     for !rl.WindowShouldClose() {
         if rl.IsKeyPressed(.H) {
@@ -87,6 +91,11 @@ main :: proc() {
 
         if hud.current_height > HUD_HEIGHT do hud.current_height = HUD_HEIGHT
 
+        if paused {
+            pause_blink_counter += 1
+            if pause_blink_counter > BLINK_CYCLE do pause_blink_counter = 0
+        }
+
         rl.BeginDrawing()
 
         if should_clear_screen {
@@ -107,7 +116,12 @@ main :: proc() {
 
         rl.ImageClearBackground(&hud.image, WORKBENCH_BLUE)
         text := rl.TextFormat("Pixels per frame: %03d", pixels_per_frame)
-        rl.ImageDrawText(&hud.image, text, 10, 10, 20, rl.RAYWHITE)
+        rl.ImageDrawText(&hud.image, text, 10, 10, FONT_SIZE, rl.RAYWHITE)
+
+        if paused && pause_blink_counter < BLINK_CYCLE / 2 {
+            x := WIDTH / 2 - rl.MeasureText("PAUSED", FONT_SIZE)
+            rl.ImageDrawText(&hud.image, "PAUSED", x, 10, FONT_SIZE, rl.RAYWHITE)
+        }
 
         texture := rl.LoadTextureFromImage(image)
         rl.DrawTexture(texture, 0, 0, rl.RAYWHITE)
