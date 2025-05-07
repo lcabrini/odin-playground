@@ -13,7 +13,7 @@ WIDTH :: 1024
 HEIGHT :: 748
 TITLE :: "Pixels"
 
-HEADER_HEIGHT :: 100
+HUD_HEIGHT :: 100
 
 main :: proc() {
     rl.SetConfigFlags({.VSYNC_HINT})
@@ -25,7 +25,7 @@ main :: proc() {
         rl.BeginDrawing()
 
         x := rl.GetRandomValue(0, WIDTH-1)
-        y := rl.GetRandomValue(HEADER_HEIGHT+1, HEIGHT-1)
+        y := rl.GetRandomValue(HUD_HEIGHT+1, HEIGHT-1)
         r := rl.GetRandomValue(0, 255)
         g := rl.GetRandomValue(0, 255)
         b := rl.GetRandomValue(0, 255)
@@ -34,7 +34,7 @@ main :: proc() {
         texture := rl.LoadTextureFromImage(image)
         rl.DrawTexture(texture, 0, 0, rl.RAYWHITE)
 
-        rl.DrawRectangle(0, 0, WIDTH, HEADER_HEIGHT, WORKBENCH_BLUE)
+        rl.DrawRectangle(0, 0, WIDTH, HUD_HEIGHT, WORKBENCH_BLUE)
         rl.EndDrawing()
         rl.UnloadTexture(texture)
     }
