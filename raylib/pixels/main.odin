@@ -42,6 +42,9 @@ main :: proc() {
     should_clear_screen := true
     paused := false
     pause_blink_counter := 0
+    use_red := true
+    use_green := true
+    use_blue := true
 
     for !rl.WindowShouldClose() {
         if rl.IsKeyPressed(.H) {
@@ -68,6 +71,18 @@ main :: proc() {
             }
 
             pixels_per_frame -= dec
+        }
+
+        if rl.IsKeyPressed(.R) {
+            use_red = !use_red
+        }
+
+        if rl.IsKeyPressed(.G) {
+            use_green = !use_green
+        }
+
+        if rl.IsKeyPressed(.B) {
+            use_blue = !use_blue
         }
 
         if rl.IsKeyPressed(.C) {
@@ -107,9 +122,9 @@ main :: proc() {
             for i in 0..<pixels_per_frame {
                 x := rl.GetRandomValue(0, WIDTH-1)
                 y := rl.GetRandomValue(0, HEIGHT-1)
-                r := rl.GetRandomValue(0, 255)
-                g := rl.GetRandomValue(0, 255)
-                b := rl.GetRandomValue(0, 255)
+                r := use_red ? rl.GetRandomValue(0, 255) : 0
+                g := use_green ? rl.GetRandomValue(0, 255) : 0
+                b := use_blue ? rl.GetRandomValue(0, 255) : 0
                 rl.ImageDrawPixel(&image, x, y, {u8(r), u8(g), u8(b), 255})
             }
         }
