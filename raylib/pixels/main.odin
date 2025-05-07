@@ -134,7 +134,7 @@ main :: proc() {
         rl.ImageDrawText(&hud.image, text, 10, 10, FONT_SIZE, rl.RAYWHITE)
 
         if paused && pause_blink_counter < BLINK_CYCLE / 2 {
-            x := WIDTH / 2 - rl.MeasureText("PAUSED", FONT_SIZE)
+            x := WIDTH / 2 - rl.MeasureText("PAUSED", FONT_SIZE) / 2
             rl.ImageDrawText(&hud.image, "PAUSED", x, 10, FONT_SIZE, rl.RAYWHITE)
         }
 
