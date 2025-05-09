@@ -20,4 +20,6 @@ main :: proc() {
         rl.DrawText(msg, 10, 10, FONT_SIZE, rl.RAYWHITE)
         rl.EndDrawing()
     }
+
+    rl.CloseWindow()
 }

@@ -24,4 +24,6 @@ main :: proc() {
         rl.DrawText(MESSAGE, x, y, FONT_SIZE, rl.RAYWHITE)
         rl.EndDrawing()
     }
+
+    rl.CloseWindow()
 }
