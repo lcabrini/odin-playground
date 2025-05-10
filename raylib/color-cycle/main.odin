@@ -4,7 +4,7 @@ import "core:fmt"
 import rl "vendor:raylib"
 
 /*
-    Emulation of the palette cycling things we used to do in Turbo Pascal.
+    Emulation of the palette cycling programs we used write do in Turbo Pascal.
 */
 
 WIDTH :: 600
@@ -52,13 +52,40 @@ main :: proc() {
 }
 
 init_palette :: proc(palette: ^Palette) {
-    r := 100
+    cv := 0
     dir := 1
+    c := 0
+    color: rl.Color
 
-    for i in 10..=490 {
-        add_palette_entry(palette, {u8(r), 0, 0, 255})
-        r += dir
-        if r == 100 || r == 255 do dir *= -1
+    for {
+        switch c {
+            case 0:
+                color = {u8(cv), 0, 0, 255}
+            case 1:
+                color = {0, u8(cv), 0, 255}
+            case 2:
+                color = {0, 0, u8(cv), 255}
+            case 3:
+                color = {0, u8(cv), u8(cv), 255}
+            case 4:
+                color = {u8(cv), u8(cv), 0, 255}
+            case 5:
+                color = {u8(cv), 0, u8(cv), 255}
+            case:
+                color = {u8(cv), u8(cv), u8(cv), 255}
+        }
+
+        add_palette_entry(palette, color)
+        cv += dir
+        if cv == 255 do dir *= -1
+        if cv == 0 {
+            if c < 6 {
+                c += 1
+                dir *= -1
+            } else {
+                break
+            }
+        }
     }
 }
 
