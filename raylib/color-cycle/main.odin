@@ -3,6 +3,10 @@ package main
 import "core:fmt"
 import rl "vendor:raylib"
 
+/*
+    Emulation of the palette cycling things we used to do in Turbo Pascal.
+*/
+
 WIDTH :: 600
 HEIGHT :: 600
 TITLE :: "Color Cycle"
@@ -42,6 +46,9 @@ main :: proc() {
         rl.EndDrawing()
         palette.head = palette.head.next
     }
+
+    destroy_palette(&palette)
+    rl.CloseWindow()
 }
 
 init_palette :: proc(palette: ^Palette) {
@@ -67,4 +74,16 @@ add_palette_entry :: proc(palette: ^Palette, color: rl.Color) {
     palette.tail.next = entry
     entry.next = palette.head
     palette.tail = entry
+}
+
+destroy_palette :: proc(palette: ^Palette) {
+    current := palette.head
+
+    for {
+        previous := current
+        if current == nil do break
+        if current.next == nil do break
+        previous.next = nil
+        free(previous)
+    }
 }
