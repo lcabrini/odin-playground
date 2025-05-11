@@ -104,13 +104,13 @@ add_palette_entry :: proc(palette: ^Palette, color: rl.Color) {
 }
 
 destroy_palette :: proc(palette: ^Palette) {
+    first := palette.head
     current := palette.head
 
     for {
         previous := current
-        if current == nil do break
-        if current.next == nil do break
-        previous.next = nil
+        current = current.next
         free(previous)
+        if current == first do break
     }
 }

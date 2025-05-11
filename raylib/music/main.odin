@@ -153,13 +153,13 @@ init_lines :: proc() -> ^Line {
 }
 
 free_lines :: proc(head: ^Line) {
+    first := head
     current := head
 
     for {
         previous := current
         current = current.next
-        previous.next = nil
-        if current == nil do break
-        if previous != nil do free(previous)
+        free(previous)
+        if current == first do break
     }
 }
