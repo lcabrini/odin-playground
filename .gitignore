@@ -29,3 +29,4 @@ raylib/connected-lines/connected-lines
 raylib/color-cycle/color-cycle
 raylib/ask-window-props/ask-window-props
 raylib/rotated-squares/main.odin
+raylib/image-tint/image-tint
