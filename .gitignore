@@ -28,5 +28,5 @@ raylib/mousepos/mousepos
 raylib/connected-lines/connected-lines
 raylib/color-cycle/color-cycle
 raylib/ask-window-props/ask-window-props
-raylib/rotated-squares/main.odin
+raylib/rotated-squares/rotated-squares
 raylib/image-tint/image-tint
