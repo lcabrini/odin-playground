@@ -5,7 +5,7 @@ import rl "vendor:raylib"
 
 WIDTH :: 1024
 HEIGHT :: 768
-TITLE :: "Rotated Shapes"
+TITLE :: "Hypnotica"
 
 MIDX :: WIDTH / 2
 MIDY :: HEIGHT / 2
