@@ -2,6 +2,10 @@ package main
 
 import rl "vendor:raylib"
 
+/*
+    I wrote this to solve some offset issues I had with my zombie shooter game.
+*/
+
 WIDTH :: 1024
 HEIGHT :: 768
 TITLE :: "Shooter"
@@ -82,20 +86,19 @@ main :: proc() {
         rl.BeginDrawing()
         rl.ClearBackground(rl.BLACK)
 
+        rl.DrawCircle(MIDX, MIDY, 50, rl.BLUE)
+
+        if bullet_fired {
+            src := rl.Rectangle{0, 0, bw, bh}
+            dest := rl.Rectangle{bullet.pos.x, bullet.pos.y, bw, bh}
+            origin := rl.Vector2{bw / 2, bh / 2}
+            rl.DrawTexturePro(bullet_texture, src, dest, origin, 0, rl.RAYWHITE)
+        }
 
         src := rl.Rectangle{0, 0, pw, ph}
         dest := rl.Rectangle{MIDX, MIDY, pw, ph}
         origin := rl.Vector2{16, ph / 2}
-
-        rl.DrawCircle(MIDX, MIDY, 50, rl.BLUE)
         rl.DrawTexturePro(player_texture, src, dest, origin, player.rot, rl.RAYWHITE)
-
-        if bullet_fired {
-            src = rl.Rectangle{0, 0, bw, bh}
-            dest = rl.Rectangle{bullet.pos.x, bullet.pos.y, bw, bh}
-            origin := rl.Vector2{bw / 2, bh / 2}
-            rl.DrawTexturePro(bullet_texture, src, dest, origin, 0, rl.RAYWHITE)
-        }
 
         rl.EndDrawing()
     }
