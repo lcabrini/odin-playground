@@ -40,3 +40,5 @@ raylib/shooter/shooter
 raylib/sine-image/sine-image
 raylib/toggle/toggle
 raylib/toggles/toggles
+to-binary/to-binary
+raylib/guess-the-toggles/guess-the-toggles
