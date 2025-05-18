@@ -32,6 +32,10 @@ main :: proc() {
             free(tmp)
         }
 
+        if rl.IsKeyPressed(.C) && line.started {
+            line.started = false
+        }
+
         if rl.IsMouseButtonPressed(rl.MouseButton.LEFT) {
             if line.started {
                 line.end_pos = rl.GetMousePosition()
