@@ -5,3 +5,5 @@
 while IFS= read -r prog; do
     rm -f $prog
 done < .gitignore
+
+find . -name screenshot.png -delete
