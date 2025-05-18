@@ -16,6 +16,10 @@ main :: proc() {
     rl.SetTargetFPS(60)
 
     for !rl.WindowShouldClose() {
+        if rl.IsKeyPressed(.P) {
+            rl.TakeScreenshot("screenshot.png")
+        }
+
         rl.BeginDrawing()
         rl.ClearBackground(rl.BLACK)
         tw := rl.MeasureText(MESSAGE, FONT_SIZE)
