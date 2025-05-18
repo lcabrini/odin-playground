@@ -20,6 +20,7 @@ HistoryItem :: struct {
 main :: proc() {
     rl.SetConfigFlags({.VSYNC_HINT})
     rl.InitWindow(WIDTH, HEIGHT, TITLE)
+    rl.SetExitKey(.Q)
     rl.SetTargetFPS(60)
 
     line: Line
@@ -32,7 +33,7 @@ main :: proc() {
             free(tmp)
         }
 
-        if rl.IsKeyPressed(.C) && line.started {
+        if rl.IsKeyPressed(.ESCAPE) && line.started {
             line.started = false
         }
 
