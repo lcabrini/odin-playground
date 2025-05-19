@@ -21,7 +21,7 @@ ToolboxItem :: struct {
     action: ToolbarAction,
 }
 
-Toolbar :: struct {
+Toolbox :: struct {
     rec: rl.Rectangle,
     items: [3]ToolboxItem,
     selected: ToolbarAction
@@ -32,31 +32,24 @@ main :: proc() {
     rl.InitWindow(WIDTH, HEIGHT, TITLE)
     rl.SetTargetFPS(60)
 
-    toolbar: Toolbar
-    init_toolbar(&toolbar)
+    toolbox: Toolbox
+    init_toolbar(&toolbox)
 
     for !rl.WindowShouldClose() {
         if rl.IsMouseButtonPressed(rl.MouseButton.LEFT) {
-            mp := rl.GetMousePosition()
-            for item in toolbar.items {
-                rec := item.rec
-                if mp.x > rec.x && mp.x < rec.x + rec.width {
-                    if mp.y > rec.y && mp.y < rec.y + rec.height {
-                        toolbar.selected = item.action
-                        break
-                    }
-                }
+            if !check_toolbox(&toolbox) {
+                // TODO: continue here
             }
         }
 
         rl.BeginDrawing()
         rl.ClearBackground(rl.BLACK)
-        draw_toolbar(toolbar)
+        draw_toolbar(toolbox)
         rl.EndDrawing()
     }
 }
 
-draw_toolbar :: proc(tb: Toolbar) {
+draw_toolbar :: proc(tb: Toolbox) {
     rl.DrawRectangleRec(tb.rec, rl.BLUE)
 
     for item in tb.items {
@@ -84,7 +77,7 @@ draw_toolbar :: proc(tb: Toolbar) {
     }
 }
 
-init_toolbar :: proc(tb: ^Toolbar) {
+init_toolbar :: proc(tb: ^Toolbox) {
     tb.rec.x = WIDTH - (TOOLBAR_ITEM_SIZE + TOOLBAR_GAP*2)
     tb.rec.y = 0
     tb.rec.width = TOOLBAR_ITEM_SIZE + TOOLBAR_GAP * 2
@@ -101,4 +94,19 @@ init_toolbar :: proc(tb: ^Toolbar) {
 
         ypos += TOOLBAR_ITEM_SIZE + TOOLBAR_GAP
     }
+}
+
+check_toolbox :: proc(tb: ^Toolbox) -> bool {
+    mp := rl.GetMousePosition()
+    for item in tb.items {
+        rec := item.rec
+        if mp.x > rec.x && mp.x < rec.x + rec.width {
+            if mp.y > rec.y && mp.y < rec.y + rec.height {
+                tb.selected = item.action
+                return true
+            }
+        }
+    }
+
+    return false
 }
