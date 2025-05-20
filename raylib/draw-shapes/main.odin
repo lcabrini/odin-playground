@@ -1,6 +1,7 @@
 package main
 
 import "core:fmt"
+import "core:math"
 import rl "vendor:raylib"
 
 WIDTH :: 1024
@@ -17,13 +18,13 @@ Pixel :: struct {
 Line :: struct {
    p1: rl.Vector2,
    p2: rl.Vector2,
-   ready: bool,
+   started: bool,
 }
 
 Rectangle :: struct {
     p1: rl.Vector2,
     p2: rl.Vector2,
-    ready: bool,
+    started: bool,
 }
 
 Shape :: union {
@@ -64,6 +65,8 @@ main :: proc() {
 
     shape: Shape = Pixel{}
     history: ^HistoryItem
+    draw_marker := false
+    marker: rl.Vector2
 
     for !rl.WindowShouldClose() {
         if rl.IsKeyPressed(.U) && history != nil {
@@ -82,8 +85,35 @@ main :: proc() {
                         hi.next = history
                         history = hi
                     case Line:
-
+                        if s.started {
+                            s.p2 = rl.GetMousePosition()
+                            hi := new(HistoryItem)
+                            hi.shape = shape
+                            hi.next = history
+                            history = hi
+                            s.started = false
+                            draw_marker = false
+                        } else {
+                            s.p1 = rl.GetMousePosition()
+                            s.started = true
+                            draw_marker = true
+                            marker = s.p1
+                        }
                     case Rectangle:
+                        if s.started {
+                            s.p2 = rl.GetMousePosition()
+                            hi := new(HistoryItem)
+                            hi.shape = shape
+                            hi.next = history
+                            history = hi
+                            s.started = false
+                            draw_marker = false
+                        } else {
+                            s.p1 = rl.GetMousePosition()
+                            s.started = true
+                            draw_marker = true
+                            marker = s.p1
+                        }
                 }
             }
         }
@@ -97,8 +127,19 @@ main :: proc() {
                 case Pixel:
                     rl.DrawPixelV(s.p, rl.RAYWHITE)
                 case Line:
+                    rl.DrawLineV(s.p1, s.p2, rl.RAYWHITE)
                 case Rectangle:
+                    x := i32(s.p1.x > s.p2.x ? s.p2.x : s.p1.x)
+                    y := i32(s.p1.y > s.p2.y ? s.p2.y : s.p1.y)
+                    w := i32(math.abs(s.p1.x - s.p2.x))
+                    h := i32(math.abs(s.p1.y - s.p2.y))
+
+                    rl.DrawRectangleLines(x, y, w, h, rl.RAYWHITE)
             }
+        }
+
+        if draw_marker {
+            rl.DrawCircleV(marker, 10, rl.GREEN)
         }
 
         rl.EndDrawing()
