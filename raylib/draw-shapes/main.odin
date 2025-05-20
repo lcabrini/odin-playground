@@ -66,6 +66,12 @@ main :: proc() {
     history: ^HistoryItem
 
     for !rl.WindowShouldClose() {
+        if rl.IsKeyPressed(.U) && history != nil {
+            tmp := history
+            history = history.next
+            free(tmp)
+        }
+
         if rl.IsMouseButtonPressed(rl.MouseButton.LEFT) {
             if !check_toolbox(&toolbox, &shape) {
                 switch &s in shape {
