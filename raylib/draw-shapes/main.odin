@@ -10,6 +10,28 @@ TITLE :: "Draw Shapes"
 TOOLBAR_ITEM_SIZE :: 20
 TOOLBAR_GAP :: 2
 
+Pixel :: struct {
+    p: rl.Vector2,
+}
+
+Line :: struct {
+   p1: rl.Vector2,
+   p2: rl.Vector2,
+   ready: bool,
+}
+
+Rectangle :: struct {
+    p1: rl.Vector2,
+    p2: rl.Vector2,
+    ready: bool,
+}
+
+Shape :: union {
+    Pixel,
+    Line,
+    Rectangle,
+}
+
 ToolbarAction :: enum {
     PIXEL,
     LINE,
@@ -27,26 +49,62 @@ Toolbox :: struct {
     selected: ToolbarAction
 }
 
+HistoryItem :: struct {
+    shape: Shape,
+    next: ^HistoryItem,
+}
+
 main :: proc() {
     rl.SetConfigFlags({.VSYNC_HINT})
     rl.InitWindow(WIDTH, HEIGHT, TITLE)
     rl.SetTargetFPS(60)
 
     toolbox: Toolbox
-    init_toolbar(&toolbox)
+    init_toolbox(&toolbox)
+
+    shape: Shape = Pixel{}
+    history: ^HistoryItem
 
     for !rl.WindowShouldClose() {
         if rl.IsMouseButtonPressed(rl.MouseButton.LEFT) {
-            if !check_toolbox(&toolbox) {
-                // TODO: continue here
+            if !check_toolbox(&toolbox, &shape) {
+                switch &s in shape {
+                    case Pixel:
+                        s.p = rl.GetMousePosition()
+                        hi := new(HistoryItem)
+                        hi.shape = shape
+                        hi.next = history
+                        history = hi
+                    case Line:
+
+                    case Rectangle:
+                }
             }
         }
 
         rl.BeginDrawing()
         rl.ClearBackground(rl.BLACK)
         draw_toolbar(toolbox)
+
+        for hi := history; hi != nil; hi = hi.next {
+            switch s in hi.shape {
+                case Pixel:
+                    rl.DrawPixelV(s.p, rl.RAYWHITE)
+                case Line:
+                case Rectangle:
+            }
+        }
+
         rl.EndDrawing()
     }
+
+    for history != nil {
+        next := history.next
+        free(history)
+        history = next
+    }
+
+    rl.CloseWindow()
 }
 
 draw_toolbar :: proc(tb: Toolbox) {
@@ -77,7 +135,7 @@ draw_toolbar :: proc(tb: Toolbox) {
     }
 }
 
-init_toolbar :: proc(tb: ^Toolbox) {
+init_toolbox :: proc(tb: ^Toolbox) {
     tb.rec.x = WIDTH - (TOOLBAR_ITEM_SIZE + TOOLBAR_GAP*2)
     tb.rec.y = 0
     tb.rec.width = TOOLBAR_ITEM_SIZE + TOOLBAR_GAP * 2
@@ -96,14 +154,25 @@ init_toolbar :: proc(tb: ^Toolbox) {
     }
 }
 
-check_toolbox :: proc(tb: ^Toolbox) -> bool {
+check_toolbox :: proc(tb: ^Toolbox, shape: ^Shape) -> bool {
     mp := rl.GetMousePosition()
     for item in tb.items {
         rec := item.rec
         if mp.x > rec.x && mp.x < rec.x + rec.width {
             if mp.y > rec.y && mp.y < rec.y + rec.height {
                 tb.selected = item.action
+
+                switch tb.selected {
+                    case .PIXEL:
+                        shape^ = Pixel{}
+                    case .LINE:
+                        shape^ = Line{}
+                    case .RECT:
+                        shape^ = Rectangle{}
+                }
+
                 return true
+
             }
         }
     }
