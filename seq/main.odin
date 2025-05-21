@@ -2,15 +2,19 @@ package main
 
 import "core:fmt"
 import "core:os"
+import "core:path/filepath"
 import "core:strconv"
 import "core:strings"
 
+progname: string
+
 main :: proc() {
     start, end, step: f64
+    progname = filepath.base(os.args[0])
 
     switch len(os.args[1:]) {
         case 0:
-            fmt.eprintfln("%s: missing operand", os.args[0])
+            fmt.eprintfln("%s: missing operand", progname)
             os.exit(-1)
         case 1:
             start = 1
@@ -26,7 +30,7 @@ main :: proc() {
             step = to_float_or_fail(os.args[2])
             end = to_float_or_fail(os.args[3])
         case:
-            fmt.eprintfln("%s: extra operand: %s", os.args[0], os.args[4])
+            fmt.eprintfln("%s: extra operand: %s", progname, os.args[4])
             os.exit(-1)
     }
 
@@ -46,7 +50,7 @@ main :: proc() {
 
 to_float_or_fail :: proc(s: string) -> f64 {
     if f, ok := strconv.parse_f64(s); !ok {
-        fmt.eprintfln("%s: invalid flaoting point argument: '%s'", os.args[0], s)
+        fmt.eprintfln("%s: invalid floating point argument: '%s'", progname, s)
         os.exit(-1)
     } else {
         return f
