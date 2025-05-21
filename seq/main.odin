@@ -31,11 +31,11 @@ main :: proc() {
     }
 
     if start > end && step > 0 {
-        os.exit(-1)
+        os.exit(0)
     }
 
     if start < end && step < 0 {
-        os.exit(-1)
+        os.exit(0)
     }
 
     precision := get_max_precision(os.args[1:])
