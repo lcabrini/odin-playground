@@ -1,9 +1,10 @@
 package main
 
 import "core:fmt"
-import "core:math"
+//import "core:math"
 import "core:os"
 import "core:strconv"
+import "core:strings"
 
 main :: proc() {
     start, end, step: f64
@@ -20,6 +21,7 @@ main :: proc() {
             start = to_float_or_fail(os.args[1])
             step = 1
             end = to_float_or_fail(os.args[2])
+
         case 3:
             start = to_float_or_fail(os.args[1])
             step = to_float_or_fail(os.args[2])
@@ -37,8 +39,9 @@ main :: proc() {
         os.exit(-1)
     }
 
+    precision := get_max_precision(os.args[1:])
     for i := start; (start < end && i <= end) || (start > end && i >= end); i += step {
-        fmt.printfln("%.f", i)
+        fmt.printfln("%.*f", precision, i)
     }
 }
 
@@ -49,4 +52,22 @@ to_float_or_fail :: proc(s: string) -> f64 {
     } else {
         return f
     }
+}
+
+get_max_precision :: proc(fps: []string) -> int {
+    max := 0
+
+    for f in fps {
+        parts, err := strings.split(f, ".")
+        if err != nil {
+            fmt.eprintln("Memory allocation error:", err)
+            os.exit(-1)
+        }
+
+        if len(parts) > 1 && len(parts[1]) > max {
+            max = len(parts[1])
+        }
+    }
+
+    return max
 }
