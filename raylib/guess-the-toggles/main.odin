@@ -13,8 +13,18 @@ TITLE :: "Guess the Toggles"
 TOGGLE_WIDTH :: 50
 TOGGLE_HEIGHT :: 100
 TOGGLE_GAP :: 3
-BUTTON_HEIGHT :: TOGGLE_HEIGHT / 2
+SWITCH_HEIGHT :: TOGGLE_HEIGHT / 2
 TOGGLE_SPEED :: 3
+
+COMPONENT_GAP :: 10
+BUTTON_X :: 100
+BUTTON_Y :: 100 + TOGGLE_HEIGHT + 20
+BUTTON_WIDTH :: TOGGLE_WIDTH * 8 + COMPONENT_GAP * 7
+BUTTON_HEIGHT :: 40
+BUTTON_REC :: rl.Rectangle{BUTTON_X, BUTTON_Y, BUTTON_WIDTH, BUTTON_HEIGHT}
+
+MESSAGE_X :: 100
+MESSAGE_Y :: BUTTON_Y +BUTTON_HEIGHT + 20
 
 Toggle :: struct {
     rec: rl.Rectangle,
@@ -31,10 +41,9 @@ main :: proc() {
     rl.SetTargetFPS(60)
 
     toggles := [8]Toggle{}
-    gap := 10
     for &t, i in toggles {
-        t.rec = {f32(100 + i * (TOGGLE_WIDTH + gap)), 100, TOGGLE_WIDTH, TOGGLE_HEIGHT}
-        t.button_pos = {t.rec.x + TOGGLE_GAP, t.rec.y + TOGGLE_GAP, t.rec.width - TOGGLE_GAP*2, BUTTON_HEIGHT}
+        t.rec = {f32(100 + i * (TOGGLE_WIDTH + COMPONENT_GAP)), 100, TOGGLE_WIDTH, TOGGLE_HEIGHT}
+        t.button_pos = {t.rec.x + TOGGLE_GAP, t.rec.y + TOGGLE_GAP, t.rec.width - TOGGLE_GAP*2, SWITCH_HEIGHT}
         t.dir = -1
     }
 
@@ -44,7 +53,15 @@ main :: proc() {
         fmt.printfln("CHEAT MODE: SECRET: %s", to_binary(secret))
     }
 
+    label_width := rl.MeasureText("Check", 20)
+    label_x := i32(BUTTON_X + BUTTON_WIDTH / 2 - label_width / 2)
+    label_y := i32(BUTTON_Y + BUTTON_HEIGHT / 2 - 20 / 2)
+
+    message := "Guess the toggles"
+    guesses := 0
+
     for !rl.WindowShouldClose() {
+        label_color := rl.RAYWHITE
         hindex := mouse_over(toggles[:])
 
         if rl.IsMouseButtonPressed(rl.MouseButton.LEFT) && hindex != -1 {
@@ -53,12 +70,21 @@ main :: proc() {
             toggles[hindex].dir *= -1
         }
 
-        if rl.IsKeyPressed(.P) {
-            guess := toggles_to_u8(toggles[:])
-            if guess == secret {
-                fmt.println("You did it")
+        if mouse_over_button() {
+            label_color = rl.YELLOW
+
+            if rl.IsMouseButtonPressed(rl.MouseButton.LEFT) {
+                guesses += 1
+                guess := toggles_to_u8(toggles[:])
+                secret_s := to_binary(secret)
+                guess_s := to_binary(guess)
+                correct := check_toggles(secret_s, guess_s)
+                if correct == 8 {
+                    message = fmt.tprintf("You did it! You needed %d guess%s", guesses, guesses == 1 ? "" : "es")
+                } else {
+                    message = fmt.tprintf("%d/8 correct", correct)
+                }
             }
-            fmt.println(guess)
         }
 
         for &t, i in toggles {
@@ -71,13 +97,17 @@ main :: proc() {
             }
         }
 
+        msg, _ := strings.clone_to_cstring(message)
+
         rl.BeginDrawing()
         rl.ClearBackground(rl.BLACK)
 
         for t, i in toggles {
             rl.DrawRectangleLinesEx(t.rec, 1, t.color)
             rl.DrawRectangleRec(t.button_pos, t.color)
-
+            rl.DrawRectangleRec(BUTTON_REC, rl.GREEN)
+            rl.DrawText("Check", label_x, label_y, 20, label_color)
+            rl.DrawText(msg, MESSAGE_X, MESSAGE_Y, 20, rl.GREEN)
         }
 
         rl.EndDrawing()
@@ -119,3 +149,26 @@ mouse_over :: proc(toggles: []Toggle) -> int {
 
     return -1
 }
+
+mouse_over_button :: proc() -> bool {
+    mp := rl.GetMousePosition()
+
+    if mp.x >= BUTTON_X && mp.x <= BUTTON_X + BUTTON_WIDTH {
+        if mp.y >= BUTTON_Y && mp.y <= BUTTON_Y + BUTTON_HEIGHT {
+            return true
+        }
+    }
+
+    return false
+}
+
+check_toggles :: proc(secret, guess: string) -> int {
+    total := 0
+
+    for i := 0; i < len(guess); i += 1 {
+        if secret[i] == guess[i] do total += 1
+    }
+
+    return total
+}
+
