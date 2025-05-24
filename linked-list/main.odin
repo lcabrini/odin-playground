@@ -9,9 +9,10 @@ Language :: struct {
 }
 
 main :: proc() {
-    slist: List(string)
-    ilist: List(int)
-    llist: List(Language)
+    slist: ^Node(string)
+    ilist: ^Node(int)
+    llist: ^Node(Language)
+
     days := []string{"Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"}
     langs := []Language{
         {"Odin", "GingerBill"},
@@ -21,20 +22,20 @@ main :: proc() {
     }
 
     for i in 1..=10 {
-        append_node(&ilist, i)
+        ilist = append_node(ilist, i)
     }
 
     for d in days {
-        append_node(&slist, d)
+        slist = append_node(slist, d)
     }
 
     for l in langs {
-        append_node(&llist, l)
+        llist = append_node(llist, l)
     }
 
-    fmt.printfln("Length of string list: %d", slist.count)
-    fmt.printfln("Length to int list: %d", ilist.count)
-    fmt.printfln("Length of languate list: %d", llist.count)
+    fmt.printfln("Length of string list: %d", list_count(slist))
+    fmt.printfln("Length to int list: %d", list_count(ilist))
+    fmt.printfln("Length of language list: %d", list_count(llist))
     fmt.println("--------------------------------------")
 
     traverse_list(ilist, printi)
