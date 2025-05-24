@@ -42,6 +42,11 @@ main :: proc() {
         append_node(&llist, l)
     }
 
+    fmt.printfln("Length of string list: %d", slist.count)
+    fmt.printfln("Length to int list: %d", ilist.count)
+    fmt.printfln("Length of languate list: %d", llist.count)
+    fmt.println("--------------------------------------")
+
     traverse_list(ilist, printi)
     fmt.println("--------------------------------------")
     traverse_list(slist, prints)
