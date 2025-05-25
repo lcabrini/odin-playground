@@ -33,6 +33,11 @@ main :: proc() {
         llist = append_node(llist, l)
     }
 
+    ilist = prepend_node(ilist, 100)
+    ilist = insert_node_at(ilist, 0, 120)
+    ilist = insert_node_at(ilist, 2, 150)
+    ilist = insert_node_at(ilist, 1000, 200)
+
     fmt.printfln("Length of string list: %d", list_count(slist))
     fmt.printfln("Length to int list: %d", list_count(ilist))
     fmt.printfln("Length of language list: %d", list_count(llist))

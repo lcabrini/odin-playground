@@ -7,18 +7,45 @@ Node :: struct($Data: typeid) {
     next: ^Node(Data),
 }
 
-append_node :: proc(list: ^Node($T), data: T) -> ^Node(T) {
+append_node :: proc(head: ^Node($T), data: T) -> ^Node(T) {
     node := new(Node(T))
     node.data = data
 
-    head := list
-    tail := get_tail(list)
+    tail := get_tail(head)
 
     if tail == nil {
-        head = node
+        return node
     } else {
         tail.next = node
     }
+
+    return head
+}
+
+prepend_node :: proc(head: ^Node($T), data: T) -> ^Node(T) {
+    node := new(Node(T))
+    node.data = data
+    node.next = head
+    return node
+}
+
+insert_node_at :: proc(head: ^Node($T), pos: int, data: T) -> ^Node(T) {
+    if pos < 1 {
+        return head
+    }
+
+    curr := head
+    for i in 1..<pos {
+        curr = curr.next
+        if curr == nil {
+            return head
+        }
+    }
+
+    node := new(Node(T))
+    node.data = data
+    node.next = curr.next
+    curr.next = node
 
     return head
 }
@@ -39,11 +66,11 @@ free_list :: proc(head: ^Node($T)) {
 }
 
 get_tail :: proc(head: ^Node($T)) -> ^Node(T) {
-    tail := head
+    curr := head
     for node := head; node != nil; node = node.next {
-        tail = node
+        curr = node
     }
-    return tail
+    return curr
 }
 
 list_count :: proc(list: ^Node($T)) -> int {
