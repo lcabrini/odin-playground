@@ -1,6 +1,7 @@
 package main
 
 import "core:fmt"
+import "core:strings"
 
 Person :: struct {
     name: string,
@@ -48,5 +49,5 @@ int_comparator :: proc(a, b: int) -> int {
 }
 
 person_comparator :: proc(a, b: Person) -> int {
-    return a.age - b.age
+    return strings.compare(a.name, b.name)
 }
