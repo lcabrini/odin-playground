@@ -15,13 +15,19 @@ main :: proc() {
     rl.SetTargetFPS(60)
 
     cells: [WIDTH/20][HEIGHT/10]bool
+    last_cell: [2]i32
 
     for !rl.WindowShouldClose() {
-        if rl.IsMouseButtonPressed(rl.MouseButton.LEFT) {
+        if rl.IsMouseButtonDown(rl.MouseButton.LEFT) {
             mp := rl.GetMousePosition()
             x := i32(mp.x) / CELL_WIDTH
             y := i32(mp.y) / CELL_HEIGHT
-            cells[y][x] = !cells[y][x]
+
+            if x != last_cell.x || y != last_cell.y {
+                cells[y][x] = !cells[y][x]
+                last_cell.x = x
+                last_cell.y = y
+            }
         }
 
         rl.BeginDrawing()
