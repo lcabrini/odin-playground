@@ -14,7 +14,7 @@ main :: proc() {
     rl.InitWindow(WIDTH, HEIGHT, TITLE)
     rl.SetTargetFPS(60)
 
-    cells: [20][10]bool
+    cells: [WIDTH/20][HEIGHT/10]bool
 
     for !rl.WindowShouldClose() {
         if rl.IsMouseButtonPressed(rl.MouseButton.LEFT) {
