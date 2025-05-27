@@ -14,6 +14,7 @@ main :: proc() {
         }
 
         fmt.printfln("% 20d is %72s in binary", n, to_binary(n))
+        fmt.printfln("% 20d is % 72b in binary (using %%b)", n, n)
     }
 }
 
