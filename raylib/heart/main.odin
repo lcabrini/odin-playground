@@ -18,6 +18,7 @@ MIDX :: WIDTH / 2
 MIDY :: HEIGHT / 2
 
 FONT_SIZE :: 80
+FONT_SPACING :: 1
 
 main :: proc() {
     text: cstring = "Odin + Raylib"
@@ -30,6 +31,7 @@ main :: proc() {
     rl.SetTargetFPS(60)
 
     image := rl.LoadImageFromScreen()
+    font := rl.LoadFontEx("../../resources/Orbitron-Black.ttf", FONT_SIZE, nil, 0)
 
     for a: f32 = 70; a > 1; a -= 1 {
         for t: f32 = 0.0; t <= math.PI * 2; t += 0.01 {
@@ -39,10 +41,10 @@ main :: proc() {
         }
     }
 
-    tw := rl.MeasureText(text, FONT_SIZE)
-    tx: i32 = MIDX - tw / 2
-    ty: i32 = MIDY - 50
-    rl.ImageDrawText(&image, text, tx, ty, FONT_SIZE, rl.RAYWHITE)
+    ts := rl.MeasureTextEx(font, text, FONT_SIZE, FONT_SPACING)
+    tx := MIDX - ts.x / 2
+    ty := f32(MIDY - FONT_SIZE / 2)
+    rl.ImageDrawTextEx(&image, font, text, {tx, ty}, FONT_SIZE, FONT_SPACING, rl.BLACK)
 
     texture := rl.LoadTextureFromImage(image)
 
@@ -57,6 +59,7 @@ main :: proc() {
         rl.EndDrawing()
     }
 
+    rl.UnloadFont(font)
     rl.UnloadTexture(texture)
     rl.UnloadImage(image)
     rl.CloseWindow()
