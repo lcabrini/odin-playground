@@ -6,6 +6,8 @@ package main
 
 import "core:fmt"
 import "core:math"
+import "core:os"
+import "core:strings"
 import rl "vendor:raylib"
 
 WIDTH :: 1024
@@ -15,7 +17,14 @@ TITLE :: "Heart"
 MIDX :: WIDTH / 2
 MIDY :: HEIGHT / 2
 
+FONT_SIZE :: 80
+
 main :: proc() {
+    text: cstring = "Odin + Raylib"
+    if len(os.args[1:]) > 0 {
+        text = strings.clone_to_cstring(os.args[1])
+    }
+
     rl.SetConfigFlags({.VSYNC_HINT})
     rl.InitWindow(WIDTH, HEIGHT, TITLE)
     rl.SetTargetFPS(60)
@@ -29,6 +38,11 @@ main :: proc() {
             rl.ImageDrawCircle(&image, i32(x), i32(y), 5, rl.RED)
         }
     }
+
+    tw := rl.MeasureText(text, FONT_SIZE)
+    tx: i32 = MIDX - tw / 2
+    ty: i32 = MIDY - 50
+    rl.ImageDrawText(&image, text, tx, ty, FONT_SIZE, rl.RAYWHITE)
 
     texture := rl.LoadTextureFromImage(image)
 
