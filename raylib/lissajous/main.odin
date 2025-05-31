@@ -1,5 +1,6 @@
 package main
 
+import "core:fmt"
 import "core:math"
 import rl "vendor:raylib"
 
@@ -28,6 +29,7 @@ main :: proc() {
 
         for i in 0..<size {
             t += 0.01
+            if t > math.PI * 2 do break
             x := MIDX + 500 * math.sin(a * f32(t) + delta)
             y := MIDY + 300 * math.sin(b * f32(t))
 
