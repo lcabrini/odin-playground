@@ -2,6 +2,8 @@ package main
 
 import "core:fmt"
 import "core:math"
+import "core:os"
+import "core:strconv"
 import rl "vendor:raylib"
 
 WIDTH :: 1024
@@ -12,6 +14,22 @@ MIDX :: WIDTH / 2
 MIDY :: HEIGHT / 2
 
 main :: proc() {
+    a: f32 = 3
+    b: f32 = 4
+    delta: f32 = math.PI / 2
+
+    if len(os.args[1:]) > 0 {
+        a = parse_f32_or_fail(os.args[1])
+    }
+
+    if len(os.args[1:]) > 1 {
+        b = parse_f32_or_fail(os.args[2])
+    }
+
+    if len(os.args[1:]) > 2 {
+        delta = parse_f32_or_fail(os.args[3])
+    }
+
     rl.SetConfigFlags({.VSYNC_HINT})
     rl.InitWindow(WIDTH, HEIGHT, TITLE)
     rl.SetTargetFPS(60)
@@ -21,9 +39,6 @@ main :: proc() {
         rl.BeginDrawing()
         rl.ClearBackground(rl.BLACK)
 
-        a: f32 = 3
-        b: f32 = 4
-        delta: f32 = math.PI / 2
         t: f32 = 0.0
         size += 1
 
@@ -40,4 +55,14 @@ main :: proc() {
     }
 
     rl.CloseWindow()
+}
+
+parse_f32_or_fail :: proc(s: string) -> f32 {
+    f, ok := strconv.parse_f32(s)
+    if !ok {
+        fmt.eprintfln("Not a valid floating-point number: %s", s)
+        os.exit(1)
+    }
+
+    return f
 }
