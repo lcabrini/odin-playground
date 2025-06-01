@@ -37,6 +37,9 @@ main :: proc() {
     rl.SetTargetFPS(60)
 
     bg := rl.LoadTexture("../../resources/space-bg.png")
+    rl.InitAudioDevice()
+    music := rl.LoadMusicStream("../../resources/acid-trance.mp3")
+    rl.PlayMusicStream(music)
 
     trails: [7]Trail
 
@@ -176,8 +179,6 @@ main :: proc() {
 
             trail.rot += 2
             trail.t += 0.01
-
-
         }
 
         rl.EndDrawing()
@@ -188,14 +189,17 @@ main :: proc() {
                 if trail.fade_val > 255 do trail.fade_val = 255
                 if trail.fade_val < 0 do trail.fade_val = 0
                 trail.color.a = u8(trail.fade_val)
-                fmt.println(trail.fade_val)
                 if trail.fade_val < 1 || trail.fade_val > 255 {
                     trail.fade = 0
                 }
             }
         }
+
+        rl.UpdateMusicStream(music)
     }
 
+    rl.UnloadMusicStream(music)
+    rl.CloseAudioDevice()
     rl.UnloadTexture(bg)
     rl.CloseWindow()
 }
