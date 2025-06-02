@@ -7,4 +7,4 @@ This is just a collection of small programs I wrote to learn [Odin](https://odin
 1. The Orbitron Black font is from [The League of Movable Type](https://www.theleagueofmoveabletype.com/)
 1. Acid Trance by [Shane Ivers](https://www.silvermansound.com)
 1. Space background from [Unsplash](https://unsplash.com/s/photos/deep-space)
-2. Classic space punch audio sample from [pixabay](https://pixabay.com)
+1. Classic space punch audio sample from [pixabay](https://pixabay.com)
