@@ -21,6 +21,9 @@ Ball :: struct {
 main :: proc() {
     rl.SetConfigFlags({.VSYNC_HINT})
     rl.InitWindow(WIDTH, HEIGHT, TITLE)
+    rl.InitAudioDevice()
+
+    hit := rl.LoadSound("../../resources/classic-punch-impact.mp3")
 
     ball: Ball
     ball.pos = {MIDX, MIDY}
@@ -66,12 +69,14 @@ main :: proc() {
                 ball.v.x *= -1
                 if ball.pos.x - ball.r < 0 do ball.pos.x = ball.r
                 if ball.pos.x + ball.r > WIDTH do ball.pos.x = WIDTH - ball.r
+                rl.PlaySound(hit)
             }
 
             if ball.pos.y - ball.r <= 0 || ball.pos.y + ball.r > HEIGHT {
                 ball.v.y *= -1
                 if ball.pos.y - ball.r < 0 do ball.pos.y = ball.r
                 if ball.pos.y + ball.r > HEIGHT do ball.pos.y = HEIGHT - ball.r
+                rl.PlaySound(hit)
             }
         }
 
@@ -89,5 +94,7 @@ main :: proc() {
         rl.EndDrawing()
     }
 
+    rl.UnloadSound(hit)
+    rl.CloseAudioDevice()
     rl.CloseWindow()
 }
