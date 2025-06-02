@@ -28,34 +28,51 @@ main :: proc() {
     ball.r = 50
 
     newpos := rl.Vector2{}
-    newv := rl.Vector2{}
     redirecting := false
+    paused := false
+    pause_counter := 0
+    show_pause := false
 
     for !rl.WindowShouldClose() {
-        if rl.IsMouseButtonPressed(rl.MouseButton.LEFT) {
-            newpos = rl.GetMousePosition()
-            redirecting = true
+        if rl.IsKeyPressed(.P) {
+            paused = !paused
+            pause_counter = 0
+            show_pause = true
         }
 
-        if rl.IsMouseButtonReleased(rl.MouseButton.LEFT) {
-            newv := rl.GetMousePosition() - newpos
-            ball.pos = newpos
-            ball.v = newv
-            redirecting = false
+        if paused {
+            pause_counter += 1
+            if pause_counter % 80 == 0 {
+                show_pause = !show_pause
+            }
         }
 
-        ball.pos += ball.v * rl.GetFrameTime()
+        if !paused {
+            if rl.IsMouseButtonPressed(rl.MouseButton.LEFT) {
+                newpos = rl.GetMousePosition()
+                redirecting = true
+            }
 
-        if ball.pos.x - ball.r <= 0 || ball.pos.x + ball.r > WIDTH {
-            ball.v.x *= -1
-            if ball.pos.x - ball.r < 0 do ball.pos.x = ball.r
-            if ball.pos.x + ball.r > WIDTH do ball.pos.x = WIDTH - ball.r
-        }
+            if rl.IsMouseButtonReleased(rl.MouseButton.LEFT) {
+                newv := rl.GetMousePosition() - newpos
+                ball.pos = newpos
+                ball.v = newv
+                redirecting = false
+            }
 
-        if ball.pos.y - ball.r <= 0 || ball.pos.y + ball.r > HEIGHT {
-            ball.v.y *= -1
-            if ball.pos.y - ball.r < 0 do ball.pos.y = ball.r
-            if ball.pos.y + ball.r > HEIGHT do ball.pos.y = HEIGHT - ball.r
+            ball.pos += ball.v * rl.GetFrameTime()
+
+            if ball.pos.x - ball.r <= 0 || ball.pos.x + ball.r > WIDTH {
+                ball.v.x *= -1
+                if ball.pos.x - ball.r < 0 do ball.pos.x = ball.r
+                if ball.pos.x + ball.r > WIDTH do ball.pos.x = WIDTH - ball.r
+            }
+
+            if ball.pos.y - ball.r <= 0 || ball.pos.y + ball.r > HEIGHT {
+                ball.v.y *= -1
+                if ball.pos.y - ball.r < 0 do ball.pos.y = ball.r
+                if ball.pos.y + ball.r > HEIGHT do ball.pos.y = HEIGHT - ball.r
+            }
         }
 
         rl.BeginDrawing()
@@ -64,6 +81,11 @@ main :: proc() {
         if redirecting {
             rl.DrawLineV(newpos, rl.GetMousePosition(), rl.BLUE)
         }
+
+        if paused && show_pause {
+            rl.DrawText("P", 10, 10, 100, rl.RAYWHITE)
+        }
+
         rl.EndDrawing()
     }
 
