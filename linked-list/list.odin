@@ -61,7 +61,7 @@ free_list :: proc(head: ^Node($T)) {
     for node != nil {
         next := node.next
         free(node)
-        node = node.next
+        node = next
     }
 }
 
