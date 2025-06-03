@@ -48,7 +48,7 @@ raylib/draw-lines/draw-lines
 raylib/draw-shapes/draw-shapes
 cat/cat
 seq/seq
-linked-list/linked-list
+singly-linked-list/singly-linked-list
 bst/bst
 raylib/dnd/dnd
 raylib/copperbars/copperbars
