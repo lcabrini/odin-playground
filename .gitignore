@@ -55,7 +55,7 @@ raylib/copperbars/copperbars
 raylib/cell-selector/cell-selector
 raylib/sierpinski/sierpinski
 raylib/lissajous/lissajous
-logic-table/main.odin
+truth-table/truth-table
 raylib/heart/heart
 raylib/rose/rose
 raylib/bobtrails/bobtrails
