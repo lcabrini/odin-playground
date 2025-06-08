@@ -15,14 +15,31 @@ MIDY :: HEIGHT / 2
 
 main :: proc() {
     prog := filepath.base(os.args[0])
-    if len(os.args[1:]) != 1 {
-        fmt.eprintfln("usage: %s IMAGE", prog)
+    if len(os.args[1:]) != 2 {
+        fmt.eprintfln("usage: %s IMAGE FILTER", prog)
         os.exit(1)
     }
 
     if !os.is_file(os.args[1]) {
         fmt.eprintfln("%s: file not found: %s", prog, os.args[1])
         os.exit(1)
+    }
+
+    red_filter := false
+    green_filter := false
+    blue_filter := false
+    for r in os.args[2] {
+        switch r {
+            case 'r':
+                red_filter = true
+            case 'g':
+                green_filter = true
+            case 'b':
+                blue_filter = true
+            case:
+                fmt.eprintfln("%s: invalid filter: %c", prog, r)
+                os.exit(1)
+        }
     }
 
     rl.SetConfigFlags({.VSYNC_HINT})
@@ -37,8 +54,9 @@ main :: proc() {
         for x in 0..<image.width {
             idx := y * image.width + x
             color := colors[idx]
-            color.g = 0
-            color.b = 0
+            color.r = red_filter ? color.r : 0
+            color.g = green_filter ? color.g : 0
+            color.b = blue_filter ? color.b : 0
             rl.ImageDrawPixel(&image, x, y, color)
         }
     }
@@ -49,7 +67,6 @@ main :: proc() {
         rl.BeginDrawing()
         rl.ClearBackground(rl.BLACK)
         if image.data != nil {
-            //rl.DrawTexture(texture, 100, 100, rl.RAYWHITE)
             scale: f32 = 1.0
             w := f32(texture.width)
             h := f32(texture.height)
