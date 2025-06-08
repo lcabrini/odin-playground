@@ -49,7 +49,20 @@ main :: proc() {
         rl.BeginDrawing()
         rl.ClearBackground(rl.BLACK)
         if image.data != nil {
-            rl.DrawTexture(texture, 100, 100, rl.RAYWHITE)
+            //rl.DrawTexture(texture, 100, 100, rl.RAYWHITE)
+            scale: f32 = 1.0
+            w := f32(texture.width)
+            h := f32(texture.height)
+            if texture.height > HEIGHT {
+                scale_x := f32(HEIGHT - 20) / f32(texture.height)
+                scale_y := f32(WIDTH - 20) / f32(texture.width)
+
+                scale = scale_x > scale_y ? scale_y : scale_x
+                w *= scale
+                h *= scale
+            }
+
+            rl.DrawTextureEx(texture, {f32(MIDX - w / 2), f32(MIDY - h / 2)}, 0, scale, rl.RAYWHITE)
         } else {
             msg: cstring = "Unsupported image format"
             tw := rl.MeasureText(msg, 40)
