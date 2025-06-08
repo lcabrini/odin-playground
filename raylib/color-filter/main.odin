@@ -48,7 +48,13 @@ main :: proc() {
     for !rl.WindowShouldClose() {
         rl.BeginDrawing()
         rl.ClearBackground(rl.BLACK)
-        rl.DrawTexture(texture, 100, 100, rl.RAYWHITE)
+        if image.data != nil {
+            rl.DrawTexture(texture, 100, 100, rl.RAYWHITE)
+        } else {
+            msg: cstring = "Unsupported image format"
+            tw := rl.MeasureText(msg, 40)
+            rl.DrawText(msg, MIDX - tw / 2, MIDY - 40 / 2, 40, rl.RED)
+        }
         rl.EndDrawing()
     }
 
