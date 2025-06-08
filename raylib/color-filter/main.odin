@@ -1,6 +1,8 @@
 package main
 
+import "core:fmt"
 import "core:os"
+import "core:path/filepath"
 import "core:strings"
 import rl "vendor:raylib"
 
@@ -12,12 +14,22 @@ MIDX :: WIDTH / 2
 MIDY :: HEIGHT / 2
 
 main :: proc() {
+    prog := filepath.base(os.args[0])
+    if len(os.args[1:]) != 1 {
+        fmt.eprintfln("usage: %s IMAGE", prog)
+        os.exit(1)
+    }
+
+    if !os.is_file(os.args[1]) {
+        fmt.eprintfln("%s: file not found: %s", prog, os.args[1])
+        os.exit(1)
+    }
+
     rl.SetConfigFlags({.VSYNC_HINT})
     rl.InitWindow(WIDTH, HEIGHT, TITLE)
     rl.SetTargetFPS(60)
 
     fn := strings.clone_to_cstring(os.args[1])
-
     image := rl.LoadImage(fn)
     colors := rl.LoadImageColors(image)
 
