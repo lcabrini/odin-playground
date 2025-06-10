@@ -64,3 +64,4 @@ stack/stack
 hailstone-sequence/hailstone-sequence
 queue/queue
 raylib/color-filter/color-filter
+raylib/image-filters/image-filters
