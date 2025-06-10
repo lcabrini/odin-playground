@@ -30,7 +30,7 @@ main :: proc() {
         if idx < src.height * src.width {
             for x in 0..<w {
                 pixel := colors[idx]
-                pixel = invert_pixel(&pixel)
+                pixel = invert_pixel(&pixel, true, true, true)
                 y: i32 = i32(idx) / src.width
                 rl.ImageDrawPixel(&dest, x, y, pixel)
                 idx += 1
@@ -48,9 +48,9 @@ main :: proc() {
     rl.CloseWindow()
 }
 
-invert_pixel :: proc(color: ^rl.Color) -> rl.Color {
-    color.r = 255 - color.r
-    color.g = 255 - color.g
-    color.b = 255 - color.b
+invert_pixel :: proc(color: ^rl.Color, filter_r := false, filter_g := false, filter_b := false) -> rl.Color {
+    if filter_r do color.r = 255 - color.r
+    if filter_g do color.g = 255 - color.g
+    if filter_b do color.b = 255 - color.b
     return color^
 }
