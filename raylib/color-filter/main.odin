@@ -70,9 +70,9 @@ main :: proc() {
             scale: f32 = 1.0
             w := f32(texture.width)
             h := f32(texture.height)
-            if texture.height > HEIGHT {
-                scale_x := f32(HEIGHT - 20) / f32(texture.height)
-                scale_y := f32(WIDTH - 20) / f32(texture.width)
+            if texture.height > HEIGHT || texture.width > WIDTH{
+                scale_x := f32(WIDTH - 20) / f32(texture.width)
+                scale_y := f32(HEIGHT - 20) / f32(texture.height)
 
                 scale = scale_x > scale_y ? scale_y : scale_x
                 w *= scale
