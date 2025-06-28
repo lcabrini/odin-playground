@@ -22,6 +22,6 @@ insertion_sort :: proc(na: []int) {
         }
 
         na[j] = key
-        fmt.printfln("    Pass #%d: %v", i+1, na)
+        fmt.printfln("    Pass #%d: %v", i, na)
     }
 }

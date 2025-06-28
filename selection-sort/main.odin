@@ -19,6 +19,6 @@ selection_sort :: proc(na: []int) {
         }
 
         na[i], na[min_index] = na[min_index], na[i]
-        fmt.printfln("    Pass #%d: array: %v", i+1, na)
+        fmt.printfln("    Pass #%d: %v", i+1, na)
     }
 }

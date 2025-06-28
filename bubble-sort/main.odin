@@ -21,7 +21,7 @@ bubble_sort :: proc(na: []int) {
                 swapped = true
             }
         }
-        fmt.printfln("    Pass #%d: array: %v", i+1, na)
+        fmt.printfln("    Pass #%d: %v", i+1, na)
         if !swapped {
             return
         }
