@@ -21,7 +21,7 @@ main :: proc() {
     idx: i32 = 0
 
     w: i32 = src.width
-    h: i32 = src.width
+    h: i32 = src.height
 
     for !rl.WindowShouldClose() {
         rl.BeginDrawing()
