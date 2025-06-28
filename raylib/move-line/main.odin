@@ -23,6 +23,7 @@ main :: proc() {
     mark2 := false
     drag1 := false
     drag2 := false
+    show_helpers := false
 
     for !rl.WindowShouldClose() {
         mousepos := rl.GetMousePosition()
@@ -49,6 +50,10 @@ main :: proc() {
             drag2 = false
         }
 
+        if rl.IsKeyPressed(.H) {
+            show_helpers = !show_helpers
+        }
+
         if drag1 {
             x1 = i32(mousepos.x)
             y1 = i32(mousepos.y)
@@ -66,6 +71,11 @@ main :: proc() {
         if mark2 do rl.DrawCircle(x2, y2, 10, rl.BLUE)
         if drag1 do rl.DrawCircle(x1, y1, 10, rl.ORANGE)
         if drag2 do rl.DrawCircle(x2, y2, 10, rl.ORANGE)
+
+        if show_helpers && x1 != x2 && y1 != y2 {
+            rl.DrawLine(x1, y1, x1, y2, rl.BLUE)
+            rl.DrawLine(x1, y2, x2, y2, rl.BLUE)
+        }
         rl.EndDrawing()
     }
 
