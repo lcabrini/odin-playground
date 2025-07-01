@@ -17,16 +17,6 @@ Weekday :: enum {
     SATURDAY,
 }
 
-/*
-SUNDAY :: 0
-MONDAY :: 1
-TUESDAY :: 2
-WEDNESDAY :: 3
-THURSDAY :: 4
-FRIDAY :: 5
-SATURDAY :: 6
-*/
-
 main :: proc() {
     sexes := []string{"male", "female"}
     weekdays := []string{"Sunday", "Monday", "Tuesday", "Wednesday", "Thursay", "Friday", "Saturday"}
