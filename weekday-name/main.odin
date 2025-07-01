@@ -7,6 +7,17 @@ import "core:strings"
 MALE :: 0
 FEMALE :: 1
 
+Weekday :: enum {
+    SUNDAY,
+    MONDAY,
+    TUESDAY,
+    WEDNESDAY,
+    THURSDAY,
+    FRIDAY,
+    SATURDAY,
+}
+
+/*
 SUNDAY :: 0
 MONDAY :: 1
 TUESDAY :: 2
@@ -14,6 +25,7 @@ WEDNESDAY :: 3
 THURSDAY :: 4
 FRIDAY :: 5
 SATURDAY :: 6
+*/
 
 main :: proc() {
     sexes := []string{"male", "female"}
@@ -29,7 +41,7 @@ main :: proc() {
     }
 
     weekday := read_weekday()
-    if weekday < 0 {
+    if weekday == nil {
         return
     }
 
@@ -62,7 +74,7 @@ read_sex :: proc() -> int {
     }
 }
 
-read_weekday :: proc() -> int {
+read_weekday :: proc() -> Weekday {
     buf: [512]byte
 
     for {
@@ -70,7 +82,7 @@ read_weekday :: proc() -> int {
         num_bytes, err := os.read(os.stdin, buf[:])
         if err != nil {
             fmt.eprintln("Error reading from stdin: ", err)
-            return -1
+            return nil
         }
 
         weekday := string(buf[:num_bytes-1])
@@ -79,19 +91,19 @@ read_weekday :: proc() -> int {
 
         switch weekday {
             case "sunday":
-                return SUNDAY
+                return Weekday.SUNDAY
             case "monday":
-                return MONDAY
+                return Weekday.MONDAY
             case "tuesday":
-                return TUESDAY
+                return Weekday.TUESDAY
             case "wednesday":
-                return WEDNESDAY
+                return Weekday.WEDNESDAY
             case "thursday":
-                return THURSDAY
+                return Weekday.THURSDAY
             case "friday":
-                return FRIDAY
+                return Weekday.FRIDAY
             case "saturday":
-                return SATURDAY
+                return Weekday.SATURDAY
             case:
                 fmt.println("Invalid weekday. Try again.")
         }
