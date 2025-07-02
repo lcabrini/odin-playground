@@ -10,6 +10,8 @@ WIDTH :: 1024
 HEIGHT :: 768
 TITLE :: "Melting Screen"
 
+MELT_SPEED :: 8
+
 main :: proc() {
     bg_fn := strings.clone_to_cstring(os.args[1])
     fg_fn := strings.clone_to_cstring(os.args[2])
@@ -32,14 +34,14 @@ main :: proc() {
 
     offsets: [WIDTH]i32
     offsets[0] = -rl.GetRandomValue(0, 255) % 16
-    for i := 1; i < WIDTH/2; i += 1 {
+    for i := 1; i < WIDTH; i += 1 {
         r := rl.GetRandomValue(0, 255) % 3 - 1
         offsets[i] = offsets[i-1] + r
     }
 
     for !rl.WindowShouldClose() {
         for i := 0; i < WIDTH; i += 1 {
-            offsets[i] += offsets[i] <= 0 ? 1 : 8
+            offsets[i] += offsets[i] <= 0 ? 1 : MELT_SPEED
             if offsets[i] > HEIGHT do offsets[i] = HEIGHT
         }
 
@@ -50,8 +52,8 @@ main :: proc() {
         for x: f32 = 0; x < WIDTH; x += 1 {
             y := offsets[int(x)] > 0 ? f32(offsets[int(x)]) : 0
             h := f32(fg_texture.height)
-            src := rl.Rectangle{x, 0, x, h}
-            dest := rl.Rectangle{x, y, x, h}
+            src := rl.Rectangle{x, 0, 1, h}
+            dest := rl.Rectangle{x, y, 1, h}
             rl.DrawTexturePro(fg_texture, src, dest, 0, 0, rl.WHITE)
         }
 
