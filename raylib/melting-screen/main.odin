@@ -1,7 +1,7 @@
 package main
 
 import "core:fmt"
-import "core:math/rand"
+import "core:path/filepath"
 import "core:os"
 import "core:strings"
 import rl "vendor:raylib"
@@ -13,6 +13,11 @@ TITLE :: "Melting Screen"
 MELT_SPEED :: 8
 
 main :: proc() {
+    if len(os.args[1:]) < 2 {
+        fmt.eprintfln("usage: %s BACKGROUND_IMAGE MELTING_IMAGE", filepath.base(os.args[0]))
+        os.exit(-1)
+    }
+
     bg_fn := strings.clone_to_cstring(os.args[1])
     fg_fn := strings.clone_to_cstring(os.args[2])
 
