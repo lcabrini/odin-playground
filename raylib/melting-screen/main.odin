@@ -6,6 +6,10 @@ import "core:os"
 import "core:strings"
 import rl "vendor:raylib"
 
+/*
+    Classic doom screen melt effect, implemented in f_wipe.c: https://github.com/id-Software/DOOM/blob/master/linuxdoom-1.10/f_wipe.c
+*/
+
 WIDTH :: 1024
 HEIGHT :: 768
 TITLE :: "Melting Screen"
