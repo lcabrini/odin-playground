@@ -32,7 +32,7 @@ main :: proc() {
     for &flocker in flockers {
         flocker.x = f32(rl.GetRandomValue(0, WIDTH))
         flocker.y = f32(rl.GetRandomValue(0, HEIGHT))
-        flocker.heading = rand.float32_range(-math.PI , math.PI)
+        flocker.heading = rand.float32_range(-math.PI, math.PI)
         flocker.speed = f32(rl.GetRandomValue(1, 5))
         flocker.radius = f32(rl.GetRandomValue(10, 20))
     }
