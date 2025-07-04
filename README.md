@@ -10,3 +10,4 @@ This is just a collection of small programs I wrote to learn [Odin](https://odin
 1. Classic space punch audio sample from [pixabay](https://pixabay.com)
 1. Background Color Forest from [Background Elements Redux](https://kenney.nl/assets/background-elements-redux) by Kenney
 1. The Cloud PNGs from [Background Elements Redux](https://kenney.nl/assets/background-elements-redux) by Kenney
+1. Blue Galaxy from [Wallpapers Wide](https://wallpaperswide.com/blue_galaxy_5-wallpapers.html)
