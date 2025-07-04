@@ -20,6 +20,8 @@ main :: proc() {
     rl.SetConfigFlags({.VSYNC_HINT})
     rl.InitWindow(WIDTH, HEIGHT, TITLE)
 
+    bg_texture := rl.LoadTexture("../../resources/backgroundColorForest.png")
+
     cannon := Cannon{}
     cannon.pos = {50, HEIGHT-30-25}
 
@@ -43,8 +45,12 @@ main :: proc() {
         }
 
         rl.BeginDrawing()
-        rl.ClearBackground(rl.BLUE)
-        rl.DrawRectangle(0, HEIGHT-30, WIDTH, 30, rl.GREEN)
+        rl.ClearBackground({206, 239, 252, 255})
+
+        for x: i32 = 0; x < WIDTH; x += bg_texture.width {
+            rl.DrawTexture(bg_texture, x, HEIGHT - bg_texture.height, rl.WHITE)
+        }
+        //rl.DrawRectangle(0, HEIGHT-30, WIDTH, 30, rl.GREEN)
 
         rl.DrawCircleV(cannon.pos, 25, rl.BLACK)
 
@@ -52,5 +58,6 @@ main :: proc() {
         rl.EndDrawing()
     }
 
+    rl.UnloadTexture(bg_texture)
     rl.CloseWindow()
 }
