@@ -20,7 +20,12 @@ main :: proc() {
     pos := rl.Vector2{MIDX, MIDY}
     v := rl.Vector2{1, 2}
 
+    rl.InitAudioDevice()
+    music := rl.LoadMusicStream("../../resources/calm-space.mp3")
+    rl.PlayAudioStream(music)
+
     for !rl.WindowShouldClose() {
+        rl.UpdateMusicStream(music)
         t := f32(rl.GetTime())
         pos += v
 
@@ -65,6 +70,9 @@ main :: proc() {
         rl.EndDrawing()
     }
 
+    rl.UnloadTexture(texture)
+    rl.UnloadMusicStream(music)
+    rl.CloseAudioDevice()
     rl.CloseWindow()
 }
 
