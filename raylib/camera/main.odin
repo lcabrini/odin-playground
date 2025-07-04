@@ -21,7 +21,6 @@ main :: proc() {
 
     for !rl.WindowShouldClose() {
         pos += v
-        fmt.println(pos)
 
         x_offset: f32 = WIDTH / 2
         if pos.x < WIDTH / 2 {
