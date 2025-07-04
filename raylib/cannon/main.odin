@@ -34,6 +34,14 @@ main :: proc() {
             if cannon.pos.x > WIDTH - 50 do cannon.pos.x = WIDTH - 50
         }
 
+        if rl.IsKeyDown(.LEFT) {
+            cannon.angle -= 1
+        }
+
+        if rl.IsKeyDown(.RIGHT) {
+            cannon.angle += 1
+        }
+
         rl.BeginDrawing()
         rl.ClearBackground(rl.BLUE)
         rl.DrawRectangle(0, HEIGHT-30, WIDTH, 30, rl.GREEN)
