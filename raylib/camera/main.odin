@@ -1,6 +1,7 @@
 package main
 
 import "core:fmt"
+import "core:math"
 import rl "vendor:raylib"
 
 WIDTH :: 1024
@@ -17,9 +18,10 @@ main :: proc() {
 
     texture := rl.LoadTexture("../../resources/blue-galaxy.jpg")
     pos := rl.Vector2{MIDX, MIDY}
-    v := rl.Vector2{3, 5}
+    v := rl.Vector2{1, 2}
 
     for !rl.WindowShouldClose() {
+        t := f32(rl.GetTime())
         pos += v
 
         x_offset: f32 = WIDTH / 2
@@ -51,6 +53,14 @@ main :: proc() {
         rl.BeginDrawing()
         rl.BeginMode2D(camera)
         rl.DrawTexture(texture, 0, 0, rl.WHITE)
+
+        for i: f32 = -5; i <= 5; i += 1 {
+            x := pos.x + f32(i * 50)
+            y := math.sin(t+(i+2)*0.3) * 300 +  pos.y
+            rl.DrawCircleV({x, y}, 32, {150, 100, 0, 100})
+            rl.DrawCircleV({x, y}, 30, {255, 150 + u8(i) * 10, 0, 100})
+        }
+
         rl.EndMode2D()
         rl.EndDrawing()
     }
