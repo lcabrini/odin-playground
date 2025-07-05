@@ -20,6 +20,9 @@ main :: proc() {
     paused := false
     clear := true
     fill := false
+    use_red := true
+    use_green := true
+    use_blue := true
 
     for !rl.WindowShouldClose() {
         if rl.IsKeyPressed(.P) {
@@ -35,13 +38,25 @@ main :: proc() {
                 fill = !fill
             }
 
+            if rl.IsKeyPressed(.R) {
+                use_red = !use_red
+            }
+
+            if rl.IsKeyPressed(.G) {
+                use_green = !use_green
+            }
+
+            if rl.IsKeyPressed(.B) {
+                use_blue = !use_blue
+            }
+
             x := rl.GetRandomValue(0, WIDTH-1)
             y := rl.GetRandomValue(0, HEIGHT-1)
             w := rl.GetRandomValue(1, WIDTH-x)
             h := rl.GetRandomValue(1, HEIGHT-y)
-            r := u8(rl.GetRandomValue(0, 255))
-            g := u8(rl.GetRandomValue(0, 255))
-            b := u8(rl.GetRandomValue(0, 255))
+            r := use_red ? u8(rl.GetRandomValue(0, 255)) : 0
+            g := use_green ? u8(rl.GetRandomValue(0, 255)) : 0
+            b := use_blue ? u8(rl.GetRandomValue(0, 255)) : 0
 
             if fill {
                 rl.ImageDrawRectangle(&image, x, y, w, h, {r, g, b, 255})
