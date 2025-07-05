@@ -19,6 +19,7 @@ main :: proc() {
     rectangles_per_frame := 1
     paused := false
     clear := true
+    fill := false
 
     for !rl.WindowShouldClose() {
         if rl.IsKeyPressed(.P) {
@@ -30,6 +31,10 @@ main :: proc() {
                 clear = true
             }
 
+            if rl.IsKeyPressed(.F) {
+                fill = !fill
+            }
+
             x := rl.GetRandomValue(0, WIDTH-1)
             y := rl.GetRandomValue(0, HEIGHT-1)
             w := rl.GetRandomValue(1, WIDTH-x)
@@ -37,7 +42,12 @@ main :: proc() {
             r := u8(rl.GetRandomValue(0, 255))
             g := u8(rl.GetRandomValue(0, 255))
             b := u8(rl.GetRandomValue(0, 255))
-            rl.ImageDrawRectangle(&image, x, y, w, h, {r, g, b, 255})
+
+            if fill {
+                rl.ImageDrawRectangle(&image, x, y, w, h, {r, g, b, 255})
+            } else {
+                rl.ImageDrawRectangleLines(&image, {f32(x), f32(y), f32(w), f32(h)}, 1,  {r, g, b, 255})
+            }
 
             if clear {
                 rl.ImageClearBackground(&image, rl.BLACK)
