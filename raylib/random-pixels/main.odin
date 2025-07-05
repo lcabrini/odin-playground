@@ -11,7 +11,7 @@ WORKBENCH_BLUE :: rl.Color{0, 85, 169, 255}
 
 WIDTH :: 1024
 HEIGHT :: 748
-TITLE :: "Pixels"
+TITLE :: "Random Pixels"
 
 HUD_HEIGHT :: 40
 HUD_SPEED :: 3
