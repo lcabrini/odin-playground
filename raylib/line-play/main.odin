@@ -18,8 +18,13 @@ main :: proc() {
     rl.SetConfigFlags({.VSYNC_HINT})
     rl.InitWindow(WIDTH, HEIGHT, TITLE)
     rl.SetTargetFPS(60)
+    rl.InitAudioDevice()
 
     texture := rl.LoadTexture("../../resources/texture-bg.jpg")
+    font := rl.LoadFontEx("../../resources/Orbitron-Black.ttf", 72, nil, 0)
+    music := rl.LoadMusicStream("../../resources/space-ambient-cinematic-music.mp3")
+    rl.PlayMusicStream(music)
+
     a: f32 = 1.1
     b: f32 = 2.3
     c: f32 = 1.5
@@ -27,6 +32,7 @@ main :: proc() {
 
     for !rl.WindowShouldClose() {
         t : = f32(rl.GetTime() * 0.8)
+        rl.UpdateMusicStream(music)
 
         rl.BeginDrawing()
         rl.DrawTexture(texture, 0, 0, rl.WHITE)
@@ -49,9 +55,13 @@ main :: proc() {
             rl.DrawLineV({x1, y1}, {x2, y2}, rl.YELLOW)
         }
 
+        rl.DrawTextPro(font, "Made with Odin + Raylib", {40+20, HEIGHT-100+20}, {0, 0}, 0, 72, 1, {0, 0, 0, 100})
+        rl.DrawTextPro(font, "Made with Odin + Raylib", {40, HEIGHT-100}, {0, 0}, 0, 72, 1, rl.WHITE)
+
         rl.EndDrawing()
     }
 
+    rl.UnloadFont(font)
     rl.UnloadTexture(texture)
     rl.CloseWindow()
 }
