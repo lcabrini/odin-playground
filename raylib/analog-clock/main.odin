@@ -38,20 +38,26 @@ main :: proc() {
             rl.DrawLine(x1, y1, x2, y2, rl.BLACK)
         }
 
-        sa := f32(s * 6) - 90
-        sx := MIDX + math.cos(sa * rl.DEG2RAD) * 320
-        sy := MIDY + math.sin(f32(s*6-90) * rl.DEG2RAD) * 320
-        rl.DrawLineEx({MIDX, MIDY}, {sx, sy}, 2, rl.BLACK)
+        a := f32(s * 6) - 90
+        x1 := MIDX + math.cos(a * rl.DEG2RAD) * 280
+        y1 := MIDY + math.sin(a * rl.DEG2RAD) * 280
+        x2 := MIDX + math.cos((a + 180) * rl.DEG2RAD) * 30
+        y2 := MIDY + math.sin((a + 180) * rl.DEG2RAD) * 30
+        rl.DrawLineEx({x1, y1}, {x2, y2}, 2, rl.BLACK)
 
-        ma := f32((m * 60 + s) / 10) - 90
-        mx := MIDX + math.cos(ma * rl.DEG2RAD) * 280
-        my := MIDY + math.sin(ma * rl.DEG2RAD) * 280
-        rl.DrawLineEx({MIDX, MIDY}, {mx, my}, 5, rl.BLACK)
+        a = f32((m * 60 + s) / 10) - 90
+        x1 = MIDX + math.cos(a * rl.DEG2RAD) * 280
+        y1 = MIDY + math.sin(a * rl.DEG2RAD) * 280
+        x2 = MIDX + math.cos((a + 180) * rl.DEG2RAD) * 30
+        y2 = MIDY + math.sin((a + 180) * rl.DEG2RAD) * 30
+        rl.DrawLineEx({x1, y1}, {x2, y2}, 5, rl.BLACK)
 
-        ha := (f32(h % 12 * 3600) + f32(m * 60 + s)) / 120 - 90
-        hx := MIDX + math.cos(ha * rl.DEG2RAD) * 200
-        hy := MIDY + math.sin(ha * rl.DEG2RAD) * 200
-        rl.DrawLineEx({MIDX, MIDY}, {hx, hy}, 10, rl.BLACK)
+        a = (f32(h % 12 * 3600) + f32(m * 60 + s)) / 120 - 90
+        x1 = MIDX + math.cos(a * rl.DEG2RAD) * 200
+        y1 = MIDY + math.sin(a * rl.DEG2RAD) * 200
+        x2 = MIDX + math.cos((a + 180) * rl.DEG2RAD) * 30
+        y2 = MIDY + math.sin((a + 180) * rl.DEG2RAD) * 30
+        rl.DrawLineEx({x1, y1}, {x2, y2}, 10, rl.BLACK)
 
         rl.DrawCircle(MIDX, MIDY, 10, rl.BLACK)
         rl.DrawCircle(MIDX, MIDY, 5, rl.RAYWHITE)
