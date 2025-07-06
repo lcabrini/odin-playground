@@ -38,16 +38,19 @@ main :: proc() {
             rl.DrawLine(x1, y1, x2, y2, rl.BLACK)
         }
 
-        sx := MIDX + math.cos(f32(s*6-90) * rl.DEG2RAD) * 320
+        sa := f32(s * 6) - 90
+        sx := MIDX + math.cos(sa * rl.DEG2RAD) * 320
         sy := MIDY + math.sin(f32(s*6-90) * rl.DEG2RAD) * 320
         rl.DrawLineEx({MIDX, MIDY}, {sx, sy}, 2, rl.BLACK)
 
-        mx := MIDX + math.cos(f32(m*6-90) * rl.DEG2RAD) * 280
-        my := MIDY + math.sin(f32(m*6-90) * rl.DEG2RAD) * 280
+        ma := f32((m * 60 + s) / 10) - 90
+        mx := MIDX + math.cos(ma * rl.DEG2RAD) * 280
+        my := MIDY + math.sin(ma * rl.DEG2RAD) * 280
         rl.DrawLineEx({MIDX, MIDY}, {mx, my}, 5, rl.BLACK)
 
-        hx := MIDX + math.cos(f32(h*30-90) * rl.DEG2RAD) * 200
-        hy := MIDY + math.sin(f32(h*30-90) * rl.DEG2RAD) * 200
+        ha := (f32(h % 12 * 3600) + f32(m * 60 + s)) / 120 - 90
+        hx := MIDX + math.cos(ha * rl.DEG2RAD) * 200
+        hy := MIDY + math.sin(ha * rl.DEG2RAD) * 200
         rl.DrawLineEx({MIDX, MIDY}, {hx, hy}, 10, rl.BLACK)
 
         rl.DrawCircle(MIDX, MIDY, 10, rl.BLACK)
