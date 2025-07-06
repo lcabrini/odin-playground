@@ -44,11 +44,14 @@ main :: proc() {
 
         mx := MIDX + math.cos(f32(m*6-90) * rl.DEG2RAD) * 280
         my := MIDY + math.sin(f32(m*6-90) * rl.DEG2RAD) * 280
-        rl.DrawLineEx({MIDX, MIDY}, {mx, my}, 4, rl.BLACK)
+        rl.DrawLineEx({MIDX, MIDY}, {mx, my}, 5, rl.BLACK)
 
         hx := MIDX + math.cos(f32(h*30-90) * rl.DEG2RAD) * 200
         hy := MIDY + math.sin(f32(h*30-90) * rl.DEG2RAD) * 200
-        rl.DrawLineEx({MIDX, MIDY}, {hx, hy}, 6, rl.BLACK)
+        rl.DrawLineEx({MIDX, MIDY}, {hx, hy}, 10, rl.BLACK)
+
+        rl.DrawCircle(MIDX, MIDY, 10, rl.BLACK)
+        rl.DrawCircle(MIDX, MIDY, 5, rl.RAYWHITE)
 
         rl.EndDrawing()
     }
