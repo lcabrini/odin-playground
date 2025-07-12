@@ -14,6 +14,7 @@ main :: proc() {
     
     image := rl.LoadImageFromScreen()
     paused := false
+    clear := true
 
     for !rl.WindowShouldClose() {
         if rl.IsKeyPressed(.P) {
@@ -21,6 +22,15 @@ main :: proc() {
         }
 
         if !paused {
+            if rl.IsKeyPressed(.C) {
+                clear = true
+            }
+
+            if clear {
+                rl.ImageClearBackground(&image, rl.BLACK)
+                clear = false
+            }
+
             x := rl.GetRandomValue(1, WIDTH-2)
             y := rl.GetRandomValue(1, HEIGHT-2)
             max_radius := x
