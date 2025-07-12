@@ -16,6 +16,9 @@ main :: proc() {
     paused := false
     clear := true
     fill := true
+    use_r := true
+    use_g := true
+    use_b := true
 
     for !rl.WindowShouldClose() {
         if rl.IsKeyPressed(.P) {
@@ -31,6 +34,18 @@ main :: proc() {
                 fill = !fill
             }
 
+            if rl.IsKeyPressed(.R) {
+                use_r = !use_r
+            }
+
+            if rl.IsKeyPressed(.G) {
+                use_g = !use_g
+            }
+
+            if rl.IsKeyPressed(.B) {
+                use_b = !use_b
+            }
+
             if clear {
                 rl.ImageClearBackground(&image, rl.BLACK)
                 clear = false
@@ -43,9 +58,9 @@ main :: proc() {
             if y < max_radius do max_radius = y
             if HEIGHT - y < max_radius do max_radius = HEIGHT - y
             radius := rl.GetRandomValue(1, max_radius)
-            r := u8(rl.GetRandomValue(1, 255))
-            g := u8(rl.GetRandomValue(1, 255))
-            b := u8(rl.GetRandomValue(1, 255))
+            r := use_r ? u8(rl.GetRandomValue(1, 255)) : 0
+            g := use_g ? u8(rl.GetRandomValue(1, 255)) : 0
+            b := use_b ? u8(rl.GetRandomValue(1, 255)) : 0
 
             if fill {
                 rl.ImageDrawCircle(&image, x, y, radius, {r, g, b, 255})
