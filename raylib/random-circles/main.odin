@@ -15,6 +15,7 @@ main :: proc() {
     image := rl.LoadImageFromScreen()
     paused := false
     clear := true
+    fill := true
 
     for !rl.WindowShouldClose() {
         if rl.IsKeyPressed(.P) {
@@ -24,6 +25,10 @@ main :: proc() {
         if !paused {
             if rl.IsKeyPressed(.C) {
                 clear = true
+            }
+
+            if rl.IsKeyPressed(.F) {
+                fill = !fill
             }
 
             if clear {
@@ -41,7 +46,12 @@ main :: proc() {
             r := u8(rl.GetRandomValue(1, 255))
             g := u8(rl.GetRandomValue(1, 255))
             b := u8(rl.GetRandomValue(1, 255))
-            rl.ImageDrawCircle(&image, x, y, radius, {r, g, b, 255})
+
+            if fill {
+                rl.ImageDrawCircle(&image, x, y, radius, {r, g, b, 255})
+            } else {
+                rl.ImageDrawCircleLines(&image, x, y, radius, {r, g, b, 255})
+            }
         }
 
         texture := rl.LoadTextureFromImage(image)
