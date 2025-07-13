@@ -32,8 +32,24 @@ main :: proc() {
         blob.pos = {0, 0}
         blobs[i] = blob
     }
+    
+    use_r := true
+    use_g := true
+    use_b := true
 
     for !rl.WindowShouldClose() {
+        if rl.IsKeyPressed(.R) {
+            use_r = !use_r
+        }
+
+        if rl.IsKeyPressed(.G) {
+            use_g = !use_g
+        }
+
+        if rl.IsKeyPressed(.B) {
+            use_b = !use_b
+        }
+
         shift: f32 = 0
         time := f32(rl.GetTime()) * 0.03
 
@@ -54,7 +70,10 @@ main :: proc() {
                 }
 
                 col := u8(math.max(math.min(math.floor(1024 - (dsq / 3e8)), 255), 0))
-                rl.ImageDrawPixel(&image, x, y, {col, col, col, 255}) 
+                r := use_r ? col : 0
+                g := use_g ? col : 0
+                b := use_b ? col : 0
+                rl.ImageDrawPixel(&image, x, y, {r, g, b, 255}) 
             }
         }
 
