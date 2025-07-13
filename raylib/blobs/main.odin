@@ -36,44 +36,53 @@ main :: proc() {
     use_r := true
     use_g := true
     use_b := true
+    paused := false
+    time: f32 = 0
 
     for !rl.WindowShouldClose() {
-        if rl.IsKeyPressed(.R) {
-            use_r = !use_r
+        if rl.IsKeyPressed(.P) {
+            paused = !paused
         }
 
-        if rl.IsKeyPressed(.G) {
-            use_g = !use_g
-        }
+        if !paused {
+            if rl.IsKeyPressed(.R) {
+                use_r = !use_r
+            }
 
-        if rl.IsKeyPressed(.B) {
-            use_b = !use_b
-        }
+            if rl.IsKeyPressed(.G) {
+                use_g = !use_g
+            }
 
-        shift: f32 = 0
-        time := f32(rl.GetTime()) * 0.03
+            if rl.IsKeyPressed(.B) {
+                use_b = !use_b
+            }
 
-        for &b in blobs {
-            b.pos.x = math.sin((time+shift) * math.PI * b.speed) * WIDTH * b.scale.x + MIDX
-            b.pos.y = math.cos((time+shift) * math.PI * b.speed) * HEIGHT * b.scale.y + MIDY
-            shift += 0.5
-        }
+            shift: f32 = 0
+            //time = f32(rl.GetTime()) * 0.03
+            time += rl.GetFrameTime() * 0.04
 
-        for y: i32 = 0; y < HEIGHT; y += 1 {
-            for x: i32 = 0; x < WIDTH; x += 1 {
-                dsq: f32 = 1
+            for &b in blobs {
+                b.pos.x = math.sin((time+shift) * math.PI * b.speed) * WIDTH * b.scale.x + MIDX
+                b.pos.y = math.cos((time+shift) * math.PI * b.speed) * HEIGHT * b.scale.y + MIDY
+                shift += 0.5
+            }
 
-                for &b in blobs {
-                    xsq: f32 = (f32(x) - b.pos.x) * (f32(x) - b.pos.x)
-                    ysq: f32 = (f32(y) - b.pos.y) * (f32(y) - b.pos.y)
-                    dsq *= math.sqrt(xsq + ysq)
+            for y: i32 = 0; y < HEIGHT; y += 1 {
+                for x: i32 = 0; x < WIDTH; x += 1 {
+                    dsq: f32 = 1
+
+                    for &b in blobs {
+                        xsq: f32 = (f32(x) - b.pos.x) * (f32(x) - b.pos.x)
+                        ysq: f32 = (f32(y) - b.pos.y) * (f32(y) - b.pos.y)
+                        dsq *= math.sqrt(xsq + ysq)
+                    }
+
+                    col := u8(math.max(math.min(math.floor(1024 - (dsq / 3e8)), 255), 0))
+                    r := use_r ? col : 0
+                    g := use_g ? col : 0
+                    b := use_b ? col : 0
+                    rl.ImageDrawPixel(&image, x, y, {r, g, b, 255}) 
                 }
-
-                col := u8(math.max(math.min(math.floor(1024 - (dsq / 3e8)), 255), 0))
-                r := use_r ? col : 0
-                g := use_g ? col : 0
-                b := use_b ? col : 0
-                rl.ImageDrawPixel(&image, x, y, {r, g, b, 255}) 
             }
         }
 
