@@ -154,7 +154,6 @@ main :: proc() {
         rl.DrawTexture(texture, 0, 0, rl.WHITE)
 
         if overlay_type != .NONE {
-            fmt.println("here")
             rl.BeginBlendMode(rl.BlendMode.MULTIPLIED)
             rl.DrawTexture(overlay, 0, 0, rl.WHITE)
             rl.EndBlendMode()
