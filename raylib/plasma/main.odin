@@ -15,6 +15,14 @@ MIDY :: HEIGHT/2
 
 FONT_SIZE :: 120
 
+ColorPresets :: enum {
+    RG,
+    RB,
+    GR,
+    GB,
+    BR,
+    BG,
+}
 main :: proc() {
     rl.SetConfigFlags({.VSYNC_HINT})
     rl.InitWindow(WIDTH, HEIGHT, TITLE)
@@ -33,6 +41,8 @@ main :: proc() {
 
     show_overlay := false
     pause := false
+    colors: ColorPresets = .BG
+    r, g, b: u8
     t: f32 = 0
 
     for !rl.WindowShouldClose() {
@@ -40,11 +50,29 @@ main :: proc() {
             pause = !pause
         }
 
+
         if !pause {
             t += 0.05
 
             if rl.IsKeyPressed(.O) {
                 show_overlay = !show_overlay
+            }
+
+            if rl.IsKeyPressed(.C) {
+                switch colors {
+                case .RG:
+                    colors = .RB
+                case .RB:
+                    colors = .GR
+                case .GR:
+                    colors = .GB
+                case .GB:
+                    colors = .BR
+                case .BR:
+                    colors = .BG
+                case .BG:
+                    colors = .RG
+                }
             }
             
             for y: i32 = 0; y < HEIGHT; y += 1 {
@@ -56,9 +84,37 @@ main :: proc() {
                     cy := dy + 0.5 * math.cos(t/3)
                     v += math.sin(math.sqrt(50 * (cx*cx + cy*cy) + 1 + t))
                     v += math.cos(math.sqrt(dx*dx + dy*dy) - t)
-                    g := u8(math.sin(v*math.PI) * 255)
-                    b := u8(math.cos(v*math.PI) * 255)
-                    rl.ImageDrawPixel(&image, x, y, {0, g, b, 255})
+
+                    switch colors {
+                    case .RG:
+                        r = u8(math.sin(v*math.PI) * 255)
+                        g = u8(math.cos(v*math.PI) * 255)
+                        b = 0
+                    case .RB:
+                        r = u8(math.sin(v*math.PI) * 255)
+                        g = 0
+                        b = u8(math.cos(v*math.PI) * 255)
+                    case .GR:
+                        r = u8(math.cos(v*math.PI) * 255)
+                        g = u8(math.sin(v*math.PI) * 255)
+                        b = 0
+                    case .GB:
+                        r = 0
+                        g = u8(math.sin(v*math.PI) * 255)
+                        b = u8(math.cos(v*math.PI) * 255)
+                    case .BR:
+                        r = u8(math.cos(v*math.PI) * 255)
+                        g = 0
+                        b = u8(math.sin(v*math.PI) * 255)
+                    case .BG:
+                        r = 0
+                        g = u8(math.cos(v*math.PI) * 255)
+                        b = u8(math.sin(v*math.PI) * 255)
+                    }
+
+                    //g := u8(math.sin(v*math.PI) * 255)
+                    //b := u8(math.cos(v*math.PI) * 255)
+                    rl.ImageDrawPixel(&image, x, y, {r, g, b, 255})
                 }
             }
         }
