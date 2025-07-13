@@ -5,6 +5,11 @@ import "core:math"
 import "core:math/rand"
 import rl "vendor:raylib"
 
+
+/* 
+    Adapted from the Metablob effect on https://seancode.com/demofx/
+*/
+
 WIDTH :: 1024
 HEIGHT :: 768
 TITLE :: "Blob"
@@ -58,7 +63,6 @@ main :: proc() {
             }
 
             shift: f32 = 0
-            //time = f32(rl.GetTime()) * 0.03
             time += rl.GetFrameTime() * 0.04
 
             for &b in blobs {
