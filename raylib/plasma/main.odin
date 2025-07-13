@@ -1,5 +1,6 @@
 package main
 
+import "core:fmt"
 import "core:math"
 import rl "vendor:raylib"
 
@@ -23,6 +24,14 @@ ColorPresets :: enum {
     BR,
     BG,
 }
+
+OverlayType :: enum {
+    NONE,
+    TEXT,
+    CIRCLE,
+    TRIANGLE,
+}
+
 main :: proc() {
     rl.SetConfigFlags({.VSYNC_HINT})
     rl.InitWindow(WIDTH, HEIGHT, TITLE)
@@ -30,19 +39,12 @@ main :: proc() {
     
     font := rl.LoadFontEx("../../resources/Inter-ExtraBold.ttf", FONT_SIZE, nil, 0)
     image := rl.LoadImageFromScreen()
-    overlay_image := rl.LoadImageFromScreen()
-    rl.ImageClearBackground(&overlay_image, rl.BLACK)
-    msg: cstring = "Plasma Effect"
-    ts := rl.MeasureTextEx(font, msg, FONT_SIZE, 1)
-    tp := rl.Vector2{MIDX - ts.x/2, MIDY - ts.y/2}
-    rl.ImageDrawTextEx(&overlay_image, font, msg, tp, FONT_SIZE, 1, rl.WHITE)
-    overlay := rl.LoadTextureFromImage(overlay_image)
-    rl.UnloadImage(overlay_image)
-
-    show_overlay := false
+    
     pause := false
+    overlay_type: OverlayType = .NONE
     colors: ColorPresets = .BG
     r, g, b: u8
+    overlay: rl.Texture
     t: f32 = 0
 
     for !rl.WindowShouldClose() {
@@ -50,12 +52,42 @@ main :: proc() {
             pause = !pause
         }
 
-
         if !pause {
             t += 0.05
 
             if rl.IsKeyPressed(.O) {
-                show_overlay = !show_overlay
+                rl.UnloadTexture(overlay)
+                switch overlay_type {
+                case .NONE:
+                    overlay_type = .TEXT
+                    overlay_image := rl.LoadImageFromScreen()
+                    rl.ImageClearBackground(&overlay_image, rl.BLACK)
+                    msg: cstring = "Plasma Effect"
+                    ts := rl.MeasureTextEx(font, msg, FONT_SIZE, 1)
+                    tp := rl.Vector2{MIDX - ts.x/2, MIDY - ts.y/2}
+                    rl.ImageDrawTextEx(&overlay_image, font, msg, tp, FONT_SIZE, 1, rl.WHITE)
+                    overlay = rl.LoadTextureFromImage(overlay_image)
+                    rl.UnloadImage(overlay_image)
+                case .TEXT:
+                    overlay_type = .CIRCLE
+                    overlay_image := rl.LoadImageFromScreen()
+                    rl.ImageClearBackground(&overlay_image, rl.BLACK)
+                    rl.ImageDrawCircle(&overlay_image, MIDX, MIDY, 300, rl.WHITE)
+                    overlay = rl.LoadTextureFromImage(overlay_image)
+                    rl.UnloadImage(overlay_image)
+                case .CIRCLE:
+                    overlay_type = .TRIANGLE
+                    overlay_image := rl.LoadImageFromScreen()
+                    rl.ImageClearBackground(&overlay_image, rl.BLACK)
+                    v1 := rl.Vector2{MIDX, 100}
+                    v2 := rl.Vector2{100, HEIGHT-100}
+                    v3 := rl.Vector2{WIDTH-100, HEIGHT-100}
+                    rl.ImageDrawTriangle(&overlay_image, v1, v2, v3, rl.WHITE)
+                    overlay = rl.LoadTextureFromImage(overlay_image)
+                    rl.UnloadImage(overlay_image)
+                case .TRIANGLE:
+                    overlay_type = .NONE
+                }
             }
 
             if rl.IsKeyPressed(.C) {
@@ -74,7 +106,7 @@ main :: proc() {
                     colors = .RG
                 }
             }
-            
+                   
             for y: i32 = 0; y < HEIGHT; y += 1 {
                 dy := f32(y) / HEIGHT - 0.5
                 for x: i32 = 0; x < WIDTH; x += 1 {
@@ -112,8 +144,6 @@ main :: proc() {
                         b = u8(math.sin(v*math.PI) * 255)
                     }
 
-                    //g := u8(math.sin(v*math.PI) * 255)
-                    //b := u8(math.cos(v*math.PI) * 255)
                     rl.ImageDrawPixel(&image, x, y, {r, g, b, 255})
                 }
             }
@@ -123,7 +153,8 @@ main :: proc() {
         rl.BeginDrawing()
         rl.DrawTexture(texture, 0, 0, rl.WHITE)
 
-        if show_overlay {
+        if overlay_type != .NONE {
+            fmt.println("here")
             rl.BeginBlendMode(rl.BlendMode.MULTIPLIED)
             rl.DrawTexture(overlay, 0, 0, rl.WHITE)
             rl.EndBlendMode()
