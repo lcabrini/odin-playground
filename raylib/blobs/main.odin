@@ -49,6 +49,10 @@ main :: proc() {
             paused = !paused
         }
 
+        if rl.IsKeyPressed(.S) {
+            rl.TakeScreenshot("screenshot.png")
+        }
+
         if !paused {
             if rl.IsKeyPressed(.R) {
                 use_r = !use_r
