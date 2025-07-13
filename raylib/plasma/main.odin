@@ -36,8 +36,6 @@ main :: proc() {
     t: f32 = 0
 
     for !rl.WindowShouldClose() {
-        //t := f32(rl.GetTime())
-
         if rl.IsKeyPressed(.P) {
             pause = !pause
         }
