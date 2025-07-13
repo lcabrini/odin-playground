@@ -29,9 +29,9 @@ main :: proc() {
                 cy := dy + 0.5 * math.cos(t/3)
                 v += math.sin(math.sqrt(50 * (cx*cx + cy*cy) + 1 + t))
                 v += math.cos(math.sqrt(dx*dx + dy*dy) - t)
-                r := u8(math.sin(v*math.PI) * 255)
+                g := u8(math.sin(v*math.PI) * 255)
                 b := u8(math.cos(v*math.PI) * 255)
-                rl.ImageDrawPixel(&image, x, y, {r, 0, b, 255})
+                rl.ImageDrawPixel(&image, x, y, {0, g, b, 255})
             }
         }
 
