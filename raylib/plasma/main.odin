@@ -52,6 +52,10 @@ main :: proc() {
             pause = !pause
         }
 
+        if rl.IsKeyPressed(.S) {
+            rl.TakeScreenshot("screenshot.png")
+        }
+
         if !pause {
             t += 0.05
 
