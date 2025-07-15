@@ -20,8 +20,6 @@ main :: proc() {
         rl.DrawCircleLinesV(mp, 30, rl.WHITE)
         rl.DrawCircleLinesV(mp, 5, rl.WHITE)
         rl.DrawLineV({mp.x, mp.y-34}, {mp.x, mp.y+34}, rl.WHITE)
-        //rl.DrawLineV({mp.x, mp.y+33}, {mp.x, mp.y+27}, rl.WHITE)
-        //rl.DrawLineV({mp.x-33, mp.y}, {mp.x-27, mp.y}, rl.WHITE)
         rl.DrawLineV({mp.x-34, mp.y}, {mp.x+34, mp.y}, rl.WHITE)
         rl.EndDrawing()
     }
