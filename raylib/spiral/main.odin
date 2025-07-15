@@ -15,14 +15,25 @@ main :: proc() {
     rl.InitWindow(WIDTH, HEIGHT, TITLE)
     rl.SetTargetFPS(60)
 
-    counter := 1
-    start_color := 1
+    counter := 0
+    start_color := 0
+    start_idx := 0
+    colors := []rl.Color {
+        {0, 0, 255, 255},
+        {0, 255, 255, 255},
+    }
 
     for !rl.WindowShouldClose() {
         counter += 1
-        //start_color += 1
-        if counter > 3000 do counter = 3000
+        if counter > 3000 {
+            counter = 3000
+            start_color += 1
+            if start_color % 50 == 0 do start_idx = 1 - start_idx
+        }
+
         color_counter := start_color
+        color_idx := start_idx
+
         rl.BeginDrawing()
         rl.ClearBackground(rl.BLACK)
     
@@ -32,9 +43,11 @@ main :: proc() {
             x: f32 = MIDX + amp * math.cos(angle * rl.DEG2RAD)
             y: f32 = MIDY + amp * math.sin(angle * rl.DEG2RAD)
             origin := rl.Vector2{20, 20}
-            color: rl.Color = color_counter % 2 == 0 ? {0, 0, 255, 255} : {0, 255, 255, 255}
-            rl.DrawRectanglePro({x, y, 40, 40}, origin, 0, color)
-            if i % 50 == 0 do color_counter += 1
+
+            rl.DrawRectanglePro({x, y, 40, 40}, origin, 0, colors[color_idx])
+            color_counter += 1
+            if color_counter % 50 == 0 do color_idx = 1 - color_idx
+
         }
 
         rl.EndDrawing()
