@@ -42,12 +42,9 @@ main :: proc() {
             amp := f32(i)/6
             x: f32 = MIDX + amp * math.cos(angle * rl.DEG2RAD)
             y: f32 = MIDY + amp * math.sin(angle * rl.DEG2RAD)
-            origin := rl.Vector2{20, 20}
-
-            rl.DrawRectanglePro({x, y, 40, 40}, origin, 0, colors[color_idx])
+            rl.DrawCircleV({x, y}, 50, colors[color_idx])
             color_counter += 1
             if color_counter % 50 == 0 do color_idx = 1 - color_idx
-
         }
 
         rl.EndDrawing()
