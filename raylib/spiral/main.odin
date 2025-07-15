@@ -9,6 +9,7 @@ HEIGHT :: 768
 TITLE :: "Spiral"
 MIDX :: WIDTH/2
 MIDY :: HEIGHT/2
+RADIUS :: 50
 
 main :: proc() {
     rl.SetConfigFlags({.VSYNC_HINT})
@@ -42,7 +43,7 @@ main :: proc() {
             amp := f32(i)/6
             x: f32 = MIDX + amp * math.cos(angle * rl.DEG2RAD)
             y: f32 = MIDY + amp * math.sin(angle * rl.DEG2RAD)
-            rl.DrawCircleV({x, y}, 50, colors[color_idx])
+            rl.DrawCircleV({x, y}, RADIUS, colors[color_idx])
             color_counter += 1
             if color_counter % 50 == 0 do color_idx = 1 - color_idx
         }
