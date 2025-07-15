@@ -5,6 +5,8 @@ import rl "vendor:raylib"
 WIDTH :: 1024
 HEIGHT :: 768
 TITLE :: "Crosshair"
+RADIUS :: 30
+INNER_RADIUS :: 5
 
 main :: proc() {
     rl.SetConfigFlags({.VSYNC_HINT})
@@ -17,10 +19,10 @@ main :: proc() {
         rl.BeginDrawing()
         rl.ClearBackground(rl.BLACK)
 
-        rl.DrawCircleLinesV(mp, 30, rl.WHITE)
-        rl.DrawCircleLinesV(mp, 5, rl.WHITE)
-        rl.DrawLineV({mp.x, mp.y-34}, {mp.x, mp.y+34}, rl.WHITE)
-        rl.DrawLineV({mp.x-34, mp.y}, {mp.x+34, mp.y}, rl.WHITE)
+        rl.DrawCircleLinesV(mp, RADIUS, rl.WHITE)
+        rl.DrawCircleLinesV(mp, INNER_RADIUS, rl.WHITE)
+        rl.DrawLineV({mp.x, mp.y-RADIUS-4}, {mp.x, mp.y+RADIUS+4}, rl.WHITE)
+        rl.DrawLineV({mp.x-RADIUS-4, mp.y}, {mp.x+RADIUS+4, mp.y}, rl.WHITE)
         rl.EndDrawing()
     }
 
