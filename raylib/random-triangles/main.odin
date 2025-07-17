@@ -21,6 +21,10 @@ main :: proc() {
         }
 
         if !paused {
+            if rl.IsKeyPressed(.C) {
+                clear = true
+            }
+
             if clear {
                 rl.ImageClearBackground(&image, rl.BLACK)
                 clear = false
