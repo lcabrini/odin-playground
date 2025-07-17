@@ -97,4 +97,4 @@ raylib/blobs/blobs
 raylib/spiral/spiral
 raylib/crosshair/crosshair
 raylib/image2code/image2code
-raylib/image2code/export.c
+raylib/image2code/exported_image.h
