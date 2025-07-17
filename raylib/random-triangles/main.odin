@@ -15,6 +15,9 @@ main :: proc() {
     paused := false
     clear := true
     fill := false
+    use_r := true
+    use_g := true
+    use_b := true
 
     for !rl.WindowShouldClose() {
         if rl.IsKeyPressed(.P) {
@@ -30,6 +33,18 @@ main :: proc() {
                 fill = !fill
             }
 
+            if rl.IsKeyPressed(.R) {
+                use_r = !use_r
+            }
+
+            if rl.IsKeyPressed(.G) {
+                use_g = !use_g
+            }
+
+            if rl.IsKeyPressed(.B) {
+                use_b = !use_b
+            }
+
             if clear {
                 rl.ImageClearBackground(&image, rl.BLACK)
                 clear = false
@@ -41,9 +56,9 @@ main :: proc() {
             y2 := f32(rl.GetRandomValue(0, HEIGHT))
             x3 := f32(rl.GetRandomValue(0, WIDTH))
             y3 := f32(rl.GetRandomValue(0, HEIGHT))
-            r := u8(rl.GetRandomValue(0, 255))
-            g := u8(rl.GetRandomValue(0, 255))
-            b := u8(rl.GetRandomValue(0, 255))
+            r := use_r ? u8(rl.GetRandomValue(0, 255)) : 0
+            g := use_g ? u8(rl.GetRandomValue(0, 255)) : 0
+            b := use_b ? u8(rl.GetRandomValue(0, 255)) : 0
 
             if fill {
                 rl.ImageDrawTriangle(&image, {x1, y1}, {x2, y2}, {x3, y3}, {r, g, b, 255})
