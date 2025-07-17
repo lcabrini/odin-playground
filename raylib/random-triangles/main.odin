@@ -14,6 +14,7 @@ main :: proc() {
     image := rl.LoadImageFromScreen()
     paused := false
     clear := true
+    fill := false
 
     for !rl.WindowShouldClose() {
         if rl.IsKeyPressed(.P) {
@@ -23,6 +24,10 @@ main :: proc() {
         if !paused {
             if rl.IsKeyPressed(.C) {
                 clear = true
+            }
+
+            if rl.IsKeyPressed(.F) {
+                fill = !fill
             }
 
             if clear {
@@ -39,7 +44,12 @@ main :: proc() {
             r := u8(rl.GetRandomValue(0, 255))
             g := u8(rl.GetRandomValue(0, 255))
             b := u8(rl.GetRandomValue(0, 255))
-            rl.ImageDrawTriangleLines(&image, {x1, y1}, {x2, y2}, {x3, y3}, {r, g, b, 255})
+
+            if fill {
+                rl.ImageDrawTriangle(&image, {x1, y1}, {x2, y2}, {x3, y3}, {r, g, b, 255})
+            } else {
+                rl.ImageDrawTriangleLines(&image, {x1, y1}, {x2, y2}, {x3, y3}, {r, g, b, 255})
+            }
         }
 
         texture := rl.LoadTextureFromImage(image)
