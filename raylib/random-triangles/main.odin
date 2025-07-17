@@ -13,6 +13,7 @@ main :: proc() {
 
     image := rl.LoadImageFromScreen()
     paused := false
+    clear := true
 
     for !rl.WindowShouldClose() {
         if rl.IsKeyPressed(.P) {
@@ -20,6 +21,11 @@ main :: proc() {
         }
 
         if !paused {
+            if clear {
+                rl.ImageClearBackground(&image, rl.BLACK)
+                clear = false
+            }
+
             x1 := f32(rl.GetRandomValue(0, WIDTH))
             y1 := f32(rl.GetRandomValue(0, HEIGHT))
             x2 := f32(rl.GetRandomValue(0, WIDTH))
