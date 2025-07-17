@@ -7,3 +7,4 @@ while IFS= read -r prog; do
 done < .gitignore
 
 find . -name screenshot.png -delete
+find . -name 'exported_*.h' -delete
