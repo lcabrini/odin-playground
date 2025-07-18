@@ -13,3 +13,4 @@ This is just a collection of small programs I wrote to learn [Odin](https://odin
 1. Blue Galaxy from [Wallpapers Wide](https://wallpaperswide.com/blue_galaxy_5-wallpapers.html)
 1. Calm Space by [Clavier](https://pixabay.com/music/ambient-calm-space-music-312291/)
 1. Space Ambient Cinematic Music by [original_soundtrack](https://pixabay.com/music/ambient-space-ambient-cinematic-music-338203/)
+1. Spritesheets and sounds for **rocks-and-diamonds** from the excellent [Rocks'n'Diamonds](https://www.artsoft.org/)
