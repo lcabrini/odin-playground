@@ -50,8 +50,13 @@ main :: proc() {
     border.sheet_x = 0
     border.sheet_y = 5
 
+    rock := Tile{}
+    rock.type = .ROCK
+    rock.spritesheet = &spritesheet_1
+    rock.sheet_x = 11
+    rock.sheet_y = 4
+
     game_map := Map{}
-    
     for y in 0..<MAP_HEIGHT {
         for x in 0..<MAP_WIDTH {
             if y == 0 || y == MAP_HEIGHT-1 {
@@ -62,6 +67,12 @@ main :: proc() {
                 game_map.tiles[y][x] = soil
             }
         }
+    }
+
+    for i in 0..<30 {
+        x := rl.GetRandomValue(1, MAP_WIDTH-2)
+        y := rl.GetRandomValue(1, MAP_HEIGHT-2)
+        game_map.tiles[y][x] = rock
     }
 
     for !rl.WindowShouldClose() {
