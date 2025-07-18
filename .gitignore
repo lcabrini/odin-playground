@@ -99,3 +99,4 @@ raylib/crosshair/crosshair
 raylib/image2code/image2code
 raylib/image2code/exported_image.h
 raylib/random-triangles/random-triangles
+raylib/perlin-noise/perlin-noise
