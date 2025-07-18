@@ -51,12 +51,17 @@ Player :: struct {
 main :: proc() {
     rl.SetConfigFlags({.VSYNC_HINT})
     rl.InitWindow(WIDTH, HEIGHT, TITLE)
-    //rl.SetTargetFPS(60)
 
     spritesheet_1 := rl.LoadTexture("../../resources/RocksBD.png")
     spritesheet_2 := rl.LoadTexture("../../resources/RocksSP.png")
     spritesheet_3 := rl.LoadTexture("../../resources/RocksHeroes.png")
     spritesheet_4 := rl.LoadTexture("../../resources/RocksMore.png")
+
+    empty := Tile{}
+    empty.type = .EMPTY
+    empty.spritesheet = &spritesheet_1
+    empty.sheet_x = 4
+    empty.sheet_y = 14
 
     soil := Tile{}
     soil.type = .SOIL
@@ -129,9 +134,15 @@ main :: proc() {
         if tick_timer < 0 {
             x := player.pos.x + player.dir.x
             y := player.pos.y + player.dir.y
+            game_map.tiles[y][x] = empty
 
-            if x > 1 && x < WIDTH-1 do player.pos.x = x
-            if y > 1 && y < HEIGHT-1 do player.pos.y = y
+            if x > 1 && x < WIDTH-1 {
+                player.pos.x = x
+            }
+
+            if y > 1 && y < HEIGHT-1 {
+                player.pos.y = y
+            }
 
             tick_timer += TICK_RATE
         }
