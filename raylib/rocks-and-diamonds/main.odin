@@ -2,6 +2,10 @@ package main
 
 import rl "vendor:raylib"
 
+/*
+    I was curious about how to create a Boulderdash-type game, so I wrote this little test.
+*/
+
 WIDTH :: 1024
 HEIGHT :: 768
 TITLE :: "Rocks and Diamonds"
