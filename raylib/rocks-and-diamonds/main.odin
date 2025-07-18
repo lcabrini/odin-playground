@@ -8,6 +8,7 @@ TITLE :: "Rocks and Diamonds"
 TILE_SIZE :: 32
 MAP_WIDTH :: 64
 MAP_HEIGHT :: 32
+TICK_RATE :: 0.13
 
 TileType :: enum {
     EMPTY,
@@ -39,14 +40,14 @@ PlayerState :: union {
 
 Player :: struct {
     state: PlayerState,
-    x: i32,
-    y: i32,
+    pos: [2]i32,
+    dir: [2]i32,
 }
 
 main :: proc() {
     rl.SetConfigFlags({.VSYNC_HINT})
     rl.InitWindow(WIDTH, HEIGHT, TITLE)
-    rl.SetTargetFPS(60)
+    //rl.SetTargetFPS(60)
 
     spritesheet_1 := rl.LoadTexture("../../resources/RocksBD.png")
     spritesheet_2 := rl.LoadTexture("../../resources/RocksSP.png")
@@ -78,8 +79,7 @@ main :: proc() {
 
     player := Player{}
     player.state = player_stopped
-    player.x = 1
-    player.y = 1
+    player.pos = {1, 1}
 
     game_map := Map{}
     for y in 0..<MAP_HEIGHT {
@@ -100,7 +100,38 @@ main :: proc() {
         game_map.tiles[y][x] = rock
     }
 
+    tick_timer: f32 = TICK_RATE
+
     for !rl.WindowShouldClose() {
+        tick_timer -= rl.GetFrameTime()
+        player.dir = {0, 0}
+
+        if rl.IsKeyDown(.UP) {
+            player.dir = {0, -1}
+        }
+
+        if rl.IsKeyDown(.DOWN) {
+            player.dir = {0, 1}
+        }
+
+        if rl.IsKeyDown(.LEFT) {
+            player.dir = {-1, 0}
+        }
+
+        if rl.IsKeyDown(.RIGHT) {
+            player.dir = {1, 0}
+        }
+
+        if tick_timer < 0 {
+            x := player.pos.x + player.dir.x
+            y := player.pos.y + player.dir.y
+
+            if x > 1 && x < WIDTH-1 do player.pos.x = x
+            if y > 1 && y < HEIGHT-1 do player.pos.y = y
+
+            tick_timer += TICK_RATE
+        }
+
         rl.BeginDrawing()
         rl.ClearBackground(rl.BLACK)
 
@@ -116,7 +147,7 @@ main :: proc() {
         switch state in player.state {
         case PlayerStopped:
             src := rl.Rectangle{f32(state.sheet_x*TILE_SIZE), f32(state.sheet_y*TILE_SIZE), TILE_SIZE, TILE_SIZE}
-            dest := rl.Rectangle{f32(player.x*TILE_SIZE), f32(player.y*TILE_SIZE), TILE_SIZE, TILE_SIZE}
+            dest := rl.Rectangle{f32(player.pos.x*TILE_SIZE), f32(player.pos.y*TILE_SIZE), TILE_SIZE, TILE_SIZE}
             rl.DrawTexturePro(state.spritesheet^, src, dest, {0, 0}, 0, rl.WHITE)
         }
 
