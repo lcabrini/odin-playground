@@ -14,7 +14,6 @@ TileType :: enum {
     SOIL,
     BORDER,
     ROCK,
-    PLAYER,
 }
 
 Tile :: struct {
@@ -26,6 +25,22 @@ Tile :: struct {
 
 Map :: struct {
     tiles: [MAP_HEIGHT][MAP_WIDTH]Tile
+}
+
+PlayerStopped :: struct {
+    spritesheet: ^rl.Texture,
+    sheet_x: i32,
+    sheet_y: i32,
+}
+
+PlayerState :: union {
+    PlayerStopped,
+}
+
+Player :: struct {
+    state: PlayerState,
+    x: i32,
+    y: i32,
 }
 
 main :: proc() {
@@ -55,6 +70,16 @@ main :: proc() {
     rock.spritesheet = &spritesheet_1
     rock.sheet_x = 11
     rock.sheet_y = 4
+
+    player_stopped := PlayerStopped{}
+    player_stopped.spritesheet = &spritesheet_3
+    player_stopped.sheet_x = 0
+    player_stopped.sheet_y = 0
+
+    player := Player{}
+    player.state = player_stopped
+    player.x = 1
+    player.y = 1
 
     game_map := Map{}
     for y in 0..<MAP_HEIGHT {
@@ -87,6 +112,14 @@ main :: proc() {
                 rl.DrawTexturePro(tile.spritesheet^, src, dest, {0, 0}, 0, rl.WHITE)
             }
         }
+
+        switch state in player.state {
+        case PlayerStopped:
+            src := rl.Rectangle{f32(state.sheet_x*TILE_SIZE), f32(state.sheet_y*TILE_SIZE), TILE_SIZE, TILE_SIZE}
+            dest := rl.Rectangle{f32(player.x*TILE_SIZE), f32(player.y*TILE_SIZE), TILE_SIZE, TILE_SIZE}
+            rl.DrawTexturePro(state.spritesheet^, src, dest, {0, 0}, 0, rl.WHITE)
+        }
+
         rl.EndDrawing()
     }
 
