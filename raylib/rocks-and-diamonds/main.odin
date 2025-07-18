@@ -34,19 +34,33 @@ main :: proc() {
     rl.SetTargetFPS(60)
 
     spritesheet_1 := rl.LoadTexture("../../resources/RocksBD.png")
-    spritesheet_2 := rl.LoadTexture("../../resources/RocksHeroes.png")
-    spritesheet_3 := rl.LoadTexture("../../resources/RocksMore.png")
+    spritesheet_2 := rl.LoadTexture("../../resources/RocksSP.png")
+    spritesheet_3 := rl.LoadTexture("../../resources/RocksHeroes.png")
+    spritesheet_4 := rl.LoadTexture("../../resources/RocksMore.png")
 
     soil := Tile{}
     soil.type = .SOIL
-    soil.spritesheet = &spritesheet_3
+    soil.spritesheet = &spritesheet_4
     soil.sheet_x = 0
     soil.sheet_y = 2 
 
+    border := Tile{}
+    border.type = .BORDER
+    border.spritesheet = &spritesheet_2
+    border.sheet_x = 0
+    border.sheet_y = 5
+
     game_map := Map{}
+    
     for y in 0..<MAP_HEIGHT {
         for x in 0..<MAP_WIDTH {
-            game_map.tiles[y][x] = soil
+            if y == 0 || y == MAP_HEIGHT-1 {
+                game_map.tiles[y][x] = border
+            } else if x == 0 || x == MAP_WIDTH-1 {
+                game_map.tiles[y][x] = border
+            } else {
+                game_map.tiles[y][x] = soil
+            }
         }
     }
 
