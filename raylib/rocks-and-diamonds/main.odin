@@ -134,13 +134,13 @@ main :: proc() {
         if tick_timer < 0 {
             x := player.pos.x + player.dir.x
             y := player.pos.y + player.dir.y
-            game_map.tiles[y][x] = empty
+            game_map.tiles[player.pos.y][player.pos.x] = empty
 
-            if x > 1 && x < WIDTH-1 {
+            if x >= 1 && x < MAP_WIDTH-1 {
                 player.pos.x = x
             }
 
-            if y > 1 && y < HEIGHT-1 {
+            if y >= 1 && y < MAP_HEIGHT-1 {
                 player.pos.y = y
             }
 
