@@ -18,7 +18,6 @@ TileType :: enum {
     EMPTY,
     SOIL,
     BORDER,
-    ROCK,
 }
 
 Tile :: struct {
@@ -76,6 +75,13 @@ Player :: struct {
     dir: [2]i32,
 }
 
+Rock :: struct {
+    spritesheet: ^rl.Texture,
+    sheet_x: i32,
+    sheet_y: i32,
+    pos: [2]i32,
+}
+
 main :: proc() {
     rl.SetConfigFlags({.VSYNC_HINT})
     rl.InitWindow(WIDTH, HEIGHT, TITLE)
@@ -105,12 +111,6 @@ main :: proc() {
     border.spritesheet = &spritesheet_2
     border.sheet_x = 0
     border.sheet_y = 5
-
-    rock := Tile{}
-    rock.type = .ROCK
-    rock.spritesheet = &spritesheet_1
-    rock.sheet_x = 11
-    rock.sheet_y = 4
 
     player_stopped := PlayerStopped{}
     player_stopped.spritesheet = &spritesheet_3
@@ -166,10 +166,14 @@ main :: proc() {
         }
     }
 
+    rocks: [30]Rock
     for i in 0..<30 {
         x := rl.GetRandomValue(1, MAP_WIDTH-2)
         y := rl.GetRandomValue(1, MAP_HEIGHT-2)
-        game_map.tiles[y][x] = rock
+        rocks[i].pos = {x, y}
+        rocks[i].spritesheet = &spritesheet_1
+        rocks[i].sheet_x = 11
+        rocks[i].sheet_y = 4
     }
 
     tick_timer: f32 = TICK_RATE
@@ -204,6 +208,13 @@ main :: proc() {
             
             type := game_map.tiles[y][x].type
             if type != .EMPTY && type != .SOIL do player.dir = {0, 0}
+
+            for rock in rocks {
+                if rock.pos == {x, y} {
+                    player.dir = {0, 0}
+                    break
+                }
+            }
 
             if player.dir != {0, 0} {
                 #partial switch &state in player.state {
@@ -277,6 +288,12 @@ main :: proc() {
                 dest := rl.Rectangle{f32(x*TILE_SIZE), f32(y*TILE_SIZE), TILE_SIZE, TILE_SIZE}
                 rl.DrawTexturePro(tile.spritesheet^, src, dest, {0, 0}, 0, rl.WHITE)
             }
+        }
+
+        for rock in rocks {
+            src := rl.Rectangle{f32(rock.sheet_x*TILE_SIZE), f32(rock.sheet_y*TILE_SIZE), TILE_SIZE, TILE_SIZE}
+            dest := rl.Rectangle{f32(rock.pos.x*TILE_SIZE), f32(rock.pos.y*TILE_SIZE), TILE_SIZE, TILE_SIZE}
+            rl.DrawTexturePro(rock.spritesheet^, src, dest, {0, 0}, 0, rl.WHITE)
         }
 
         switch state in player.state {
