@@ -315,6 +315,7 @@ main :: proc() {
     rl.UnloadTexture(spritesheet_1)
     rl.UnloadTexture(spritesheet_2)
     rl.UnloadTexture(spritesheet_3)
+    rl.UnloadTexture(spritesheet_4)
     rl.CloseAudioDevice()
     rl.CloseWindow()
 }
