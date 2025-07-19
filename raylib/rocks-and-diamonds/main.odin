@@ -51,11 +51,14 @@ Player :: struct {
 main :: proc() {
     rl.SetConfigFlags({.VSYNC_HINT})
     rl.InitWindow(WIDTH, HEIGHT, TITLE)
+    rl.InitAudioDevice()
 
     spritesheet_1 := rl.LoadTexture("../../resources/RocksBD.png")
     spritesheet_2 := rl.LoadTexture("../../resources/RocksSP.png")
     spritesheet_3 := rl.LoadTexture("../../resources/RocksHeroes.png")
     spritesheet_4 := rl.LoadTexture("../../resources/RocksMore.png")
+    empty_wav := rl.LoadSound("../../resources/empty.wav")
+    soil_wav := rl.LoadSound("../../resources/schlurf.wav")
 
     empty := Tile{}
     empty.type = .EMPTY
@@ -134,14 +137,23 @@ main :: proc() {
         if tick_timer < 0 {
             x := player.pos.x + player.dir.x
             y := player.pos.y + player.dir.y
-            game_map.tiles[player.pos.y][player.pos.x] = empty
 
-            if x >= 1 && x < MAP_WIDTH-1 {
-                player.pos.x = x
-            }
+            if player.dir != {0, 0} {
+                game_map.tiles[player.pos.y][player.pos.x] = empty
 
-            if y >= 1 && y < MAP_HEIGHT-1 {
-                player.pos.y = y
+                if x >= 1 && x < MAP_WIDTH-1 {
+                    player.pos.x = x
+                }
+
+                if y >= 1 && y < MAP_HEIGHT-1 {
+                    player.pos.y = y
+                }
+
+                if game_map.tiles[y][x] == empty {
+                    rl.PlaySound(empty_wav)
+                } else if game_map.tiles[y][x] == soil {
+                    rl.PlaySound(soil_wav)
+                }
             }
 
             tick_timer += TICK_RATE
@@ -169,8 +181,11 @@ main :: proc() {
         rl.EndDrawing()
     }
 
+    rl.UnloadSound(soil_wav)
+    rl.UnloadSound(empty_wav)
     rl.UnloadTexture(spritesheet_1)
     rl.UnloadTexture(spritesheet_2)
     rl.UnloadTexture(spritesheet_3)
+    rl.CloseAudioDevice()
     rl.CloseWindow()
 }
