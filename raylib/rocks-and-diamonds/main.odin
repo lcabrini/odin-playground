@@ -241,8 +241,34 @@ main :: proc() {
             tick_timer += TICK_RATE
         }
 
+        offset_x := f32(rl.GetScreenWidth() / 2)
+        offset_y := f32(rl.GetScreenHeight() / 2)
+        
+        if player.pos.x * TILE_SIZE < WIDTH/2 {
+            offset_x = f32(player.pos.x) * TILE_SIZE
+        }
+
+        if player.pos.y * TILE_SIZE < HEIGHT/2 {
+            offset_y = f32(player.pos.y) * TILE_SIZE
+        }
+
+        if player.pos.x * TILE_SIZE > MAP_WIDTH * TILE_SIZE - WIDTH/2 {
+            offset_x = f32(player.pos.x) * TILE_SIZE - (MAP_WIDTH * TILE_SIZE - WIDTH)
+        }
+
+        if player.pos.y * TILE_SIZE > MAP_HEIGHT * TILE_SIZE - HEIGHT/2 {
+            offset_y = f32(player.pos.y) * TILE_SIZE - (MAP_HEIGHT * TILE_SIZE - HEIGHT)
+        }
+
+        camera := rl.Camera2D {
+            zoom = 1,
+            offset = {offset_x, offset_y},
+            target = {f32(player.pos.x) * TILE_SIZE, f32(player.pos.y) * TILE_SIZE},
+        }
+
         rl.BeginDrawing()
         rl.ClearBackground(rl.BLACK)
+        rl.BeginMode2D(camera)
 
         for y in 0..<MAP_HEIGHT {
             for x in 0..<MAP_WIDTH {
@@ -280,6 +306,7 @@ main :: proc() {
             rl.DrawTexturePro(state.spritesheet^, src, dest, {0, 0}, 0, rl.WHITE)
         }
 
+        rl.EndMode2D()
         rl.EndDrawing()
     }
 
