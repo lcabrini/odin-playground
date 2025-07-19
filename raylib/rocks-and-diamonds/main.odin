@@ -137,6 +137,9 @@ main :: proc() {
         if tick_timer < 0 {
             x := player.pos.x + player.dir.x
             y := player.pos.y + player.dir.y
+            
+            type := game_map.tiles[y][x].type
+            if type != .EMPTY && type != .SOIL do player.dir = {0, 0}
 
             if player.dir != {0, 0} {
                 game_map.tiles[player.pos.y][player.pos.x] = empty
