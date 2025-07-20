@@ -110,6 +110,7 @@ main :: proc() {
     spritesheet_4 := rl.LoadTexture("../../resources/RocksMore.png")
     empty_wav := rl.LoadSound("../../resources/empty.wav")
     soil_wav := rl.LoadSound("../../resources/schlurf.wav")
+    push_wav := rl.LoadSound("../../resources/pusch.wav")
 
     empty := Tile{}
     empty.type = .EMPTY
@@ -281,6 +282,7 @@ main :: proc() {
                         player_push_right.sprite_idx += 1
                         if player_push_right.sprite_idx > 3 do player_push_right.sprite_idx = 0
                         rock.pos.x += 1
+                        rl.PlaySound(push_wav)
                     } else {
                         player_push_right.sprite_idx = 0  
                         player.dir = {0, 0}
@@ -292,6 +294,7 @@ main :: proc() {
                         player_push_left.sprite_idx += 1
                         if player_push_left.sprite_idx > 3 do player_push_left.sprite_idx = 0
                         rock.pos.x -= 1
+                        rl.PlaySound(push_wav)
                     } else {
                         player_push_left.sprite_idx = 0
                         player.dir = {0, 0}
