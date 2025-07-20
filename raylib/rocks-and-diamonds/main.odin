@@ -97,6 +97,7 @@ Rock :: struct {
     sheet_x: i32,
     sheet_y: i32,
     pos: [2]i32,
+    falling: bool,
 }
 
 main :: proc() {
@@ -215,7 +216,6 @@ main :: proc() {
     for !rl.WindowShouldClose() {
         tick_timer -= rl.GetFrameTime()
 
-
         if tick_timer < 0 {
             player.dir = {0, 0}
 
@@ -246,7 +246,10 @@ main :: proc() {
             if type != .EMPTY && type != .SOIL do player.dir = {0, 0}
 
             for &rock in rocks {
-                if rock.pos == {x, y} {
+                if game_map.tiles[rock.pos.y+1][rock.pos.x].type == TileType.EMPTY {
+                    rock.pos.y += 1
+                    rock.falling = true
+                } else if rock.pos == {x, y} {
                     if player.dir.x == 1 {
                         player.state = player_push_right
                         player_push_right.rock = &rock
@@ -256,7 +259,6 @@ main :: proc() {
                     } else {
                         player.dir = {0, 0}
                     }
-                    break
                 }
             }
 
@@ -276,8 +278,6 @@ main :: proc() {
                     if player_down.sprite_idx > 3 do player_down.sprite_idx = 0
                 case PlayerPushRight:
                     rock := player_push_right.rock
-                    fmt.println(rock)
-                    fmt.println(game_map.tiles[rock.pos.x+1][rock.pos.y])
                     if game_map.tiles[rock.pos.y][rock.pos.x+1].type == TileType.EMPTY {
                         player_push_right.sprite_idx += 1
                         if player_push_right.sprite_idx > 3 do player_push_right.sprite_idx = 0
@@ -289,7 +289,6 @@ main :: proc() {
                     }
                 case PlayerPushLeft:
                     rock := player_push_left.rock
-                    fmt.println(game_map.tiles[rock.pos.x-1][rock.pos.y])
                     if game_map.tiles[rock.pos.y][rock.pos.x-1].type == TileType.EMPTY {
                         player_push_left.sprite_idx += 1
                         if player_push_left.sprite_idx > 3 do player_push_left.sprite_idx = 0
