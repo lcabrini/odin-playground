@@ -408,6 +408,7 @@ main :: proc() {
         rl.EndDrawing()
     }
 
+    rl.UnloadSound(push_wav)
     rl.UnloadSound(soil_wav)
     rl.UnloadSound(empty_wav)
     rl.UnloadTexture(spritesheet_1)
