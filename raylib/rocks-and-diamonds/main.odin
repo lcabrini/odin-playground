@@ -1,5 +1,6 @@
 package main
 
+import "core:fmt"
 import rl "vendor:raylib"
 
 /*
@@ -61,12 +62,28 @@ PlayerDown :: struct {
     sprite_idx: i32,
 }
 
+PlayerPushLeft :: struct {
+    spritesheet: ^rl.Texture,
+    sprites: [4][2]i32,
+    sprite_idx: i32,
+    rock: ^Rock,
+}
+
+PlayerPushRight :: struct {
+    spritesheet: ^rl.Texture,
+    sprites: [4][2]i32,
+    sprite_idx: i32,
+    rock: ^Rock,
+}
+
 PlayerState :: union {
     PlayerStopped,
     PlayerLeft,
     PlayerRight,
     PlayerUp,
     PlayerDown,
+    PlayerPushLeft,
+    PlayerPushRight,
 }
 
 Player :: struct {
@@ -149,6 +166,21 @@ main :: proc() {
     player_down.sprites[3] = {3, 0}
     player_down.sprite_idx = 0
 
+    player_push_left := PlayerPushLeft{}
+    player_push_left.spritesheet = &spritesheet_3
+    player_push_left.sprites[0] = {4, 2}
+    player_push_left.sprites[1] = {5, 2}
+    player_push_left.sprites[2] = {6, 2}
+    player_push_left.sprites[3] = {7, 2}
+    player_push_left.sprite_idx = 0
+
+    player_push_right := PlayerPushRight{}
+    player_push_right.spritesheet = &spritesheet_3
+    player_push_right.sprites[0] = {0, 2}
+    player_push_right.sprites[1] = {1, 2}
+    player_push_right.sprites[2] = {2, 2}
+    player_push_right.sprites[3] = {3, 2}
+
     player := Player{}
     player.state = player_stopped
     player.pos = {1, 1}
@@ -176,42 +208,53 @@ main :: proc() {
         rocks[i].sheet_y = 4
     }
 
+
     tick_timer: f32 = TICK_RATE
 
     for !rl.WindowShouldClose() {
         tick_timer -= rl.GetFrameTime()
-        player.dir = {0, 0}
 
-        if rl.IsKeyDown(.UP) {
-            player.dir = {0, -1}
-            player.state = player_up
-        }
-
-        if rl.IsKeyDown(.DOWN) {
-            player.dir = {0, 1}
-            player.state = player_down
-        }
-
-        if rl.IsKeyDown(.LEFT) {
-            player.dir = {-1, 0}
-            player.state = player_left
-        }
-
-        if rl.IsKeyDown(.RIGHT) {
-            player.dir = {1, 0}
-            player.state = player_right
-        }
 
         if tick_timer < 0 {
+            player.dir = {0, 0}
+
+            if rl.IsKeyDown(.UP) {
+                player.dir = {0, -1}
+                player.state = player_up
+            }
+
+            if rl.IsKeyDown(.DOWN) {
+                player.dir = {0, 1}
+                player.state = player_down
+            }
+
+            if rl.IsKeyDown(.LEFT) {
+                player.dir = {-1, 0}
+                player.state = player_left
+            }
+
+            if rl.IsKeyDown(.RIGHT) {
+                player.dir = {1, 0}
+                player.state = player_right
+            }
+
             x := player.pos.x + player.dir.x
             y := player.pos.y + player.dir.y
             
             type := game_map.tiles[y][x].type
             if type != .EMPTY && type != .SOIL do player.dir = {0, 0}
 
-            for rock in rocks {
+            for &rock in rocks {
                 if rock.pos == {x, y} {
-                    player.dir = {0, 0}
+                    if player.dir.x == 1 {
+                        player.state = player_push_right
+                        player_push_right.rock = &rock
+                    } else if player.dir.x == -1 {
+                        player.state = player_push_left
+                        player_push_left.rock = &rock
+                    } else {
+                        player.dir = {0, 0}
+                    }
                     break
                 }
             }
@@ -230,8 +273,33 @@ main :: proc() {
                 case PlayerDown:
                     player_down.sprite_idx += 1
                     if player_down.sprite_idx > 3 do player_down.sprite_idx = 0
+                case PlayerPushRight:
+                    rock := player_push_right.rock
+                    fmt.println(rock)
+                    fmt.println(game_map.tiles[rock.pos.x+1][rock.pos.y])
+                    if game_map.tiles[rock.pos.y][rock.pos.x+1].type == TileType.EMPTY {
+                        player_push_right.sprite_idx += 1
+                        if player_push_right.sprite_idx > 3 do player_push_right.sprite_idx = 0
+                        rock.pos.x += 1
+                    } else {
+                        player_push_right.sprite_idx = 0  
+                        player.dir = {0, 0}
+                    }
+                case PlayerPushLeft:
+                    rock := player_push_left.rock
+                    fmt.println(game_map.tiles[rock.pos.x-1][rock.pos.y])
+                    if game_map.tiles[rock.pos.y][rock.pos.x-1].type == TileType.EMPTY {
+                        player_push_left.sprite_idx += 1
+                        if player_push_left.sprite_idx > 3 do player_push_left.sprite_idx = 0
+                        rock.pos.x -= 1
+                    } else {
+                        player_push_left.sprite_idx = 0
+                        player.dir = {0, 0}
+                    }
                 }
+            }
 
+            if player.dir != {0, 0} {
                 game_map.tiles[player.pos.y][player.pos.x] = empty
 
                 if x >= 1 && x < MAP_WIDTH-1 {
@@ -317,6 +385,16 @@ main :: proc() {
             dest := rl.Rectangle{f32(player.pos.x*TILE_SIZE), f32(player.pos.y*TILE_SIZE), TILE_SIZE, TILE_SIZE}
             rl.DrawTexturePro(state.spritesheet^, src, dest, {0, 0}, 0, rl.WHITE)
         case PlayerDown:
+            sprite := state.sprites[state.sprite_idx]
+            src := rl.Rectangle{f32(sprite.x*TILE_SIZE), f32(sprite.y*TILE_SIZE), TILE_SIZE, TILE_SIZE}
+            dest := rl.Rectangle{f32(player.pos.x*TILE_SIZE), f32(player.pos.y*TILE_SIZE), TILE_SIZE, TILE_SIZE}
+            rl.DrawTexturePro(state.spritesheet^, src, dest, {0, 0}, 0, rl.WHITE)
+        case PlayerPushRight:
+            sprite := state.sprites[state.sprite_idx]
+            src := rl.Rectangle{f32(sprite.x*TILE_SIZE), f32(sprite.y*TILE_SIZE), TILE_SIZE, TILE_SIZE}
+            dest := rl.Rectangle{f32(player.pos.x*TILE_SIZE), f32(player.pos.y*TILE_SIZE), TILE_SIZE, TILE_SIZE}
+            rl.DrawTexturePro(state.spritesheet^, src, dest, {0, 0}, 0, rl.WHITE)
+        case PlayerPushLeft:
             sprite := state.sprites[state.sprite_idx]
             src := rl.Rectangle{f32(sprite.x*TILE_SIZE), f32(sprite.y*TILE_SIZE), TILE_SIZE, TILE_SIZE}
             dest := rl.Rectangle{f32(player.pos.x*TILE_SIZE), f32(player.pos.y*TILE_SIZE), TILE_SIZE, TILE_SIZE}
