@@ -213,11 +213,13 @@ main :: proc() {
     }
 
     tick_timer: f32 = TICK_RATE
+    tick_helper: i32 = 0
 
     for !rl.WindowShouldClose() {
         tick_timer -= rl.GetFrameTime()
 
         if tick_timer < 0 {
+            tick_helper += 1
             player.dir = {0, 0}
 
             if rl.IsKeyDown(.UP) {
@@ -245,7 +247,6 @@ main :: proc() {
             
             type := game_map.tiles[y][x].type
             if type == .BORDER do player.dir = {0, 0}
-            //if type != .EMPTY && type != .SOIL do player.dir = {0, 0}
 
             for &r in rocks {
                 if game_map.tiles[r.pos.y+1][r.pos.x].type == TileType.EMPTY {
@@ -282,7 +283,7 @@ main :: proc() {
                     if player_down.sprite_idx > 3 do player_down.sprite_idx = 0
                 case PlayerPushRight:
                     r := player_push_right.rock
-                    if game_map.tiles[r.pos.y][r.pos.x+1].type == TileType.EMPTY {
+                    if game_map.tiles[r.pos.y][r.pos.x+1].type == TileType.EMPTY && tick_helper % 3 == 0 {
                         player_push_right.sprite_idx += 1
                         if player_push_right.sprite_idx > 3 do player_push_right.sprite_idx = 0
                         game_map.tiles[r.pos.y][r.pos.x] = empty
@@ -295,7 +296,7 @@ main :: proc() {
                     }
                 case PlayerPushLeft:
                     r := player_push_left.rock
-                    if game_map.tiles[r.pos.y][r.pos.x-1].type == TileType.EMPTY {
+                    if game_map.tiles[r.pos.y][r.pos.x-1].type == TileType.EMPTY && tick_helper % 3 == 0 {
                         player_push_left.sprite_idx += 1
                         if player_push_left.sprite_idx > 3 do player_push_left.sprite_idx = 0
                         game_map.tiles[r.pos.y][r.pos.x] = empty
@@ -367,14 +368,6 @@ main :: proc() {
                 rl.DrawTexturePro(tile.spritesheet^, src, dest, {0, 0}, 0, rl.WHITE)
             }
         }
-
-        /*
-        for rock in rocks {
-            src := rl.Rectangle{f32(rock.sheet_x*TILE_SIZE), f32(rock.sheet_y*TILE_SIZE), TILE_SIZE, TILE_SIZE}
-            dest := rl.Rectangle{f32(rock.pos.x*TILE_SIZE), f32(rock.pos.y*TILE_SIZE), TILE_SIZE, TILE_SIZE}
-            rl.DrawTexturePro(rock.spritesheet^, src, dest, {0, 0}, 0, rl.WHITE)
-        }
-        */
 
         switch state in player.state {
         case PlayerStopped:
