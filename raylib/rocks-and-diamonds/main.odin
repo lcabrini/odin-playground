@@ -19,6 +19,7 @@ TileType :: enum {
     EMPTY,
     SOIL,
     BORDER,
+    ROCK,
 }
 
 Tile :: struct {
@@ -93,9 +94,6 @@ Player :: struct {
 }
 
 Rock :: struct {
-    spritesheet: ^rl.Texture,
-    sheet_x: i32,
-    sheet_y: i32,
     pos: [2]i32,
     falling: bool,
 }
@@ -130,6 +128,12 @@ main :: proc() {
     border.spritesheet = &spritesheet_2
     border.sheet_x = 0
     border.sheet_y = 5
+
+    rock := Tile{}
+    rock.type = .ROCK
+    rock.spritesheet = &spritesheet_1
+    rock.sheet_x = 11
+    rock.sheet_y = 4
 
     player_stopped := PlayerStopped{}
     player_stopped.spritesheet = &spritesheet_3
@@ -204,12 +208,9 @@ main :: proc() {
     for i in 0..<30 {
         x := rl.GetRandomValue(1, MAP_WIDTH-2)
         y := rl.GetRandomValue(1, MAP_HEIGHT-2)
+        game_map.tiles[y][x] = rock
         rocks[i].pos = {x, y}
-        rocks[i].spritesheet = &spritesheet_1
-        rocks[i].sheet_x = 11
-        rocks[i].sheet_y = 4
     }
-
 
     tick_timer: f32 = TICK_RATE
 
@@ -243,19 +244,22 @@ main :: proc() {
             y := player.pos.y + player.dir.y
             
             type := game_map.tiles[y][x].type
-            if type != .EMPTY && type != .SOIL do player.dir = {0, 0}
+            if type == .BORDER do player.dir = {0, 0}
+            //if type != .EMPTY && type != .SOIL do player.dir = {0, 0}
 
-            for &rock in rocks {
-                if game_map.tiles[rock.pos.y+1][rock.pos.x].type == TileType.EMPTY {
-                    rock.pos.y += 1
-                    rock.falling = true
-                } else if rock.pos == {x, y} {
+            for &r in rocks {
+                if game_map.tiles[r.pos.y+1][r.pos.x].type == TileType.EMPTY {
+                    game_map.tiles[r.pos.y][r.pos.x] = empty
+                    r.pos.y += 1
+                    game_map.tiles[r.pos.y][r.pos.x] = rock
+                    r.falling = true
+                } else if r.pos == {x, y} {
                     if player.dir.x == 1 {
                         player.state = player_push_right
-                        player_push_right.rock = &rock
+                        player_push_right.rock = &r
                     } else if player.dir.x == -1 {
                         player.state = player_push_left
-                        player_push_left.rock = &rock
+                        player_push_left.rock = &r
                     } else {
                         player.dir = {0, 0}
                     }
@@ -277,22 +281,26 @@ main :: proc() {
                     player_down.sprite_idx += 1
                     if player_down.sprite_idx > 3 do player_down.sprite_idx = 0
                 case PlayerPushRight:
-                    rock := player_push_right.rock
-                    if game_map.tiles[rock.pos.y][rock.pos.x+1].type == TileType.EMPTY {
+                    r := player_push_right.rock
+                    if game_map.tiles[r.pos.y][r.pos.x+1].type == TileType.EMPTY {
                         player_push_right.sprite_idx += 1
                         if player_push_right.sprite_idx > 3 do player_push_right.sprite_idx = 0
-                        rock.pos.x += 1
+                        game_map.tiles[r.pos.y][r.pos.x] = empty
+                        r.pos.x += 1
+                        game_map.tiles[r.pos.y][r.pos.x] = rock
                         rl.PlaySound(push_wav)
                     } else {
                         player_push_right.sprite_idx = 0  
                         player.dir = {0, 0}
                     }
                 case PlayerPushLeft:
-                    rock := player_push_left.rock
-                    if game_map.tiles[rock.pos.y][rock.pos.x-1].type == TileType.EMPTY {
+                    r := player_push_left.rock
+                    if game_map.tiles[r.pos.y][r.pos.x-1].type == TileType.EMPTY {
                         player_push_left.sprite_idx += 1
                         if player_push_left.sprite_idx > 3 do player_push_left.sprite_idx = 0
-                        rock.pos.x -= 1
+                        game_map.tiles[r.pos.y][r.pos.x] = empty
+                        r.pos.x -= 1
+                        game_map.tiles[r.pos.y][r.pos.x] = rock
                         rl.PlaySound(push_wav)
                     } else {
                         player_push_left.sprite_idx = 0
@@ -360,11 +368,13 @@ main :: proc() {
             }
         }
 
+        /*
         for rock in rocks {
             src := rl.Rectangle{f32(rock.sheet_x*TILE_SIZE), f32(rock.sheet_y*TILE_SIZE), TILE_SIZE, TILE_SIZE}
             dest := rl.Rectangle{f32(rock.pos.x*TILE_SIZE), f32(rock.pos.y*TILE_SIZE), TILE_SIZE, TILE_SIZE}
             rl.DrawTexturePro(rock.spritesheet^, src, dest, {0, 0}, 0, rl.WHITE)
         }
+        */
 
         switch state in player.state {
         case PlayerStopped:
