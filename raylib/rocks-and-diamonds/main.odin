@@ -110,6 +110,7 @@ main :: proc() {
     empty_wav := rl.LoadSound("../../resources/empty.wav")
     soil_wav := rl.LoadSound("../../resources/schlurf.wav")
     push_wav := rl.LoadSound("../../resources/pusch.wav")
+    rockfall_wav := rl.LoadSound("../../resources/klopf.wav")
 
     empty := Tile{}
     empty.type = .EMPTY
@@ -254,6 +255,9 @@ main :: proc() {
                     r.pos.y += 1
                     game_map.tiles[r.pos.y][r.pos.x] = rock
                     r.falling = true
+                } else if r.falling {
+                    r.falling = false
+                    rl.PlaySound(rockfall_wav)
                 } else if r.pos == {x, y} {
                     if player.dir.x == 1 {
                         player.state = player_push_right
@@ -271,7 +275,7 @@ main :: proc() {
                 #partial switch &state in player.state {
                 case PlayerLeft:
                     player_left.sprite_idx += 1
-                    if player_left.sprite_idx > 3 do player_left.sprite_idx = 0
+                    if player_left.sprite_idx > 3 do player_left.sprite_idx = 0e
                 case PlayerRight:
                     player_right.sprite_idx += 1
                     if player_right.sprite_idx > 3 do player_right.sprite_idx = 0
@@ -413,6 +417,7 @@ main :: proc() {
     rl.UnloadSound(push_wav)
     rl.UnloadSound(soil_wav)
     rl.UnloadSound(empty_wav)
+    rl.UnloadSound(rockfall_wav)
     rl.UnloadTexture(spritesheet_1)
     rl.UnloadTexture(spritesheet_2)
     rl.UnloadTexture(spritesheet_3)
