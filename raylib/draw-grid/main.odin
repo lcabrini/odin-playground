@@ -54,21 +54,33 @@ main :: proc() {
     }
 
     color_idx := 0
+    paused := false
     image := rl.LoadImageFromScreen()
     texture := rl.LoadTextureFromImage(image)
     rl.UnloadImage(image)
+    done: bool
 
     for !rl.WindowShouldClose() {
+        if rl.IsKeyPressed(.P) {
+            paused = !paused
+        }
+
+
+        done := false
+        if !paused {
+            done = true
+            for &line in lines {
+                if line.to.x < line.final.x || line.to.y < line.final.y {
+                    done = false
+                    line.to += line.inc
+                }
+            }
+        }
+
         rl.BeginDrawing()
         rl.DrawTexture(texture, 0, 0, rl.WHITE)
 
-        done := true
-        for &line in lines {
-            if line.to.x < line.final.x || line.to.y < line.final.y {
-                done = false
-                line.to += line.inc
-            }
-
+        for line in lines {
             if line.to.x > 0 && line.to.y > 0 {
                 rl.DrawLineV(line.from, line.to, colors[color_idx])
                 rl.DrawCircleV(line.to, 2, rl.RAYWHITE)
