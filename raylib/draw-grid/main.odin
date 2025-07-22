@@ -20,6 +20,7 @@ main :: proc() {
     rl.InitWindow(WIDTH, HEIGHT, TITLE)
     rl.SetTargetFPS(60)
 
+    delay := 0
     lines: [dynamic]Line
     for y: f32 = 0; y < HEIGHT; y += SPACING {
         line := Line{}
@@ -39,15 +40,36 @@ main :: proc() {
         append(&lines, line)
     }
 
+    colors: []rl.Color = {
+        rl.RED,
+        rl.GREEN,
+        rl.BLUE,
+        rl.YELLOW,
+        rl.ORANGE,
+        rl.WHITE,
+    }
+
+    color_idx := 0
+
     for !rl.WindowShouldClose() {
         rl.BeginDrawing()
         rl.ClearBackground(rl.BLACK)
 
+        done := true
         for &line in lines {
-            rl.DrawLineV(line.from, line.to, rl.GREEN)
+            rl.DrawLineV(line.from, line.to, colors[color_idx])
             if line.to.x < line.final.x || line.to.y < line.final.y {
                 line.to += line.inc
+                done = false
                 break
+            }
+        }
+
+        if done {
+            color_idx += 1
+            if color_idx >= len(colors) do color_idx = 0
+            for &line in lines {
+                line.to = line.from
             }
         }
  
