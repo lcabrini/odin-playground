@@ -101,3 +101,4 @@ raylib/image2code/exported_image.h
 raylib/random-triangles/random-triangles
 raylib/perlin-noise/perlin-noise
 raylib/rocks-and-diamonds/rocks-and-diamonds
+raylib/draw-grid/draw-grid
