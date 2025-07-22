@@ -65,6 +65,22 @@ main :: proc() {
             paused = !paused
         }
 
+        if rl.IsKeyPressed(.R) {
+            delay: f32 = 0
+            color_idx = 0
+            if color_idx >= len(colors) do color_idx = 0
+            for &line in lines {
+                line.to = line.inc.x > 0 ? {delay, line.to.y} : {line.to.x, delay}
+                delay -= DELAY
+            }
+
+            rl.UnloadTexture(texture)
+            image := rl.LoadImageFromScreen()
+            rl.ImageClearBackground(&image, rl.BLACK)
+            texture = rl.LoadTextureFromImage(image)
+            rl.UnloadImage(image)
+        }
+
 
         done := false
         if !paused {
