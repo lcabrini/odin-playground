@@ -81,6 +81,14 @@ main :: proc() {
             rl.UnloadImage(image)
         }
 
+        if rl.IsKeyPressed(.C) {
+            rl.UnloadTexture(texture)
+            image := rl.LoadImageFromScreen()
+            rl.ImageClearBackground(&image, rl.BLACK)
+            texture = rl.LoadTextureFromImage(image)
+            rl.UnloadImage(image)
+
+        }
 
         done := false
         if !paused {
