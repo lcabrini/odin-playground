@@ -71,7 +71,7 @@ main :: proc() {
 
             if line.to.x > 0 && line.to.y > 0 {
                 rl.DrawLineV(line.from, line.to, colors[color_idx])
-                rl.DrawCircleV(line.to, 3, rl.RAYWHITE)
+                rl.DrawCircleV(line.to, 2, rl.RAYWHITE)
             }
 
         }
