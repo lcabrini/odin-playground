@@ -23,7 +23,7 @@ main :: proc() {
         a := math.abs(rl.GetMousePosition().x - MIDX) / 10
         rl.BeginDrawing()
         rl.ClearBackground(rl.BLACK)
-        draw_branch({MIDX, HEIGHT-1}, 200, 0, a)
+        draw_branch({MIDX, HEIGHT-1}, 190, 0, a)
         rl.EndDrawing()
     }
 
@@ -34,7 +34,7 @@ draw_branch :: proc(origin: rl.Vector2, length, dir, da: f32) {
     x := origin.x + length * math.sin(dir*rl.DEG2RAD)
     y := origin.y - length * math.cos(dir*rl.DEG2RAD)
     thickness := length / 10
-    color := length > 3 ? rl.BROWN : rl.GREEN
+    color := length > 3 ? rl.DARKBROWN : rl.GREEN
     rl.DrawLineEx(origin, {x, y}, thickness, color)
     if length > 2 {
         draw_branch({x, y}, length*3/4, dir+da, da)
