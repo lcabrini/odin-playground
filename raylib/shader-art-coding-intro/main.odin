@@ -29,6 +29,7 @@ Select the shader you want to test:
 8.  Bi-directional gray radial gradient
 9.  Ring
 10. Ring with smooth transition
+11. Multiple rings with smooth transition
 `
 
 readint :: proc(prompt: string, min, max: int) -> int {
