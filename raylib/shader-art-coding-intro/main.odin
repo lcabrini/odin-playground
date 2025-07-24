@@ -21,6 +21,7 @@ Select the shader you want to test:
 1. Empty
 2. Horizontal Gradient
 3. Vertical Gradient
+4. Horizontal and Vertical Gradients
 `
 
 readint :: proc(prompt: string, min, max: int) -> int {
@@ -52,7 +53,7 @@ readint :: proc(prompt: string, min, max: int) -> int {
 
 main :: proc() {
     fmt.println(menu)
-    example := readint("Enter example", 1, 3)
+    example := readint("Enter example", 1, 4)
     if example == -1 do os.exit(1)
 
     screen_width: f32 = 1024
