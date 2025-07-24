@@ -9,7 +9,7 @@ uniform float renderWidth;
 uniform float renderHeight;
 
 void main() {
-    vec2 uv = fragTexCoord*2.0 - 1.0;
+    vec2 uv = fragTexCoord;
     uv.x *= renderWidth/renderHeight;
 
     finalColor = vec4(uv.x, 0.0, 0.0, 1.0);
