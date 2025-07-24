@@ -32,6 +32,7 @@ Select the shader you want to test:
 11. Multiple rings with smooth transition
 12. Animated rings
 13. Inverse animated rings
+14. Inverse animated rings with red tint
 `
 
 readint :: proc(prompt: string, min, max: int) -> int {
