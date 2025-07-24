@@ -19,10 +19,10 @@ Shader examples from "An Introduction to Shader Art Coding" by kishimisu"
 
 Select the shader you want to test:
 1. Empty
-2. Horizontal Gradient
-3. Vertical Gradient
-4. Horizontal and Vertical Gradients
-5. Radial Gradient
+2. Red horizontal gradient
+3. Green vertical gradient
+4. Red horizontal and green vertical gradients
+5. Red radial Gradient
 `
 
 readint :: proc(prompt: string, min, max: int) -> int {
