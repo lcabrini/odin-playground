@@ -39,6 +39,7 @@ Select the shader you want to test:
 18. Spatial repetition of animated rings
 19. Pattern 1
 20. Pattern 2
+21. Pattern 3
 `
 
 readint :: proc(prompt: string, min, max: int) -> int {
