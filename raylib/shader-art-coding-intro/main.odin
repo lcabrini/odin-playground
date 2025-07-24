@@ -26,6 +26,7 @@ Select the shader you want to test:
 5. Red radial gradient
 6. Gray radial gradient
 7. Gray radial gradient (larger black inner circle)
+8. Bi-directional gray radial gradient
 `
 
 readint :: proc(prompt: string, min, max: int) -> int {
