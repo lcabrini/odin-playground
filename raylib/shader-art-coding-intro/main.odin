@@ -27,6 +27,7 @@ Select the shader you want to test:
 6. Gray radial gradient
 7. Gray radial gradient (larger black inner circle)
 8. Bi-directional gray radial gradient
+9. Ring
 `
 
 readint :: proc(prompt: string, min, max: int) -> int {
