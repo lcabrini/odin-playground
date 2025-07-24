@@ -2,6 +2,7 @@ package main
 
 import "core:fmt"
 import "core:os"
+import "core:path/filepath"
 import "core:strconv"
 import rl "vendor:raylib"
 
@@ -54,8 +55,14 @@ readint :: proc(prompt: string, min, max: int) -> int {
 }
 
 main :: proc() {
+    shaders, err := filepath.glob("*.fs")
+    if err != nil {
+        fmt.eprintln("Unable to glob: ", err)
+        os.exit(1) 
+    }
+
     fmt.println(menu)
-    example := readint("Enter example", 1, 6)
+    example := readint("Enter example", 1, len(shaders))
     if example == -1 do os.exit(1)
 
     screen_width: f32 = 1024
