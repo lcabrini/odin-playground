@@ -8,6 +8,7 @@ HEIGHT :: 768
 TITLE :: "Circle Play"
 MIDX :: WIDTH/2
 MIDY :: HEIGHT/2
+STEP :: 20
 
 main :: proc() {
     rl.SetConfigFlags({.VSYNC_HINT})
@@ -24,11 +25,13 @@ main :: proc() {
 
         x: f32 = MIDX + (MIDX-300) * math.cos(a * rl.DEG2RAD)
         y: f32 = MIDY + (MIDY-300) * math.sin(a * rl.DEG2RAD)
+        color := rl.ORANGE
 
-        for i: f32 = 0; i < 300; i += 50 {
-            rl.DrawCircleLinesV({x, y}, 300-i, rl.BLUE)
-            x = x + (300 - i) * math.cos((a + i) * rl.DEG2RAD)
-            y = y + (300 - i) * math.sin((a + i) * rl.DEG2RAD)
+        for i: f32 = 0; i < 300; i += STEP {
+            color = color == rl.RED ? rl.ORANGE : rl.RED
+            rl.DrawCircleV({x, y}, 300-i, color)
+            x = x + (i+STEP - i)/2 * math.cos(a * rl.DEG2RAD)
+            y = y + (i+STEP - i)/2 * math.sin(a * rl.DEG2RAD)
         }
 
         rl.EndDrawing()
