@@ -33,6 +33,7 @@ Select the shader you want to test:
 12. Animated rings
 13. Inverse animated rings
 14. Inverse animated rings with red tint
+15. Inverse animaged rings with vibrant blue tint
 `
 
 readint :: proc(prompt: string, min, max: int) -> int {
