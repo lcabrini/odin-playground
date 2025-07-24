@@ -20,6 +20,7 @@ Shader examples from "An Introduction to Shader Art Coding" by kishimisu"
 Select the shader you want to test:
 1. Empty
 2. Horizontal Gradient
+3. Vertical Gradient
 `
 
 readint :: proc(prompt: string, min, max: int) -> int {
@@ -51,7 +52,7 @@ readint :: proc(prompt: string, min, max: int) -> int {
 
 main :: proc() {
     fmt.println(menu)
-    example := readint("Enter example", 1, 5)
+    example := readint("Enter example", 1, 3)
     if example == -1 do os.exit(1)
 
     screen_width: f32 = 1024
