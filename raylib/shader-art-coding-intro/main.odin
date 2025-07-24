@@ -30,6 +30,7 @@ Select the shader you want to test:
 9.  Ring
 10. Ring with smooth transition
 11. Multiple rings with smooth transition
+12. Animated rings
 `
 
 readint :: proc(prompt: string, min, max: int) -> int {
@@ -82,14 +83,14 @@ main :: proc() {
     shader := rl.LoadShader("", fn)
     widthLoc := rl.GetShaderLocation(shader, "renderWidth")
     heightLoc := rl.GetShaderLocation(shader, "renderHeight")
-    secondsLoc := rl.GetShaderLocation(shader, "seconds")
-    seconds: f32 = 0
+    timeLoc := rl.GetShaderLocation(shader, "time")
+    td: f32 = 0
     rl.SetShaderValue(shader, widthLoc, &screen_width, rl.ShaderUniformDataType.FLOAT)
     rl.SetShaderValue(shader, heightLoc, &screen_height, rl.ShaderUniformDataType.FLOAT)
 
     for !rl.WindowShouldClose() {
-        seconds += rl.GetFrameTime()
-        rl.SetShaderValue(shader, secondsLoc, &seconds, rl.ShaderUniformDataType.FLOAT)
+        td += rl.GetFrameTime()
+        rl.SetShaderValue(shader, timeLoc, &td, rl.ShaderUniformDataType.FLOAT)
 
         rl.BeginTextureMode(texture)
         rl.ClearBackground(rl.BLACK)
