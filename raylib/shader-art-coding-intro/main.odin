@@ -5,6 +5,12 @@ import "core:os"
 import "core:strconv"
 import rl "vendor:raylib"
 
+/*
+    I converted "An Introduction to Shader Art Coding" by kishimisu ((https://www.youtube.com/watch?v=f4s1h2YETNY).
+    I got some help from  https://github.com/planetis-m/raylib-examples/blob/main/personal/shaderart.nim to figure 
+    out how to to get it to work with Raylib.
+*/
+
 TITLE :: "Shader Art Coding Intro"
 
 menu := `
@@ -13,7 +19,7 @@ Shader examples from "An Introduction to Shader Art Coding" by kishimisu"
 
 Select the shader you want to test:
 1. Empty
-2. Gradient
+2. Horizontal Gradient
 `
 
 readint :: proc(prompt: string, min, max: int) -> int {
