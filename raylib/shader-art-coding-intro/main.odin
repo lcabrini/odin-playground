@@ -41,6 +41,7 @@ Select the shader you want to test:
 20. Pattern 2
 21. Pattern 3
 22. Pattern 4
+23. Final Pattern
 `
 
 readint :: proc(prompt: string, min, max: int) -> int {
