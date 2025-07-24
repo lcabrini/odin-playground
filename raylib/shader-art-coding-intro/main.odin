@@ -38,6 +38,7 @@ Select the shader you want to test:
 17. Dynamic multi-colored animated rings
 18. Spatial repetition of animated rings
 19. Pattern 1
+20. Pattern 2
 `
 
 readint :: proc(prompt: string, min, max: int) -> int {
