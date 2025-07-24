@@ -19,15 +19,16 @@ Shader examples from "An Introduction to Shader Art Coding" by kishimisu"
 (https://www.youtube.com/watch?v=f4s1h2YETNY).
 
 Select the shader you want to test:
-1. Empty
-2. Red horizontal gradient
-3. Green vertical gradient
-4. Red horizontal and green vertical gradients
-5. Red radial gradient
-6. Gray radial gradient
-7. Gray radial gradient (larger black inner circle)
-8. Bi-directional gray radial gradient
-9. Ring
+1.  Empty
+2.  Red horizontal gradient
+3.  Green vertical gradient
+4.  Red horizontal and green vertical gradients
+5.  Red radial gradient
+6.  Gray radial gradient
+7.  Gray radial gradient (larger black inner circle)
+8.  Bi-directional gray radial gradient
+9.  Ring
+10. Ring with smooth transition
 `
 
 readint :: proc(prompt: string, min, max: int) -> int {
