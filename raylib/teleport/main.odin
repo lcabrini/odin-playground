@@ -44,6 +44,7 @@ main :: proc() {
 
     rl.UnloadImageColors(colors)
     rl.UnloadImage(image)
+    target := rl.LoadRenderTexture(WIDTH, HEIGHT)
 
     rand.shuffle(pixels[:])
     last_idx := 0
@@ -62,13 +63,15 @@ main :: proc() {
             if pixel.pos.x > pixel.dest.x do pixel.pos.x = pixel.dest.x
         }
 
-        rl.BeginDrawing()
+        rl.BeginTextureMode(target)
         rl.ClearBackground(rl.BLACK)
-
         for pixel in pixels {
             rl.DrawPixelV(pixel.pos, pixel.color)
         }
+        rl.EndTextureMode()
 
+        rl.BeginDrawing()
+        rl.DrawTextureRec(target.texture, {0, 0, WIDTH, -HEIGHT}, {0, 0}, rl.WHITE)
         rl.EndDrawing()
     }
 
