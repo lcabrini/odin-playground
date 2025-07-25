@@ -26,7 +26,6 @@ main :: proc() {
     rl.SetConfigFlags({.VSYNC_HINT})
     rl.SetTraceLogLevel(.ERROR)
     rl.InitWindow(WIDTH, HEIGHT, TITLE)
-    rl.SetTargetFPS(60)
 
     target := rl.LoadRenderTexture(WIDTH, HEIGHT)
     blobs: [5]Blob
