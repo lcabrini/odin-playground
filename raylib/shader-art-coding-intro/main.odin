@@ -85,7 +85,7 @@ main :: proc() {
     screen_width: f32 = 1024
     screen_height: f32 = 768
     rl.SetConfigFlags({.VSYNC_HINT})
-    //rl.SetTraceLogLevel(.ERROR)
+    rl.SetTraceLogLevel(.ERROR)
     rl.InitWindow(i32(screen_width), i32(screen_height), TITLE)
     rl.SetTargetFPS(60)
 
