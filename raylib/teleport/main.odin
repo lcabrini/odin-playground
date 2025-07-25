@@ -38,7 +38,7 @@ main :: proc() {
         pixel.pos = {f32(i % iw) + 50, f32(i / iw) + 50}
         pixel.dest = {f32(WIDTH - iw - 100) + pixel.pos.x, pixel.pos.y}
         pixel.color = colors[i]
-        pixel.speed = f32(rl.GetRandomValue(20, 30))
+        pixel.speed = 30
         append(&pixels, pixel)
     }
 
@@ -55,7 +55,7 @@ main :: proc() {
             last_idx = len(pixels)
             index_incr = 0
         }
-        index_incr *= 1.2
+        index_incr *= 1.9
 
         for &pixel in pixels [:last_idx] {
             pixel.pos.x += pixel.speed
