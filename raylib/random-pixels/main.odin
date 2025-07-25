@@ -28,12 +28,12 @@ Hud :: struct {
     draw: bool,
     current_height: i32,
     color: rl.Color,
-    //image: rl.Image
     target: rl.RenderTexture
 }
 
 main :: proc() {
     rl.SetConfigFlags({.VSYNC_HINT})
+    rl.SetTraceLogLevel(.ERROR)
     rl.InitWindow(WIDTH, HEIGHT, TITLE)
     target := rl.LoadRenderTexture(WIDTH, HEIGHT)
     rl.SetTargetFPS(60)
