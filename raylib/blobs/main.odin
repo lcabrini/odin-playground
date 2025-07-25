@@ -27,7 +27,7 @@ main :: proc() {
     rl.InitWindow(WIDTH, HEIGHT, TITLE)
     rl.SetTargetFPS(60)
 
-    image := rl.LoadImageFromScreen()
+    target := rl.LoadRenderTexture(WIDTH, HEIGHT)
     blobs: [5]Blob
     for i := 0; i < len(blobs); i += 1 {
         blob := Blob{}
@@ -75,6 +75,8 @@ main :: proc() {
                 shift += 0.5
             }
 
+            rl.BeginTextureMode(target)
+            rl.ClearBackground(rl.BLACK)
             for y: i32 = 0; y < HEIGHT; y += 1 {
                 for x: i32 = 0; x < WIDTH; x += 1 {
                     dsq: f32 = 1
@@ -89,18 +91,18 @@ main :: proc() {
                     r := use_r ? col : 0
                     g := use_g ? col : 0
                     b := use_b ? col : 0
-                    rl.ImageDrawPixel(&image, x, y, {r, g, b, 255}) 
+                    rl.DrawPixel(x, y, {r, g, b, 255}) 
                 }
             }
+
+            rl.EndTextureMode()
         }
 
-        texture := rl.LoadTextureFromImage(image)
         rl.BeginDrawing()
-        rl.DrawTexture(texture, 0, 0, rl.WHITE)
+        rl.DrawTextureRec(target.texture, {0, 0, WIDTH, -HEIGHT}, {0, 0} , rl.WHITE)
         rl.EndDrawing()
-        rl.UnloadTexture(texture)
     }
 
-    rl.UnloadImage(image)
+    rl.UnloadRenderTexture(target)
     rl.CloseWindow()
 }
