@@ -31,13 +31,15 @@ main :: proc() {
     show_1 := true
     show_2 := true
     show_3 := true
+    paused := false
 
     for !rl.WindowShouldClose() {
         if rl.IsKeyPressed(.ONE) do show_1 = !show_1
         if rl.IsKeyPressed(.TWO) do show_2 = !show_2
         if rl.IsKeyPressed(.THREE) do show_3 = !show_3
+        if rl.IsKeyPressed(.P) do paused = !paused
 
-        start_a += 1
+        if !paused do start_a += 1
 
         rl.BeginDrawing()
         rl.ClearBackground(rl.BLACK)
@@ -85,8 +87,6 @@ main :: proc() {
             rl.GuiSlider({700, 630, 200, 20}, "Freq 3", rl.TextFormat("%.2f", curve3.freq), &curve3.freq, 0.05, 5)
             rl.GuiSlider({700, 660, 200, 20}, "Phase 3", rl.TextFormat("%.2f", curve3.phase), &curve3.phase, 0, 2*math.PI)
         }
-
-
 
         rl.EndDrawing()
     }
