@@ -92,7 +92,7 @@ main :: proc() {
             rl.GuiSlider({700, 600, 200, 20}, "Amp 3", rl.TextFormat("%.2f", curve3.amp), &curve3.amp, 0, 120)
             rl.GuiSlider({700, 630, 200, 20}, "Freq 3", rl.TextFormat("%.2f", curve3.freq), &curve3.freq, 0.05, 5)
             rl.GuiSlider({700, 660, 200, 20}, "Phase 3", rl.TextFormat("%.2f", curve3.phase), &curve3.phase, 0, 2*math.PI)
-            rl.GuiToggle({700, 690, 200, 20}, "Abs 2", &curve3.abs)
+            rl.GuiToggle({700, 690, 200, 20}, "Abs 3", &curve3.abs)
         }
 
         rl.EndDrawing()
