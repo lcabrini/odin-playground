@@ -33,7 +33,7 @@ Select the shader you want to test:
 12. Animated rings
 13. Inverse animated rings
 14. Inverse animated rings with red tint
-15. Inverse animaged rings with vibrant blue tint
+15. Inverse animated rings with vibrant blue tint
 16. Multi-colored animated rings
 17. Dynamic multi-colored animated rings
 18. Spatial repetition of animated rings
