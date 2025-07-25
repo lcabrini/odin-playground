@@ -90,7 +90,7 @@ main :: proc() {
     rl.SetTargetFPS(60)
 
     fn := rl.TextFormat("shader-%02d.fs", example)
-    texture := rl.LoadRenderTexture(i32(screen_width), i32(screen_height))
+    target := rl.LoadRenderTexture(i32(screen_width), i32(screen_height))
     shader := rl.LoadShader("", fn)
     widthLoc := rl.GetShaderLocation(shader, "renderWidth")
     heightLoc := rl.GetShaderLocation(shader, "renderHeight")
@@ -103,7 +103,7 @@ main :: proc() {
         td += rl.GetFrameTime()
         rl.SetShaderValue(shader, timeLoc, &td, rl.ShaderUniformDataType.FLOAT)
 
-        rl.BeginTextureMode(texture)
+        rl.BeginTextureMode(target)
         rl.ClearBackground(rl.BLACK)
         rl.DrawRectangle(0, 0, i32(screen_width), i32(screen_height), rl.BLACK)
         rl.EndTextureMode()
@@ -111,10 +111,11 @@ main :: proc() {
         rl.BeginDrawing()
         rl.ClearBackground(rl.BLACK)
         rl.BeginShaderMode(shader)
-        rl.DrawTexture(texture.texture, 0, 0, rl.WHITE)
+        rl.DrawTexture(target.texture, 0, 0, rl.WHITE)
         rl.EndShaderMode()
         rl.EndDrawing()
     }
 
+    rl.UnloadRenderTexture(target)
     rl.CloseWindow()
 }
