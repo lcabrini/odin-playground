@@ -43,6 +43,21 @@ main :: proc() {
             rl.DrawCircleV({a, MIDY-yt}, 3, rl.RAYWHITE)
         }
 
+        rl.GuiSlider({100, 600, 200, 20}, "Amp 1", rl.TextFormat("%.2f", curve1.amp), &curve1.amp, 0, 200)
+        rl.GuiSlider({100, 630, 200, 20}, "Freq 1", rl.TextFormat("%.2f", curve1.freq), &curve1.freq, 0.05, 5)
+        rl.GuiSlider({100, 660, 200, 20}, "Phase 1", rl.TextFormat("%.2f", curve1.phase), &curve1.phase, 0, 2*math.PI)
+
+        rl.GuiSlider({400, 600, 200, 20}, "Amp 2", rl.TextFormat("%.2f", curve2.amp), &curve2.amp, 0, 200)
+        rl.GuiSlider({400, 630, 200, 20}, "Freq 2", rl.TextFormat("%.2f", curve2.freq), &curve2.freq, 0.05, 5)
+        rl.GuiSlider({400, 660, 200, 20}, "Phase 2", rl.TextFormat("%.2f", curve2.phase), &curve2.phase, 0, 2*math.PI)
+
+        rl.GuiSlider({700, 600, 200, 20}, "Amp 3", rl.TextFormat("%.2f", curve3.amp), &curve3.amp, 0, 200)
+        rl.GuiSlider({700, 630, 200, 20}, "Freq 3", rl.TextFormat("%.2f", curve3.freq), &curve3.freq, 0.05, 5)
+        rl.GuiSlider({700, 660, 200, 20}, "Phase 3", rl.TextFormat("%.2f", curve3.phase), &curve3.phase, 0, 2*math.PI)
+
+
+
+
         rl.EndDrawing()
     }
 
