@@ -24,7 +24,11 @@ main :: proc() {
     rl.InitWindow(WIDTH, HEIGHT, TITLE)
     rl.SetTargetFPS(60)
 
-    fn := strings.clone_to_cstring(os.args[1])
+    fn: cstring = "../../resources/raylib-logo.png"
+    if len(os.args) > 1 {
+        fn = strings.clone_to_cstring(os.args[1])
+    }
+
     image := rl.LoadImage(fn)
     colors := rl.LoadImageColors(image)
     pixels: [dynamic]Pixel
@@ -58,7 +62,7 @@ main :: proc() {
         }
         index_incr *= 1.9
 
-        for &pixel in pixels [:last_idx] {
+        for &pixel in pixels[:last_idx] {
             pixel.pos.x += pixel.speed
             if pixel.pos.x > pixel.dest.x do pixel.pos.x = pixel.dest.x
         }
