@@ -43,16 +43,25 @@ main :: proc() {
 
     for !rl.WindowShouldClose() {
         if rl.IsMouseButtonDown(rl.MouseButton.LEFT) {
-            for i in 0..<50 {
-                mp := rl.GetMousePosition()
-                x := i32(mp.x) + rl.GetRandomValue(-10, 10)
-                y := i32(mp.y) + rl.GetRandomValue(-10, 10)
-                if y < 0 || y > HEIGHT -1 do break
-                if x < 0 || x > WIDTH - 1 do break
-                grain := Grain{}
-                grain.v = {0, 1}
-                grain.color = {0xdc, 0xb1, 0x59, 0xff}
-                screen[y*WIDTH+x] = grain
+            mp := rl.GetMousePosition()
+
+            for i in 0..<f32(20) {
+                inner: for a in 0..<f32(360) {
+                    r := rl.GetRandomValue(0, 9)
+                    if r > 0 do continue inner
+                    x := int(mp.x + i*math.cos(a*rl.DEG2RAD))
+                    y := int(mp.y + i*math.sin(a*rl.DEG2RAD))
+
+                    //x := i32(mp.x) + rl.GetRandomValue(-10, 10)
+                    //y := i32(mp.y) + rl.GetRandomValue(-10, 10)
+
+                    if y < 0 || y > HEIGHT -1 do continue
+                    if x < 0 || x > WIDTH - 1 do continue
+                    grain := Grain{}
+                    grain.v = {0, f32(rl.GetRandomValue(1,4))}
+                    grain.color = {0xdc, 0xb1, 0x59, 0xff}
+                    screen[y*WIDTH+x] = grain
+                }
             }
         }
 
