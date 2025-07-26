@@ -57,16 +57,12 @@ main :: proc() {
         if rl.IsMouseButtonDown(rl.MouseButton.LEFT) {
             mp := rl.GetMousePosition()
 
-            for i in 0..<f32(20) {
-                inner: for a in 0..<f32(360) {
-                    r := rl.GetRandomValue(0, 9)
-                    if r > 0 do continue inner
+            for i in 0..<f32(50) {
+                for a in 0..<f32(360) {
+                    r := rl.GetRandomValue(0, 100)
+                    if r > 5 do continue
                     x := int(mp.x + i*math.cos(a*rl.DEG2RAD))
                     y := int(mp.y + i*math.sin(a*rl.DEG2RAD))
-
-                    //x := i32(mp.x) + rl.GetRandomValue(-10, 10)
-                    //y := i32(mp.y) + rl.GetRandomValue(-10, 10)
-
                     if y < 0 || y > HEIGHT -1 do continue
                     if x < 0 || x > WIDTH - 1 do continue
                     grain := Grain{}
