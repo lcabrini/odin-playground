@@ -15,7 +15,8 @@ Curve :: struct {
     freq: f32,
     phase: f32,
     color: rl.Color,
-    abs: bool
+    abs: bool,
+    inv: bool,
 }
 
 main :: proc() {
@@ -47,10 +48,13 @@ main :: proc() {
         for a in 0..<f32(WIDTH) {
             y1 := curve1.amp * math.sin(curve1.freq * (a + start_a) * rl.DEG2RAD+curve1.phase)
             if curve1.abs do y1 = math.abs(y1)
+            if curve1.inv do y1 *= -1
             y2 := curve2.amp * math.sin(curve2.freq * (a + start_a) * rl.DEG2RAD+curve2.phase)
             if curve2.abs do y2 = math.abs(y2)
+            if curve2.inv do y2 *= -1
             y3 := curve3.amp * math.sin(curve3.freq * (a + start_a) * rl.DEG2RAD+curve3.phase)
             if curve3.abs do y3 = math.abs(y3)
+            if curve3.inv do y3 *= -1
             yt: f32 = 0
             
             if show_1 {
@@ -72,27 +76,30 @@ main :: proc() {
         }
 
         if show_1 {
-            rl.DrawRectangle(40, 580, 300, 150, {255, 0, 0, 100})
+            rl.DrawRectangle(40, 580, 300, 180, {255, 0, 0, 100})
             rl.GuiSlider({100, 600, 200, 20}, "Amp 1", rl.TextFormat("%.2f", curve1.amp), &curve1.amp, 0, 120)
             rl.GuiSlider({100, 630, 200, 20}, "Freq 1", rl.TextFormat("%.2f", curve1.freq), &curve1.freq, 0.05, 5)
             rl.GuiSlider({100, 660, 200, 20}, "Phase 1", rl.TextFormat("%.2f", curve1.phase), &curve1.phase, 0, 2*math.PI)
             rl.GuiToggle({100, 690, 200, 20}, "Abs 1", &curve1.abs)
+            rl.GuiToggle({100, 720, 200, 20}, "Inv 1", &curve1.inv)
         }
 
         if show_2 {
-            rl.DrawRectangle(340, 580, 300, 150, {0, 255, 0, 100})
+            rl.DrawRectangle(340, 580, 300, 180, {0, 255, 0, 100})
             rl.GuiSlider({400, 600, 200, 20}, "Amp 2", rl.TextFormat("%.2f", curve2.amp), &curve2.amp, 0, 120)
             rl.GuiSlider({400, 630, 200, 20}, "Freq 2", rl.TextFormat("%.2f", curve2.freq), &curve2.freq, 0.05, 5)
             rl.GuiSlider({400, 660, 200, 20}, "Phase 2", rl.TextFormat("%.2f", curve2.phase), &curve2.phase, 0, 2*math.PI)
             rl.GuiToggle({400, 690, 200, 20}, "Abs 2", &curve2.abs)
+            rl.GuiToggle({400, 720, 200, 20}, "Inv 1", &curve2.inv)
         }
 
         if show_3 {
-            rl.DrawRectangle(640, 580, 300, 150, {0, 0, 255, 100})
+            rl.DrawRectangle(640, 580, 300, 180, {0, 0, 255, 100})
             rl.GuiSlider({700, 600, 200, 20}, "Amp 3", rl.TextFormat("%.2f", curve3.amp), &curve3.amp, 0, 120)
             rl.GuiSlider({700, 630, 200, 20}, "Freq 3", rl.TextFormat("%.2f", curve3.freq), &curve3.freq, 0.05, 5)
             rl.GuiSlider({700, 660, 200, 20}, "Phase 3", rl.TextFormat("%.2f", curve3.phase), &curve3.phase, 0, 2*math.PI)
             rl.GuiToggle({700, 690, 200, 20}, "Abs 3", &curve3.abs)
+            rl.GuiToggle({700, 720, 200, 20}, "Inv 1", &curve3.inv)
         }
 
         rl.EndDrawing()
