@@ -25,8 +25,7 @@ main :: proc() {
     rl.InitWindow(WIDTH, HEIGHT, TITLE)
     rl.SetTargetFPS(60)
 
-    image := rl.LoadImage(fname)
-    texture := rl.LoadTextureFromImage(image)
+    texture := rl.LoadTexture(fname)
     rot: f32 = 0.0
     zoom: f32 = 0.1
     dir: f32 = 1.02
@@ -45,9 +44,9 @@ main :: proc() {
         rl.ClearBackground(rl.BLACK)
         x := f32(WIDTH / 2)
         y := f32(HEIGHT / 2)
-        w := f32(image.width) * zoom
-        h := f32(image.height) * zoom
-        src := rl.Rectangle{0, 0, f32(image.width), f32(image.height)}
+        w := f32(texture.width) * zoom
+        h := f32(texture.height) * zoom
+        src := rl.Rectangle{0, 0, f32(texture.width), f32(texture.height)}
         dest := rl.Rectangle{x, y, w, h}
         origin := rl.Vector2{w/2, h/2}
         rl.DrawTexturePro(texture, src, dest, origin, rot, rl.RAYWHITE)
@@ -56,7 +55,6 @@ main :: proc() {
     }
 
     rl.UnloadTexture(texture)
-    rl.UnloadImage(image)
     rl.CloseWindow()
 
 }
