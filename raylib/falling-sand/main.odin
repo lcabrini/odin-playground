@@ -11,6 +11,7 @@ import rl "vendor:raylib"
 WIDTH :: 1024
 HEIGHT :: 768
 TITLE :: "Falling Sand"
+ACCEL :: 1.09
 
 Grain :: struct {
     v: rl.Vector2,
@@ -95,7 +96,7 @@ main :: proc() {
                         continue
                     }
 
-                    pt.v.y *= 1.09
+                    pt.v.y *= ACCEL
                     y1 := y + int(pt.v.y)
                     if y1 >= HEIGHT {
                         for {
