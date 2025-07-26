@@ -12,6 +12,7 @@ WIDTH :: 1024
 HEIGHT :: 768
 TITLE :: "Falling Sand"
 ACCEL :: 1.09
+MAX_V :: 20
 
 Grain :: struct {
     v: rl.Vector2,
@@ -97,6 +98,7 @@ main :: proc() {
                     }
 
                     pt.v.y *= ACCEL
+                    if pt.v.y > MAX_V do pt.v.y = MAX_V
                     y1 := y + int(pt.v.y)
                     if y1 >= HEIGHT {
                         for {
