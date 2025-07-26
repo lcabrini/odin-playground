@@ -14,6 +14,18 @@ TITLE :: "Falling Sand"
 ACCEL :: 1.09
 MAX_V :: 20
 
+HSL :: struct {
+    h: f32,
+    s: f32,
+    l: f32,
+}
+
+RGB :: struct {
+    r: f32,
+    g: f32,
+    b: f32,
+}
+
 Grain :: struct {
     v: rl.Vector2,
     color: rl.Color,
@@ -59,7 +71,8 @@ main :: proc() {
                     if x < 0 || x > WIDTH - 1 do continue
                     grain := Grain{}
                     grain.v = {0, f32(rl.GetRandomValue(1,4))}
-                    grain.color = {0xdc, 0xb1, 0x59, 0xff}
+                    change := rl.GetRandomValue(-20, 20)
+                    grain.color = {u8(0xdc+change), u8(0xb1+change), u8(0x59+change), 255}
                     screen[y*WIDTH+x] = grain
                 }
             }
