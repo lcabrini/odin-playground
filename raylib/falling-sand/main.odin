@@ -45,6 +45,8 @@ main :: proc() {
                 mp := rl.GetMousePosition()
                 x := i32(mp.x) + rl.GetRandomValue(-10, 10)
                 y := i32(mp.y) + rl.GetRandomValue(-10, 10)
+                if y < 0 || y > HEIGHT -1 do break
+                if x < 0 || x > WIDTH - 1 do break
                 grain := Grain{}
                 grain.v = {0, 1}
                 grain.color = {0xdc, 0xb1, 0x59, 0xff}
