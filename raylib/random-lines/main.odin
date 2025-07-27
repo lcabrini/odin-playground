@@ -1,5 +1,6 @@
 package main
 
+import "core:fmt"
 import rl "vendor:raylib"
 
 /*
@@ -9,6 +10,7 @@ import rl "vendor:raylib"
 WIDTH :: 1024
 HEIGHT :: 768
 TITLE :: "Random Lines"
+MAX_LINES_PER_FRAME :: 50
 
 main :: proc() {
     rl.SetConfigFlags({.VSYNC_HINT})
@@ -21,11 +23,20 @@ main :: proc() {
     use_r := true
     use_g := true
     use_b := true
+    lines_per_frame := 1
 
     for !rl.WindowShouldClose() {
         if rl.IsKeyPressed(.P) do pause = !pause
 
         if !pause {
+            if rl.IsKeyPressed(.LEFT) do lines_per_frame -= 1
+            if rl.IsKeyPressed(.RIGHT) do lines_per_frame += 1
+            if rl.IsKeyPressed(.UP) do lines_per_frame += 5
+            if rl.IsKeyPressed(.DOWN) do lines_per_frame -= 5
+
+            if lines_per_frame < 1 do lines_per_frame = 1
+            if lines_per_frame > MAX_LINES_PER_FRAME do lines_per_frame = MAX_LINES_PER_FRAME
+
             rl.BeginTextureMode(target)
             if clear {
                 rl.ClearBackground(rl.BLACK)
@@ -37,14 +48,17 @@ main :: proc() {
             if rl.IsKeyPressed(.G) do use_g = !use_g
             if rl.IsKeyPressed(.B) do use_b = !use_b
 
-            x1 := f32(rl.GetRandomValue(0, WIDTH))
-            y1 := f32(rl.GetRandomValue(0, HEIGHT))
-            x2 := f32(rl.GetRandomValue(0, WIDTH))
-            y2 := f32(rl.GetRandomValue(0, HEIGHT))
-            r := use_r ? u8(rl.GetRandomValue(0, 255)) : 0
-            g := use_g ? u8(rl.GetRandomValue(0, 255)) : 0
-            b := use_b ? u8(rl.GetRandomValue(0, 255)) : 0
-            rl.DrawLineV({x1, y1}, {x2, y2}, {r, g, b, 255})
+            for i in 0..<lines_per_frame {
+                x1 := f32(rl.GetRandomValue(0, WIDTH))
+                y1 := f32(rl.GetRandomValue(0, HEIGHT))
+                x2 := f32(rl.GetRandomValue(0, WIDTH))
+                y2 := f32(rl.GetRandomValue(0, HEIGHT))
+                r := use_r ? u8(rl.GetRandomValue(0, 255)) : 0
+                g := use_g ? u8(rl.GetRandomValue(0, 255)) : 0
+                b := use_b ? u8(rl.GetRandomValue(0, 255)) : 0
+                rl.DrawLineV({x1, y1}, {x2, y2}, {r, g, b, 255})
+            }
+
             rl.EndTextureMode()
         }
 
