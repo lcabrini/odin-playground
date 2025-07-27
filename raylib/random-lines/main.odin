@@ -15,7 +15,7 @@ main :: proc() {
     rl.InitWindow(WIDTH, HEIGHT, TITLE)
     rl.SetTargetFPS(60)
 
-    image := rl.LoadImageFromScreen()
+    target := rl.LoadRenderTexture(WIDTH, HEIGHT)
     clear := true
     pause := false
     use_r := true
@@ -26,6 +26,12 @@ main :: proc() {
         if rl.IsKeyPressed(.P) do pause = !pause
 
         if !pause {
+            rl.BeginTextureMode(target)
+            if clear {
+                rl.ClearBackground(rl.BLACK)
+                clear = false
+            }
+
             if rl.IsKeyPressed(.C) do clear = true
             if rl.IsKeyPressed(.R) do use_r = !use_r
             if rl.IsKeyPressed(.G) do use_g = !use_g
@@ -38,21 +44,15 @@ main :: proc() {
             r := use_r ? u8(rl.GetRandomValue(0, 255)) : 0
             g := use_g ? u8(rl.GetRandomValue(0, 255)) : 0
             b := use_b ? u8(rl.GetRandomValue(0, 255)) : 0
-            rl.ImageDrawLineV(&image, {x1, y1}, {x2, y2}, {r, g, b, 255})
-
-            if clear {
-                rl.ImageClearBackground(&image, rl.BLACK)
-                clear = false
-            }
+            rl.DrawLineV({x1, y1}, {x2, y2}, {r, g, b, 255})
+            rl.EndTextureMode()
         }
 
         rl.BeginDrawing()
-        rl.ClearBackground(rl.BLACK)
-        texture := rl.LoadTextureFromImage(image)
-        rl.DrawTexture(texture, 0, 0, rl.WHITE)
+        rl.DrawTexture(target.texture, 0, 0, rl.WHITE)
         rl.EndDrawing()
-        rl.UnloadTexture(texture)
     }
 
+    rl.UnloadRenderTexture(target)
     rl.CloseWindow()
 }
