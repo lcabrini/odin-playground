@@ -74,7 +74,7 @@ main :: proc() {
             }
         }
 
-        for y := HEIGHT-2; y > 0; y -= 1 {
+        for y := HEIGHT-2; y >= 0; y -= 1 {
             for x in 0..<WIDTH {
                 #partial switch &pt in screen[y*WIDTH+x] {
                 case Grain:
