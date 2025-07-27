@@ -103,7 +103,7 @@ main :: proc() {
                             } else {
                                 screen[y*WIDTH+x] = empty
                             }
-                        } else if screen[(y+1)*WIDTH+x+1] == empty {
+                        } else if (y+1)*WIDTH+x+1 < len(screen) && screen[(y+1)*WIDTH+x+1] == empty {
                             if x+1 < WIDTH-1 {
                                 screen[(y+1)*WIDTH+x+1] = pt
                                 screen[y*WIDTH+x] = empty
