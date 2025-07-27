@@ -62,21 +62,30 @@ main :: proc() {
             }
         }
 
-
         rl.BeginDrawing()
         rl.ClearBackground(rl.BLACK)
 
         for joint, i in snake {
-
-            if i == 0 do rl.DrawCircleSector(joint.pos, joint.r+1, (joint.a - math.PI/2)*rl.RAD2DEG, (joint.a + math.PI/2)*rl.RAD2DEG, 50, rl.WHITE)
+            if i == 0 {
+                rl.DrawCircleSector(joint.pos, joint.r+1, (joint.a - math.PI/2)*rl.RAD2DEG, (joint.a + math.PI/2)*rl.RAD2DEG, 50, rl.WHITE)
+                rl.DrawCircleSector(joint.pos, joint.r+2, (joint.a - math.PI/2)*rl.RAD2DEG, (joint.a + math.PI/2)*rl.RAD2DEG, 50, rl.WHITE)
+            }
+                
             rl.DrawCircleV(joint.pos, joint.r, rl.GREEN)
 
-            if i > 0 {
-                rl.DrawLineV({snake[i-1].left.x, snake[i-1].left.y}, {joint.left.x, joint.left.y}, rl.WHITE)
-                rl.DrawLineV({snake[i-1].right.x, snake[i-1].right.y}, {joint.right.x, joint.right.y}, rl.WHITE)
+            /* TODO: must be a better way to do this. */
+            if i > 1 {
+                x := snake[i-1].pos.x + snake[i-1].r * math.cos(snake[i-1].a)
+                y := snake[i-1].pos.y + snake[i-1].r * math.sin(snake[i-1].a) 
+                rl.DrawLineEx(joint.pos, {x, y}, joint.r*2-1, rl.GREEN)
             }
-        }
 
+            if i > 0 {
+                rl.DrawLineEx({snake[i-1].left.x, snake[i-1].left.y}, {joint.left.x, joint.left.y}, 2, rl.WHITE)
+                rl.DrawLineEx({snake[i-1].right.x, snake[i-1].right.y}, {joint.right.x, joint.right.y}, 2, rl.WHITE)
+            }
+
+        }
 
         rl.EndDrawing()
     }
