@@ -10,8 +10,8 @@ main :: proc() {
     rl.SetConfigFlags({.VSYNC_HINT})
     rl.InitWindow(WIDTH, HEIGHT, TITLE)
     rl.SetTargetFPS(60)
-
-    image := rl.LoadImageFromScreen()
+    
+    target := rl.LoadRenderTexture(WIDTH, HEIGHT)
     paused := false
     clear := true
     fill := false
@@ -45,8 +45,9 @@ main :: proc() {
                 use_b = !use_b
             }
 
+            rl.BeginTextureMode(target)
             if clear {
-                rl.ImageClearBackground(&image, rl.BLACK)
+                rl.ClearBackground(rl.BLACK)
                 clear = false
             }
 
@@ -61,19 +62,18 @@ main :: proc() {
             b := use_b ? u8(rl.GetRandomValue(0, 255)) : 0
 
             if fill {
-                rl.ImageDrawTriangle(&image, {x1, y1}, {x2, y2}, {x3, y3}, {r, g, b, 255})
+                rl.DrawTriangle({x1, y1}, {x2, y2}, {x3, y3}, {r, g, b, 255})
             } else {
-                rl.ImageDrawTriangleLines(&image, {x1, y1}, {x2, y2}, {x3, y3}, {r, g, b, 255})
+                rl.DrawTriangleLines({x1, y1}, {x2, y2}, {x3, y3}, {r, g, b, 255})
             }
+            rl.EndTextureMode()
         }
 
-        texture := rl.LoadTextureFromImage(image)
         rl.BeginDrawing()
-        rl.DrawTexture(texture, 0, 0, rl.WHITE)
+        rl.DrawTextureRec(target.texture, {0, 0, WIDTH, -HEIGHT}, {0, 0}, rl.WHITE)
         rl.EndDrawing()
-        rl.UnloadTexture(texture)
     }
 
-    rl.UnloadImage(image)
+    rl.UnloadRenderTexture(target)
     rl.CloseWindow()
 }
