@@ -10,7 +10,10 @@ import rl "vendor:raylib"
 WIDTH :: 1024
 HEIGHT :: 768
 TITLE :: "Random Lines"
+MIN_LINES_PER_FRAME :: 1
 MAX_LINES_PER_FRAME :: 50
+SMALL_CHANGE :: 1
+LARGE_CHANGE :: 10
 
 main :: proc() {
     rl.SetConfigFlags({.VSYNC_HINT})
@@ -29,12 +32,12 @@ main :: proc() {
         if rl.IsKeyPressed(.P) do pause = !pause
 
         if !pause {
-            if rl.IsKeyPressed(.LEFT) do lines_per_frame -= 1
-            if rl.IsKeyPressed(.RIGHT) do lines_per_frame += 1
-            if rl.IsKeyPressed(.UP) do lines_per_frame += 5
-            if rl.IsKeyPressed(.DOWN) do lines_per_frame -= 5
+            if rl.IsKeyPressed(.LEFT) do lines_per_frame -= SMALL_CHANGE
+            if rl.IsKeyPressed(.RIGHT) do lines_per_frame += SMALL_CHANGE
+            if rl.IsKeyPressed(.UP) do lines_per_frame += LARGE_CHANGE
+            if rl.IsKeyPressed(.DOWN) do lines_per_frame -= LARGE_CHANGE
 
-            if lines_per_frame < 1 do lines_per_frame = 1
+            if lines_per_frame < MIN_LINES_PER_FRAME do lines_per_frame = MIN_LINES_PER_FRAME
             if lines_per_frame > MAX_LINES_PER_FRAME do lines_per_frame = MAX_LINES_PER_FRAME
 
             rl.BeginTextureMode(target)
