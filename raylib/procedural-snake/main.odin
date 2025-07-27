@@ -94,8 +94,6 @@ main :: proc() {
         rl.DrawCircleV({e1x, e1y}, 2, rl.BLACK)
         rl.DrawCircleV({e2x, e2y}, 2, rl.BLACK)
 
-
-
         rl.EndDrawing()
     }
 
