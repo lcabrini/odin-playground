@@ -9,6 +9,7 @@ TITLE :: "3D Basic"
 
 main :: proc() {
     rl.SetConfigFlags({.VSYNC_HINT})
+    rl.SetTraceLogLevel(.ERROR)
     rl.InitWindow(WIDTH, HEIGTH, TITLE)
     rl.SetTargetFPS(60)
 
