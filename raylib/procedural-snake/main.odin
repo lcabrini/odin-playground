@@ -84,8 +84,17 @@ main :: proc() {
                 rl.DrawLineEx({snake[i-1].left.x, snake[i-1].left.y}, {joint.left.x, joint.left.y}, 2, rl.WHITE)
                 rl.DrawLineEx({snake[i-1].right.x, snake[i-1].right.y}, {joint.right.x, joint.right.y}, 2, rl.WHITE)
             }
-
         }
+
+        e1x := snake[0].pos.x + (snake[0].r - 6) * math.cos(snake[0].a - math.PI/2)
+        e1y := snake[0].pos.y + (snake[0].r - 6) * math.sin(snake[0].a - math.PI/2)
+        e2x := snake[0].pos.x + (snake[0].r - 6) * math.cos(snake[0].a + math.PI/2)
+        e2y := snake[0].pos.y + (snake[0].r - 6) * math.sin(snake[0].a + math.PI/2)
+
+        rl.DrawCircleV({e1x, e1y}, 2, rl.BLACK)
+        rl.DrawCircleV({e2x, e2y}, 2, rl.BLACK)
+
+
 
         rl.EndDrawing()
     }
