@@ -10,6 +10,9 @@ import rl "vendor:raylib"
 WIDTH :: 1024
 HEIGHT :: 768
 TITLE :: "Random Rectangles"
+MAX_RECTS_PER_FRAME :: 200
+SMALL_CHANGE :: 1
+BIG_CHANGE :: 10
 
 main :: proc() {
     rl.SetConfigFlags({.VSYNC_HINT})
@@ -33,13 +36,13 @@ main :: proc() {
         }
 
         if !paused {
-            if rl.IsKeyPressed(.LEFT) do rectangles_per_frame -= 1
-            if rl.IsKeyPressed(.RIGHT) do rectangles_per_frame += 1
-            if rl.IsKeyPressed(.UP) do rectangles_per_frame += 10
-            if rl.IsKeyPressed(.DOWN) do rectangles_per_frame -= 10
+            if rl.IsKeyPressed(.LEFT) do rectangles_per_frame -= SMALL_CHANGE
+            if rl.IsKeyPressed(.RIGHT) do rectangles_per_frame += SMALL_CHANGE
+            if rl.IsKeyPressed(.UP) do rectangles_per_frame += BIG_CHANGE
+            if rl.IsKeyPressed(.DOWN) do rectangles_per_frame -= BIG_CHANGE
 
-            if rectangles_per_frame < 0 do rectangles_per_frame = 0
-            if rectangles_per_frame > 1000 do rectangles_per_frame = 1000
+            if rectangles_per_frame < 1 do rectangles_per_frame = 1
+            if rectangles_per_frame > MAX_RECTS_PER_FRAME do rectangles_per_frame = MAX_RECTS_PER_FRAME
 
             if rl.IsKeyPressed(.C) {
                 clear = true
