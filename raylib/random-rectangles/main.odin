@@ -76,7 +76,7 @@ main :: proc() {
         }
 
         rl.BeginDrawing()
-        rl.DrawTexture(target.texture, 0, 0, rl.WHITE)
+        rl.DrawTextureRec(target.texture, {0, 0, WIDTH, -HEIGHT}, {0, 0}, rl.WHITE)
         rl.EndDrawing()
     }
 
