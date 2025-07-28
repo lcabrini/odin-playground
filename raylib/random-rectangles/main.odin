@@ -40,29 +40,14 @@ main :: proc() {
             if rl.IsKeyPressed(.RIGHT) do rectangles_per_frame += SMALL_CHANGE
             if rl.IsKeyPressed(.UP) do rectangles_per_frame += BIG_CHANGE
             if rl.IsKeyPressed(.DOWN) do rectangles_per_frame -= BIG_CHANGE
+            if rl.IsKeyPressed(.C) do clear = true
+            if rl.IsKeyPressed(.F) do fill = !fill
+            if rl.IsKeyPressed(.R) do use_red = !use_red
+            if rl.IsKeyPressed(.G) do use_green = !use_green
+            if rl.IsKeyPressed(.B) do use_blue = !use_blue
 
             if rectangles_per_frame < 1 do rectangles_per_frame = 1
             if rectangles_per_frame > MAX_RECTS_PER_FRAME do rectangles_per_frame = MAX_RECTS_PER_FRAME
-
-            if rl.IsKeyPressed(.C) {
-                clear = true
-            }
-
-            if rl.IsKeyPressed(.F) {
-                fill = !fill
-            }
-
-            if rl.IsKeyPressed(.R) {
-                use_red = !use_red
-            }
-
-            if rl.IsKeyPressed(.G) {
-                use_green = !use_green
-            }
-
-            if rl.IsKeyPressed(.B) {
-                use_blue = !use_blue
-            }
 
             rl.BeginTextureMode(target)
 
