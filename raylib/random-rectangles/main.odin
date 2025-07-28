@@ -12,6 +12,7 @@ TITLE :: "Random Rectangles"
 
 main :: proc() {
     rl.SetConfigFlags({.VSYNC_HINT})
+    rl.SetTraceLogLevel(.ERROR)
     rl.InitWindow(WIDTH, HEIGHT, TITLE)
     rl.SetTargetFPS(60)
 
