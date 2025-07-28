@@ -4,6 +4,7 @@
 
 package main
 
+import "core:fmt"
 import rl "vendor:raylib"
 
 WIDTH :: 1024
@@ -32,6 +33,14 @@ main :: proc() {
         }
 
         if !paused {
+            if rl.IsKeyPressed(.LEFT) do rectangles_per_frame -= 1
+            if rl.IsKeyPressed(.RIGHT) do rectangles_per_frame += 1
+            if rl.IsKeyPressed(.UP) do rectangles_per_frame += 10
+            if rl.IsKeyPressed(.DOWN) do rectangles_per_frame -= 10
+
+            if rectangles_per_frame < 0 do rectangles_per_frame = 0
+            if rectangles_per_frame > 1000 do rectangles_per_frame = 1000
+
             if rl.IsKeyPressed(.C) {
                 clear = true
             }
@@ -61,10 +70,12 @@ main :: proc() {
             g := use_green ? u8(rl.GetRandomValue(0, 255)) : 0
             b := use_blue ? u8(rl.GetRandomValue(0, 255)) : 0
 
-            if fill {
-                rl.DrawRectangle(x, y, w, h, {r, g, b, 255})
-            } else {
-                rl.DrawRectangleLines(x, y, w, h, {r, g, b, 255})
+            for i in 0..<rectangles_per_frame {
+                if fill {
+                    rl.DrawRectangle(x, y, w, h, {r, g, b, 255})
+                } else {
+                    rl.DrawRectangleLines(x, y, w, h, {r, g, b, 255})
+                }
             }
 
             if clear {
