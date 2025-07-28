@@ -65,6 +65,12 @@ main :: proc() {
             }
 
             rl.BeginTextureMode(target)
+
+            if clear {
+                rl.ClearBackground(rl.BLACK)
+                clear = false
+            }
+
             x := rl.GetRandomValue(0, WIDTH-1)
             y := rl.GetRandomValue(0, HEIGHT-1)
             w := rl.GetRandomValue(1, WIDTH-x)
@@ -79,11 +85,6 @@ main :: proc() {
                 } else {
                     rl.DrawRectangleLines(x, y, w, h, {r, g, b, 255})
                 }
-            }
-
-            if clear {
-                rl.ClearBackground(rl.BLACK)
-                clear = false
             }
 
             rl.EndTextureMode()
