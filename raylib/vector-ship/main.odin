@@ -27,6 +27,9 @@ main :: proc() {
     ship.r = 20
 
     for !rl.WindowShouldClose() {
+        if rl.IsKeyDown(.LEFT) do ship.a -= 1
+        if rl.IsKeyDown(.RIGHT) do ship.a += 1
+
         rl.BeginDrawing()
         rl.ClearBackground(rl.BLACK)
 
