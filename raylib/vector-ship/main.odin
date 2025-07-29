@@ -29,17 +29,19 @@ main :: proc() {
     for !rl.WindowShouldClose() {
         if rl.IsKeyDown(.LEFT) do ship.a -= 1
         if rl.IsKeyDown(.RIGHT) do ship.a += 1
-
+        
         rl.BeginDrawing()
         rl.ClearBackground(rl.BLACK)
 
-        x1 := ship.pos.x + ship.r * math.cos(ship.a*rl.DEG2RAD)
-        y1 := ship.pos.y + ship.r * math.sin(ship.a*rl.DEG2RAD)
-        x2 := ship.pos.x + ship.r * math.cos((ship.a-150)*rl.DEG2RAD)
-        y2 := ship.pos.y + ship.r * math.sin((ship.a-150)*rl.DEG2RAD)
-        x3 := ship.pos.x + ship.r * math.cos((ship.a-210)*rl.DEG2RAD)
-        y3 := ship.pos.y + ship.r * math.sin((ship.a-210)*rl.DEG2RAD)
-        rl.DrawTriangleLines({x1, y1}, {x2, y2}, {x3, y3}, rl.WHITE)
+        {
+            x1 := ship.pos.x + ship.r * math.cos(ship.a*rl.DEG2RAD)
+            y1 := ship.pos.y + ship.r * math.sin(ship.a*rl.DEG2RAD)
+            x2 := ship.pos.x + ship.r * math.cos((ship.a-150)*rl.DEG2RAD)
+            y2 := ship.pos.y + ship.r * math.sin((ship.a-150)*rl.DEG2RAD)
+            x3 := ship.pos.x + ship.r * math.cos((ship.a-210)*rl.DEG2RAD)
+            y3 := ship.pos.y + ship.r * math.sin((ship.a-210)*rl.DEG2RAD)
+            rl.DrawTriangleLines({x1, y1}, {x2, y2}, {x3, y3}, rl.WHITE)
+        }
         rl.EndDrawing()
     }
 
