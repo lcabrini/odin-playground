@@ -27,9 +27,21 @@ main :: proc() {
     ship.r = 20
 
     for !rl.WindowShouldClose() {
-        if rl.IsKeyDown(.LEFT) do ship.a -= 1
-        if rl.IsKeyDown(.RIGHT) do ship.a += 1
-        
+        if rl.IsKeyDown(.LEFT) do ship.a -= 5
+        if rl.IsKeyDown(.RIGHT) do ship.a += 5
+        if rl.IsKeyDown(.UP) {
+            x := 0.1 * math.cos(ship.a*rl.DEG2RAD)
+            y := 0.1 * math.sin(ship.a*rl.DEG2RAD)
+            ship.v += {x, y}
+        }
+
+        if ship.v.x > 20 do ship.v.x = 20
+        if ship.v.y > 20 do ship.v.y = 20
+        if ship.v.x < -20 do ship.v.x = -20
+        if ship.v.y < -20 do ship.v.y = -20
+
+        ship.pos += ship.v
+
         rl.BeginDrawing()
         rl.ClearBackground(rl.BLACK)
 
@@ -42,6 +54,7 @@ main :: proc() {
             y3 := ship.pos.y + ship.r * math.sin((ship.a-210)*rl.DEG2RAD)
             rl.DrawTriangleLines({x1, y1}, {x2, y2}, {x3, y3}, rl.WHITE)
         }
+
         rl.EndDrawing()
     }
 
