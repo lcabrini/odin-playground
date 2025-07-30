@@ -65,7 +65,7 @@ main :: proc() {
         rl.BeginDrawing()
         rl.ClearBackground(rl.BLACK)
 
-        for joint, i in snake {
+        #reverse for joint, i in snake {
             if i == 0 {
                 rl.DrawCircleSector(joint.pos, joint.r+1, (joint.a - math.PI/2)*rl.RAD2DEG, (joint.a + math.PI/2)*rl.RAD2DEG, 50, rl.WHITE)
                 rl.DrawCircleSector(joint.pos, joint.r+2, (joint.a - math.PI/2)*rl.RAD2DEG, (joint.a + math.PI/2)*rl.RAD2DEG, 50, rl.WHITE)
