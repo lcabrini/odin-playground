@@ -7,14 +7,15 @@ HEIGHT :: 768
 TITLE :: "Basic Window"
 
 main :: proc() {
-    rl.SetConfigFlags({.VSYNC_HINT})
-    rl.InitWindow(WIDTH, HEIGHT, TITLE)
-    defer rl.CloseWindow()
-    rl.SetTargetFPS(60)
+  rl.SetTraceLogLevel(.ERROR)
+  rl.SetConfigFlags({.VSYNC_HINT})
+  rl.InitWindow(WIDTH, HEIGHT, TITLE)
+  defer rl.CloseWindow()
+  rl.SetTargetFPS(60)
 
-    for !rl.WindowShouldClose() {
-        rl.BeginDrawing()
-        rl.ClearBackground(rl.BLACK)
-        rl.EndDrawing()
-    }
+  for !rl.WindowShouldClose() {
+    rl.BeginDrawing()
+    rl.ClearBackground(rl.BLACK)
+    rl.EndDrawing()
+  }
 }
