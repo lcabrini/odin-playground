@@ -11,9 +11,10 @@ main :: proc() {
     rl.InitWindow(WIDTH, HEIGHT, TITLE)
     rl.SetTargetFPS(60)
 
-    image := rl.LoadImageFromScreen()
+    //image := rl.LoadImageFromScreen()
+    target := rl.LoadRenderTexture(WIDTH, HEIGHT)
     should_plot := false
-    size: i32 = 1
+    size: f32 = 1
 
     for !rl.WindowShouldClose() {
         if rl.IsKeyPressed(.UP) {
@@ -26,18 +27,21 @@ main :: proc() {
 
         should_plot = rl.IsMouseButtonDown(rl.MouseButton.LEFT)
 
+        rl.BeginTextureMode(target)
         if should_plot {
             pos := rl.GetMousePosition()
-            rl.ImageDrawCircleV(&image, pos, size, rl.RAYWHITE)
+            rl.DrawCircleV(pos, size, rl.RAYWHITE)
         }
+        rl.EndTextureMode()
 
         rl.BeginDrawing()
-        texture := rl.LoadTextureFromImage(image)
-        rl.DrawTexture(texture, 0, 0, rl.RAYWHITE)
+        //texture := rl.LoadTextureFromImage(image)
+        rl.DrawTextureRec(target.texture, {0, 0, WIDTH, -HEIGHT}, {0, 0}, rl.RAYWHITE)
         rl.EndDrawing()
 
-        rl.UnloadTexture(texture)
+        //rl.UnloadTexture(texture)
     }
 
+    rl.UnloadRenderTexture(target)
     rl.CloseWindow()
 }
