@@ -72,7 +72,7 @@ readint :: proc(prompt: string, min, max: int) -> int {
 }
 
 main :: proc() {
-    shaders, err := filepath.glob("*.fs")
+    shaders, err := filepath.glob("*.frag")
     if err != nil {
         fmt.eprintln("Unable to glob: ", err)
         os.exit(1) 
@@ -89,7 +89,7 @@ main :: proc() {
     rl.InitWindow(i32(screen_width), i32(screen_height), TITLE)
     rl.SetTargetFPS(60)
 
-    fn := rl.TextFormat("shader-%02d.fs", example)
+    fn := rl.TextFormat("shader-%02d.frag", example)
     target := rl.LoadRenderTexture(i32(screen_width), i32(screen_height))
     shader := rl.LoadShader("", fn)
     widthLoc := rl.GetShaderLocation(shader, "renderWidth")
