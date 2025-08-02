@@ -13,7 +13,8 @@ main :: proc() {
   rl.InitWindow(WIDTH, HEIGHT, TITLE)
   rl.SetTargetFPS(60)
 
-  image := rl.LoadImageFromScreen()
+  //image := rl.LoadImageFromScreen()
+  target := rl.LoadRenderTexture(WIDTH, HEIGHT)
   paused := false
   clear := true
   fill := true
@@ -47,8 +48,9 @@ main :: proc() {
         use_b = !use_b
       }
 
+      rl.BeginTextureMode(target)
       if clear {
-        rl.ImageClearBackground(&image, rl.BLACK)
+        rl.ClearBackground(rl.BLACK)
         clear = false
       }
 
@@ -58,25 +60,27 @@ main :: proc() {
       if WIDTH - x < x do max_radius = WIDTH - x
         if y < max_radius do max_radius = y
           if HEIGHT - y < max_radius do max_radius = HEIGHT - y
-            radius := rl.GetRandomValue(1, max_radius)
+            radius := f32(rl.GetRandomValue(1, max_radius))
             r := use_r ? u8(rl.GetRandomValue(1, 255)) : 0
             g := use_g ? u8(rl.GetRandomValue(1, 255)) : 0
             b := use_b ? u8(rl.GetRandomValue(1, 255)) : 0
 
             if fill {
-              rl.ImageDrawCircle(&image, x, y, radius, {r, g, b, 255})
+              rl.DrawCircle(x, y, radius, {r, g, b, 255})
             } else {
-              rl.ImageDrawCircleLines(&image, x, y, radius, {r, g, b, 255})
+              rl.DrawCircleLines(x, y, radius, {r, g, b, 255})
             }
           }
+          rl.EndTextureMode()
 
-          texture := rl.LoadTextureFromImage(image)
+          //texture := rl.LoadTextureFromImage(image)
           rl.BeginDrawing()
-          rl.DrawTexture(texture, 0, 0, rl.WHITE)
+          rl.DrawTextureRec(target.texture, {0, 0, WIDTH, -HEIGHT}, {0, 0}, rl.WHITE)
           rl.EndDrawing()
 
-          rl.UnloadTexture(texture)
+          //rl.UnloadTexture(texture)
   }
 
+  rl.UnloadRenderTexture(target)
   rl.CloseWindow()
 }
