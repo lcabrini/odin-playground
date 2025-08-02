@@ -11,7 +11,6 @@ main :: proc() {
     rl.InitWindow(WIDTH, HEIGHT, TITLE)
     rl.SetTargetFPS(60)
 
-    //image := rl.LoadImageFromScreen()
     target := rl.LoadRenderTexture(WIDTH, HEIGHT)
     should_plot := false
     size: f32 = 1
@@ -35,11 +34,8 @@ main :: proc() {
         rl.EndTextureMode()
 
         rl.BeginDrawing()
-        //texture := rl.LoadTextureFromImage(image)
         rl.DrawTextureRec(target.texture, {0, 0, WIDTH, -HEIGHT}, {0, 0}, rl.RAYWHITE)
         rl.EndDrawing()
-
-        //rl.UnloadTexture(texture)
     }
 
     rl.UnloadRenderTexture(target)
