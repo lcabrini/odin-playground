@@ -8,74 +8,75 @@ HEIGHT :: 768
 TITLE :: "Random Circles"
 
 main :: proc() {
-    rl.SetConfigFlags({.VSYNC_HINT})
-    rl.InitWindow(WIDTH, HEIGHT, TITLE)
-    rl.SetTargetFPS(60)
-    
-    image := rl.LoadImageFromScreen()
-    paused := false
-    clear := true
-    fill := true
-    use_r := true
-    use_g := true
-    use_b := true
+  rl.SetTraceLogLevel(.ERROR)
+  rl.SetConfigFlags({.VSYNC_HINT})
+  rl.InitWindow(WIDTH, HEIGHT, TITLE)
+  rl.SetTargetFPS(60)
 
-    for !rl.WindowShouldClose() {
-        if rl.IsKeyPressed(.P) {
-            paused = !paused
-        }
+  image := rl.LoadImageFromScreen()
+  paused := false
+  clear := true
+  fill := true
+  use_r := true
+  use_g := true
+  use_b := true
 
-        if !paused {
-            if rl.IsKeyPressed(.C) {
-                clear = true
-            }
+  for !rl.WindowShouldClose() {
+    if rl.IsKeyPressed(.P) {
+      paused = !paused
+    }
 
-            if rl.IsKeyPressed(.F) {
-                fill = !fill
-            }
+    if !paused {
+      if rl.IsKeyPressed(.C) {
+        clear = true
+      }
 
-            if rl.IsKeyPressed(.R) {
-                use_r = !use_r
-            }
+      if rl.IsKeyPressed(.F) {
+        fill = !fill
+      }
 
-            if rl.IsKeyPressed(.G) {
-                use_g = !use_g
-            }
+      if rl.IsKeyPressed(.R) {
+        use_r = !use_r
+      }
 
-            if rl.IsKeyPressed(.B) {
-                use_b = !use_b
-            }
+      if rl.IsKeyPressed(.G) {
+        use_g = !use_g
+      }
 
-            if clear {
-                rl.ImageClearBackground(&image, rl.BLACK)
-                clear = false
-            }
+      if rl.IsKeyPressed(.B) {
+        use_b = !use_b
+      }
 
-            x := rl.GetRandomValue(1, WIDTH-2)
-            y := rl.GetRandomValue(1, HEIGHT-2)
-            max_radius := x
-            if WIDTH - x < x do max_radius = WIDTH - x
-            if y < max_radius do max_radius = y
-            if HEIGHT - y < max_radius do max_radius = HEIGHT - y
+      if clear {
+        rl.ImageClearBackground(&image, rl.BLACK)
+        clear = false
+      }
+
+      x := rl.GetRandomValue(1, WIDTH-2)
+      y := rl.GetRandomValue(1, HEIGHT-2)
+      max_radius := x
+      if WIDTH - x < x do max_radius = WIDTH - x
+        if y < max_radius do max_radius = y
+          if HEIGHT - y < max_radius do max_radius = HEIGHT - y
             radius := rl.GetRandomValue(1, max_radius)
             r := use_r ? u8(rl.GetRandomValue(1, 255)) : 0
             g := use_g ? u8(rl.GetRandomValue(1, 255)) : 0
             b := use_b ? u8(rl.GetRandomValue(1, 255)) : 0
 
             if fill {
-                rl.ImageDrawCircle(&image, x, y, radius, {r, g, b, 255})
+              rl.ImageDrawCircle(&image, x, y, radius, {r, g, b, 255})
             } else {
-                rl.ImageDrawCircleLines(&image, x, y, radius, {r, g, b, 255})
+              rl.ImageDrawCircleLines(&image, x, y, radius, {r, g, b, 255})
             }
-        }
+          }
 
-        texture := rl.LoadTextureFromImage(image)
-        rl.BeginDrawing()
-        rl.DrawTexture(texture, 0, 0, rl.WHITE)
-        rl.EndDrawing()
+          texture := rl.LoadTextureFromImage(image)
+          rl.BeginDrawing()
+          rl.DrawTexture(texture, 0, 0, rl.WHITE)
+          rl.EndDrawing()
 
-        rl.UnloadTexture(texture)
-    }
+          rl.UnloadTexture(texture)
+  }
 
-    rl.CloseWindow()
+  rl.CloseWindow()
 }
