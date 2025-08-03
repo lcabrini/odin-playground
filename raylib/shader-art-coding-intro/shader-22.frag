@@ -1,9 +1,7 @@
 #version 330
 
 in vec2 fragTexCoord;
-in vec4 fragCoord;
-
-out vec4 fragColor;
+out vec4 finalColor;
 
 uniform float renderWidth;
 uniform float renderHeight;
@@ -22,7 +20,7 @@ void main() {
     vec2 uv = vec2(fragTexCoord.x, 1.0-fragTexCoord.y) * 2.0 - 1.0;
     uv.x *= renderWidth/renderHeight;
     vec2 uv0 = uv;
-    vec3 finalColor = vec3(0.0);
+    vec3 fragColor = vec3(0.0);
 
     for (float i = 0.0; i < 4.0; i++) {
         uv = fract(uv * 1.5) - 0.5;
@@ -33,7 +31,7 @@ void main() {
         d = abs(d);
         d = 0.01 / d;
 
-        finalColor += col * d;
+        fragColor += col * d;
     }
-    fragColor = vec4(finalColor, 1.0);
+    finalColor = vec4(fragColor, 1.0);
 }
