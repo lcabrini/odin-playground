@@ -34,12 +34,10 @@ main :: proc() {
     font := rl.LoadFontEx("../../resources/Orbitron-Black.ttf", FONT_SIZE, nil, 0)
 
     rl.BeginTextureMode(target)
-    for a: f32 = 70; a >= 1; a -= 1 {
-        for t: f32 = 0.0; t <= math.PI * 2; t += 0.01 {
-            x: f32 = MIDX + a * 5.0 * math.sin(t) * math.sin(t) * math.sin(t)
-            y: f32 = MIDY - (a * 4.0 * math.cos(t) - a * 1.3 * math.cos(2.0 * t) - a * 0.6 * math.cos(3.0 * t) - a * 0.2 * math.cos(4.0 * t))
-            rl.DrawCircleV({x, y}, 5, rl.RED)
-        }
+    for a: f32 = 70; a >= 1; a -= 1 do for t: f32 = 0.0; t <= math.PI * 2; t += 0.01 {
+        x: f32 = MIDX + a * 5.0 * math.sin(t) * math.sin(t) * math.sin(t)
+        y: f32 = MIDY - (a * 4.0 * math.cos(t) - a * 1.3 * math.cos(2.0 * t) - a * 0.6 * math.cos(3.0 * t) - a * 0.2 * math.cos(4.0 * t))
+        rl.DrawCircleV({x, y}, 5, rl.RED)
     }
 
     ts := rl.MeasureTextEx(font, text, FONT_SIZE, FONT_SPACING)
