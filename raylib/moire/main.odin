@@ -23,7 +23,6 @@ main :: proc() {
 	rl.InitWindow(WIDTH, HEIGHT, TITLE)
 	rl.SetTargetFPS(60)
 
-	//image := rl.LoadImageFromScreen()
 	target := rl.LoadRenderTexture(WIDTH, HEIGHT)
 
 	t: f32 = 0
@@ -59,17 +58,11 @@ main :: proc() {
 		}
 		rl.EndTextureMode()
 
-		//texture := rl.LoadTextureFromImage(image)
-
 		rl.BeginDrawing()
 		rl.DrawTextureRec(target.texture, {0, 0, WIDTH, -HEIGHT}, {0, 0}, rl.WHITE)
-		//rl.ClearBackground(rl.BLACK)
-		//rl.DrawTexture(texture, 0, 0, rl.WHITE)
 		rl.EndDrawing()
-		//rl.UnloadTexture(texture)
 	}
 
 	rl.UnloadRenderTexture(target)
-	//rl.UnloadImage(image)
 	rl.CloseWindow()
 }
