@@ -16,8 +16,17 @@ main :: proc() {
 	rl.SetTargetFPS(60)
 	target := rl.LoadRenderTexture(WIDTH, HEIGHT)
 
+	should_clear := true
+
 	for !rl.WindowShouldClose() {
+		if rl.IsKeyPressed(.C) do should_clear = true
+
 		rl.BeginTextureMode(target)
+
+		if should_clear {
+			rl.ClearBackground(rl.BLACK)
+			should_clear = false
+		}
 
 		for i in 0 ..< 50 {
 			l := f32(rl.GetRandomValue(-300, 300))
