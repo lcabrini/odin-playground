@@ -17,29 +17,34 @@ main :: proc() {
 	target := rl.LoadRenderTexture(WIDTH, HEIGHT)
 
 	should_clear := true
+	paused := false
 
 	for !rl.WindowShouldClose() {
-		if rl.IsKeyPressed(.C) do should_clear = true
+		if rl.IsKeyPressed(.P) do paused = !paused
 
-		rl.BeginTextureMode(target)
+		if !paused {
+			if rl.IsKeyPressed(.C) do should_clear = true
 
-		if should_clear {
-			rl.ClearBackground(rl.BLACK)
-			should_clear = false
+			rl.BeginTextureMode(target)
+
+			if should_clear {
+				rl.ClearBackground(rl.BLACK)
+				should_clear = false
+			}
+
+			for i in 0 ..< 50 {
+				l := f32(rl.GetRandomValue(-300, 300))
+				a := f32(rl.GetRandomValue(0, 360)) * rl.DEG2RAD
+				x := MIDX + l * math.cos(a)
+				y := MIDY + l * math.sin(a)
+				r := u8(rl.GetRandomValue(100, 255))
+				g := u8(rl.GetRandomValue(100, 255))
+				b := u8(rl.GetRandomValue(100, 255))
+				rl.DrawPixelV({x, y}, {r, g, b, 255})
+			}
+
+			rl.EndTextureMode()
 		}
-
-		for i in 0 ..< 50 {
-			l := f32(rl.GetRandomValue(-300, 300))
-			a := f32(rl.GetRandomValue(0, 360)) * rl.DEG2RAD
-			x := MIDX + l * math.cos(a)
-			y := MIDY + l * math.sin(a)
-			r := u8(rl.GetRandomValue(100, 255))
-			g := u8(rl.GetRandomValue(100, 255))
-			b := u8(rl.GetRandomValue(100, 255))
-			rl.DrawPixelV({x, y}, {r, g, b, 255})
-		}
-
-		rl.EndTextureMode()
 
 		rl.BeginDrawing()
 		rl.DrawTextureRec(target.texture, {0, 0, WIDTH, -HEIGHT}, {0, 0}, rl.WHITE)
