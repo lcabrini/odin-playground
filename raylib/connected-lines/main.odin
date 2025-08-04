@@ -8,6 +8,7 @@ TITLE :: "Connected Lines"
 
 
 main :: proc() {
+	rl.SetTraceLogLevel(.ERROR)
 	rl.SetConfigFlags({.VSYNC_HINT})
 	rl.InitWindow(WIDTH, HEIGHT, TITLE)
 	target := rl.LoadRenderTexture(WIDTH, HEIGHT)
