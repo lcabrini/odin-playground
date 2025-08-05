@@ -34,10 +34,8 @@ main :: proc() {
 			}
 
 			for i in 0 ..< 50 {
-				//l := f32(rl.GetRandomValue(-300, 300))
-				//a := f32(rl.GetRandomValue(0, 360)) * rl.DEG2RAD
 				l := rand.float32() * 600 - 300
-				a := rand.float32() * 360
+				a := rand.float32() * 360 * rl.DEG2RAD
 				x := MIDX + l * math.cos(a)
 				y := MIDY + l * math.sin(a)
 				r := u8(rl.GetRandomValue(100, 255))
