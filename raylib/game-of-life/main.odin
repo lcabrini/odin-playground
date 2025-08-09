@@ -30,36 +30,42 @@ main :: proc() {
 		cells[y][x].alive = true
 	}
 
+	paused := false
+
 	for !rl.WindowShouldClose() {
-		tmp := make([][]Cell, HEIGHT)
-		for y in 0 ..< HEIGHT {
-			tmp[y] = make([]Cell, WIDTH)
-		}
+		if rl.IsKeyPressed(.P) do paused = !paused
 
-		for y in 0 ..< HEIGHT do for x in 0 ..< WIDTH {
-			tmp[y][x] = cells[y][x]
-		}
-
-		for y in 0 ..< HEIGHT do for x in 0 ..< WIDTH {
-			alive_count := 0
-			if y > 0 && x > 0 && cells[y - 1][x - 1].alive do alive_count += 1
-			if y > 0 && cells[y - 1][x].alive do alive_count += 1
-			if y > 0 && x < WIDTH - 1 && cells[y - 1][x + 1].alive do alive_count += 1
-			if x > 0 && cells[y][x - 1].alive do alive_count += 1
-			if x < WIDTH - 1 && cells[y][x + 1].alive do alive_count += 1
-			if y < HEIGHT - 1 && x > 0 && cells[y + 1][x - 1].alive do alive_count += 1
-			if y < HEIGHT - 1 && cells[y + 1][x].alive do alive_count += 1
-			if y < HEIGHT - 1 && x < WIDTH - 1 && cells[y + 1][x + 1].alive do alive_count += 1
-
-			if cells[y][x].alive {
-				tmp[y][x].alive = alive_count < 2 || alive_count > 3 ? false : true
-			} else {
-				tmp[y][x].alive = alive_count == 3 ? true : false
+		if !paused {
+			tmp := make([][]Cell, HEIGHT)
+			for y in 0 ..< HEIGHT {
+				tmp[y] = make([]Cell, WIDTH)
 			}
-		}
 
-		for y in 0 ..< HEIGHT do for x in 0 ..< WIDTH {
-			cells[y][x] = tmp[y][x]
+			for y in 0 ..< HEIGHT do for x in 0 ..< WIDTH {
+				tmp[y][x] = cells[y][x]
+			}
+
+			for y in 0 ..< HEIGHT do for x in 0 ..< WIDTH {
+				alive_count := 0
+				if y > 0 && x > 0 && cells[y - 1][x - 1].alive do alive_count += 1
+				if y > 0 && cells[y - 1][x].alive do alive_count += 1
+				if y > 0 && x < WIDTH - 1 && cells[y - 1][x + 1].alive do alive_count += 1
+				if x > 0 && cells[y][x - 1].alive do alive_count += 1
+				if x < WIDTH - 1 && cells[y][x + 1].alive do alive_count += 1
+				if y < HEIGHT - 1 && x > 0 && cells[y + 1][x - 1].alive do alive_count += 1
+				if y < HEIGHT - 1 && cells[y + 1][x].alive do alive_count += 1
+				if y < HEIGHT - 1 && x < WIDTH - 1 && cells[y + 1][x + 1].alive do alive_count += 1
+
+				if cells[y][x].alive {
+					tmp[y][x].alive = alive_count < 2 || alive_count > 3 ? false : true
+				} else {
+					tmp[y][x].alive = alive_count == 3 ? true : false
+				}
+			}
+
+			for y in 0 ..< HEIGHT do for x in 0 ..< WIDTH {
+				cells[y][x] = tmp[y][x]
+			}
 		}
 
 		rl.BeginDrawing()
